@@ -1,4 +1,3 @@
-import { ObjectId } from "mongoose";
 import { Category, ICategory } from "../models/category.models";
 import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
@@ -46,7 +45,7 @@ export const getAllCategories = asyncHandler<
   any,
   { page: number; limit: number }
 >(async (req, res) => {
-  const { page = 1, limit = 5 } = req.query;
+  const { page = 1, limit = 8 } = req.query;
   const categoryAggregrate = Category.aggregate([{ $match: {} }]);
 
   const categories = await Category.aggregatePaginate(
@@ -75,7 +74,7 @@ export const getAllCategories = asyncHandler<
 export const getCategoryById = asyncHandler<any, { categoryId: string }>(
   async (req, res) => {
     const { categoryId } = req.params;
-    
+
     const category = await Category.findById(categoryId);
 
     if (!category) throw new ApiError(404, "Category does not exist");
@@ -93,6 +92,10 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
     const { categoryId } = req.params;
     const { name } = req.body;
     let update: Partial<ICategory> = {};
+
+    const category = await Category.findById(categoryId);
+
+    if (!category) throw new ApiError(404, "Category does not exist");
 
     if (name) update = { ...update, name };
     if (req.file)
@@ -112,8 +115,9 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
       { new: true }
     );
 
-    if (!updatedCategory) throw new ApiError(404, "Category does not exist");
-
+    if (category.mainImage.url !== updatedCategory?.mainImage.url)
+      removeLocalFile(category.mainImage.localPath);
+    
     return res
       .status(201)
       .json(
@@ -126,7 +130,7 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
   }
 );
 
-export const deleteCategory = asyncHandler<any, { categoryId: string }>(
+export const removeCategory = asyncHandler<any, { categoryId: string }>(
   async (req, res) => {
     const { categoryId } = req.params;
 

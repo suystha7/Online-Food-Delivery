@@ -21,7 +21,7 @@ import {
   updateProfile,
 } from "../controllers/user.controllers";
 import { verifyJwt } from "../middlewares/auth.middlewares";
-import { mongoIdValidator } from "../validators/mongodb.validators";
+import { mongoIdParamValidator } from "../validators/mongodb.validators";
 import { upload } from "../middlewares/multer.middlewares";
 
 const router = Router();
@@ -65,6 +65,6 @@ router.route("/logout").post(verifyJwt, logoutUser);
 
 router
   .route("/:userId")
-  .delete(verifyJwt, mongoIdValidator("userId"), validate, removeUser);
+  .delete(verifyJwt, mongoIdParamValidator("userId"), validate, removeUser);
 
 export default router;

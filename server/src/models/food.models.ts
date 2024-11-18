@@ -1,7 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { AggregatePaginateModel, Schema } from "mongoose";
 import { IImage, imageSchema } from "./user.models";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-interface IFood extends Document {
+export interface IFood extends Document {
   category: Schema.Types.ObjectId;
   description: string;
   discount: number;
@@ -39,7 +40,7 @@ const foodSchema = new Schema<IFood>(
     },
     price: {
       type: Number,
-      default: 0,
+      default: 1,
     },
     subImages: {
       type: [imageSchema],
@@ -53,4 +54,11 @@ const foodSchema = new Schema<IFood>(
   { timestamps: true }
 );
 
-export const Food = mongoose.model<IFood>("Food", foodSchema);
+foodSchema.plugin(mongooseAggregatePaginate);
+
+interface FoodModel<T extends Document> extends AggregatePaginateModel<T> {}
+
+export const Food: FoodModel<IFood> = mongoose.model<IFood>(
+  "Food",
+  foodSchema
+) as FoodModel<IFood>;

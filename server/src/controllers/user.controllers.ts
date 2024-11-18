@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import crypto from "crypto";
 import { User, IUser } from "../models/user.models";
 import ApiResponse from "../utils/ApiResponse";
