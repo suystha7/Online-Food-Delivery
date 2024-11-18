@@ -1,4 +1,4 @@
-import { Category, Testimonial } from './types';
+import { Category, Service, Testimonial } from './types';
 
 export const banners = [
   {
@@ -158,5 +158,28 @@ export const testimonials: Testimonial[] = [
     imageUrl: "https://dummyimage.com/305x305",
     quote:
       "Edison bulb retro cloud bread echo park, helvetica stumptown taiyaki taxidermy 90's cronut +1 kinfolk. Single-origin coffee ennui shaman taiyaki vape DIY tote bag drinking vinegar cronut adaptogen squid fanny pack vaporware.",
+  },
+];
+
+export const services: Service[] = [
+  {
+    icon: '🍽️', // You can use Unicode icons or use React Icons for more options
+    title: 'Dine-In',
+    description: 'Enjoy our cozy indoor dining area with excellent ambiance and service.',
+  },
+  {
+    icon: '🚗',
+    title: 'Takeout',
+    description: 'Order online and pick up your food to enjoy at home or on the go.',
+  },
+  {
+    icon: '🍕',
+    title: 'Delivery',
+    description: 'Get your favorite meals delivered to your doorstep with fast and safe delivery.',
+  },
+  {
+    icon: '🍷',
+    title: 'Specialty Drinks',
+    description: 'We offer a wide range of specialty beverages to complement your meal.',
   },
 ];

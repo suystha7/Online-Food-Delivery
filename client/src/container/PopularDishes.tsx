@@ -6,7 +6,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { PopularDishesProps } from "@/lib/types";
-import DishCard from "@/app/menu/page";
+import Link from "next/link";
+import DishCard from "@/components/DishCard";
 
 const PopularDishesCarousel: FC<PopularDishesProps> = ({ dishes }) => {
   return (
@@ -37,9 +38,11 @@ const PopularDishesCarousel: FC<PopularDishesProps> = ({ dishes }) => {
         ))}
 
         <div className="text-center mt-6">
-          <button className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition duration-300">
-            See more
-          </button>
+          <Link href="/menu">
+            <button className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition duration-300">
+              See more
+            </button>
+          </Link>
         </div>
       </Swiper>
     </div>

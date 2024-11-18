@@ -6,7 +6,6 @@ import Services from "@/container/Services";
 import Testimonials from "@/container/Testimonial";
 import { categories, dishes } from "@/lib/data";
 
-
 const Main = () => {
   return (
     <div>

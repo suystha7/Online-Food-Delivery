@@ -1,7 +1,7 @@
 "use client";
 import { FC } from "react";
-import { Swiper, SwiperSlide } from "swiper/react"; // Import Swiper and SwiperSlide
-import "swiper/css"; // Import Swiper styles
+import { Swiper, SwiperSlide } from "swiper/react"; 
+import "swiper/css"; 
 import { Autoplay } from "swiper/modules";
 import { Category } from "@/lib/types";
 import MenuItemCard from "@/components/MenuItemCard";

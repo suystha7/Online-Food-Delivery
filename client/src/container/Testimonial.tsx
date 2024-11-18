@@ -3,8 +3,8 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react"; 
 import "swiper/css"; 
-import { Navigation, Pagination } from "swiper/modules"; 
-import { testimonials } from "../lib/data";
+import { Navigation, Pagination } from "swiper/modules";
+import { testimonials } from "@/lib/data";
 
 const Testimonials: React.FC = () => {
   return (
@@ -23,7 +23,7 @@ const Testimonials: React.FC = () => {
           modules={[Navigation, Pagination]} // Enable Swiper modules
           className="mySwiper"
         >
-          {testimonials .map((testimonial, index) => (
+          {testimonials.map((testimonial, index) => (
             <SwiperSlide key={index}>
               <div className="h-full text-center">
                 <img
