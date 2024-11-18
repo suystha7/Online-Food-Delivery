@@ -14,13 +14,12 @@ const Testimonials: React.FC = () => {
           What Our Clients Say
         </h1>
 
-        {/* Swiper Component */}
         <Swiper
-          spaceBetween={30} // Space between slides
-          slidesPerView={3} // Number of slides shown at once
-          navigation // Enable navigation arrows
-          pagination={{ clickable: true }} // Enable clickable pagination dots
-          modules={[Navigation, Pagination]} // Enable Swiper modules
+          spaceBetween={30} 
+          slidesPerView={3} 
+          navigation 
+          pagination={{ clickable: true }} 
+          modules={[Navigation, Pagination]} 
           className="mySwiper"
         >
           {testimonials.map((testimonial, index) => (
@@ -28,7 +27,7 @@ const Testimonials: React.FC = () => {
               <div className="h-full text-center">
                 <img
                   alt="testimonial"
-                  className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
+                  className="w-2 h-2 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
                   src={testimonial.imageUrl}
                 />
                 <p className="leading-relaxed">{testimonial.quote}</p>

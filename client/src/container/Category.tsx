@@ -12,10 +12,9 @@ interface CategoryListProps {
 
 const CategoryList: FC<CategoryListProps> = ({ categories = [] }) => {
   return (
-    <div className="space-y-12 mb-10">
+    <div className="space-y-12 m-[1%]">
       {categories.map((category) => (
         <div key={category.id} className="px-4 md:px-8">
-          {/* Swiper for category items */}
           <Swiper
             spaceBetween={20} 
             slidesPerView={1} 
