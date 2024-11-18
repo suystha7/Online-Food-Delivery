@@ -45,12 +45,12 @@ export const sendMail = async (options: {
 };
 
 export const generateEmailVerificationMailgenContent = (
-  username: string,
+  fullName: string,
   url: string
 ) => {
   return {
     body: {
-      name: username,
+      name: fullName,
       intro: "Welcome to QuiBite!",
       action: {
         instructions:
@@ -68,12 +68,12 @@ export const generateEmailVerificationMailgenContent = (
 };
 
 export const generateResetForgottenPasswordMailgenContent = (
-  username: string,
+  fullName: string,
   url: string
 ) => {
   return {
     body: {
-      name: username,
+      name: fullName,
       intro: "Welcome to QuickBite!",
       action: {
         instructions:

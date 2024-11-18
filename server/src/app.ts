@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morganMiddleware from "./loggers/morgan.loggers";
 import categoryRouter from "./routes/category.routes";
+import userRouter from "./routes/user.routes";
 import errorHandler from "./middlewares/error.middlewares";
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(morganMiddleware);
 
 app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/users",userRouter);
 
 app.use("/health", (req: Request, res: Response) => {
   res.send("Sucess ok");

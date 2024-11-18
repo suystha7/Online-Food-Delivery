@@ -75,9 +75,7 @@ export const getAllCategories = asyncHandler<
 export const getCategoryById = asyncHandler<any, { categoryId: string }>(
   async (req, res) => {
     const { categoryId } = req.params;
-
-    console.log('here')
-
+    
     const category = await Category.findById(categoryId);
 
     if (!category) throw new ApiError(404, "Category does not exist");
