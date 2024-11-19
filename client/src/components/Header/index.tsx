@@ -65,7 +65,7 @@ const Navbar: FC = () => {
           </li>
           <li>
             <Link
-              href="/about" 
+              href="/about"
               className="uppercase font-semibold hover:text-blue-600 transition duration-200"
             >
               About
@@ -73,15 +73,7 @@ const Navbar: FC = () => {
           </li>
           <li>
             <Link
-              href="/gallery" 
-              className="uppercase font-semibold hover:text-blue-600 transition duration-200"
-            >
-              Gallery
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/contact" 
+              href="/contact"
               className="uppercase font-semibold hover:text-blue-600 transition duration-200"
             >
               Contact

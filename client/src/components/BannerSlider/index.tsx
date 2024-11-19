@@ -6,7 +6,32 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Pagination, Autoplay } from "swiper/modules";
-import { banners } from "@/lib/data";
+
+const banners = [
+  {
+    id: 1,
+    image: "/banner/food1.webp",
+    alt: "Delicious Food 1",
+    title: "Discover the Taste of Excellence",
+    description:
+      "Indulge in the finest culinary creations from around the world.",
+  },
+  {
+    id: 2,
+    image: "/banner/food2.avif",
+    alt: "Delicious Food 2",
+    title: "A Feast for the Senses",
+    description: "Savor every bite with our expertly crafted dishes.",
+  },
+  {
+    id: 3,
+    image: "/banner/food.webp",
+    alt: "Delicious Food 3",
+    title: "Elevate Your Dining Experience",
+    description:
+      "Join us for an unforgettable journey of flavors and textures.",
+  },
+];
 
 
 const HeroSection: FC = () => {
@@ -42,9 +67,6 @@ const HeroSection: FC = () => {
                   {banner.title}
                 </h1>
                 <p className="mt-4 text-lg md:text-2xl">{banner.description}</p>
-                <button className="mt-8 inline-block px-8 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
-                  Get Started
-                </button>
               </div>
             </div>
           </SwiperSlide>
