@@ -5,7 +5,8 @@ import morganMiddleware from "./loggers/morgan.loggers";
 import categoryRouter from "./routes/category.routes";
 import userRouter from "./routes/user.routes";
 import foodRouter from "./routes/food.routes";
-import cartRouter from './routes/cart.routes'
+import cartRouter from "./routes/cart.routes";
+import bannerRouter from "./routes/banner.routes";
 import errorHandler from "./middlewares/error.middlewares";
 
 const app = express();
@@ -29,7 +30,8 @@ app.use(morganMiddleware);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/foods", foodRouter);
-app.use("/api/v1/carts",cartRouter)
+app.use("/api/v1/carts", cartRouter);
+app.use("/api/v1/banners", bannerRouter);
 
 app.use("/health", (req: Request, res: Response) => {
   res.send("Sucess ok");

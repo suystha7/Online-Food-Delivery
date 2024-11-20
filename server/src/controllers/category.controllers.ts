@@ -91,16 +91,16 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
   async (req, res) => {
     const { categoryId } = req.params;
     const { name } = req.body;
-    let update: Partial<ICategory> = {};
+    let updates: Partial<ICategory> = {};
 
     const category = await Category.findById(categoryId);
 
     if (!category) throw new ApiError(404, "Category does not exist");
 
-    if (name) update = { ...update, name };
+    if (name) updates = { ...updates, name };
     if (req.file)
-      update = {
-        ...update,
+      updates = {
+        ...updates,
         mainImage: {
           url: getFileStaticPath(req, req.file?.filename),
           localPath: getFileLocalPath(req.file?.filename),
@@ -110,7 +110,7 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
     const updatedCategory = await Category.findByIdAndUpdate(
       categoryId,
       {
-        $set: update,
+        $set: updates,
       },
       { new: true }
     );

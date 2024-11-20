@@ -146,9 +146,11 @@ logs
 
 NOTES.md
 .DS_Store
+notes.md
 
 # Playwright
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
