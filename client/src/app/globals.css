@@ -21,3 +21,68 @@ body {
   background: var(--foreground);
   font-family: "Poppins", sans-serif;
 }
+
+.text-y{
+  color: #f7be27 !important;
+}
+
+.container{
+  max-width: 1280px !important;
+  width: 1280px !important;
+}
+
+header .logo{
+  width: 200px;
+}
+
+header .logo img{
+  width: 100px !important;
+  height: auto !important;
+}
+
+header.scroll{
+  background-color: #fff;
+}
+
+header nav ul li a{
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase   ;
+}
+
+header.scroll nav ul li a{
+  color: #2c2c2c;
+}
+
+header nav ul li a:hover{
+  text-decoration: none;
+  color: #f7be27;
+}
+
+header.scroll header nav ul li a:hover{
+  color: #f7be27;
+}
+
+header .cartTab svg{
+  font-size: 35px;
+}
+
+header.scroll .cartTab svg{
+  color: #171717 !important;
+}
+
+header .cartTab span{
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  z-index: 100;
+  background-color: #e3000e;
+  color: #fff;
+}
+
+.swiper-pagination-bullet .swiper-pagination-bullet-active{
+  background-color: #fff;
+}
