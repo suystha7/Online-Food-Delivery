@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
 
   return (
     <header
-      className="w-full fixed top-0 left-0 z-[100] py-4 pr-12"
+      className="w-full fixed top-0 left-0 z-[100] py-4 pr-12 duration-300"
       ref={headerRef}
     >
       <div className="flex items-center justify-between">
