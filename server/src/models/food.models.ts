@@ -1,9 +1,9 @@
-import mongoose, { AggregatePaginateModel, Schema } from "mongoose";
+import mongoose, { AggregatePaginateModel, Schema,Types } from "mongoose";
 import { IImage, imageSchema } from "./user.models";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 export interface IFood extends Document {
-  category: Schema.Types.ObjectId;
+  category: Types.ObjectId;
   description: string;
   discount: number;
   mainImage: IImage;

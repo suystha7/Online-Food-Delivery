@@ -8,6 +8,7 @@ import {
   UserRolesEnum,
   UserRolesType,
 } from "../constant";
+import { Cart } from "./cart.models";
 
 export interface IImage {
   url: string;
@@ -98,6 +99,14 @@ userSchema.pre(
     next();
   }
 );
+
+userSchema.post("save", async function (user, next) {
+  const cart = await Cart.findOne({ owner: user._id });
+
+  if (!cart) await Cart.create({ owner: user._id, items: [] });
+
+  next();
+});
 
 userSchema.methods.isPasswordCorrect = async function (
   password: string
