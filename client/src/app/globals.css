@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"); 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -22,71 +22,65 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-/* Swiper Pagination */
-.swiper-pagination {
+.text-y{
+  color: #f7be27 !important;
+}
+
+.container{
+  max-width: 1280px !important;
+  width: 1280px !important;
+}
+
+header .logo{
+  width: 200px;
+}
+
+header .logo img{
+  width: 100px !important;
+  height: auto !important;
+}
+
+header.scroll {
+  background-color: transparent;
+  backdrop-filter: blur(50px);
+}
+
+
+header nav ul li a{
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase   ;
+}
+
+header.scroll nav ul li a{
+  color: white;
+}
+
+header nav ul li a:hover{
+  text-decoration: none;
+  color: #f7be27;
+}
+
+header.scroll header nav ul li a:hover{
+  color: #f7be27;
+}
+
+header .cartTab svg{
+  font-size: 35px;
+}
+
+header.scroll .cartTab svg{
+  color: white !important;
+}
+
+header .cartTab span{
   position: absolute;
-}
-
-.swiper-pagination .swiper-pagination-bullet {
-  width: 12px;
-  height: 12px;
-  background-color: rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
-  margin: 0 5px;
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-.swiper-pagination .swiper-pagination-bullet-active {
-  background-color: #1e40af;
-  transform: scale(1.2);
-}
-
-.swiper-pagination .swiper-pagination-bullet:hover {
-  background-color: #3b82f6;
-  transform: scale(1.1);
-}
-
-/* Swiper Buttons */
-.swiper-button-next,
-.swiper-button-prev {
-  color: #000; /* $white is set to black here for demonstration */
-  padding: 10px;
-  border-radius: 50%;
-  transition: background-color 0.3s ease;
-}
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  /* background-color: #f59e0b; */
-}
-
-.swiper-button-prev {
-  content: "←"; /* Previous button icon */
-}
-
-.swiper-button-next {
-  content: "→"; /* Next button icon */
-}
-
-/* Custom Swiper Buttons */
-.custom-swiper-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  width: 40px;
-  height: 40px;
-}
-
-.custom-swiper-button:before {
-  font-size: 24px;
-  color: #000; /* $white is set to black here */
-}
-
-.custom-swiper-button.swiper-button-prev:before {
-  content: "←"; /* Left arrow for previous */
-}
-
-.custom-swiper-button.swiper-button-next:before {
-  content: "→"; /* Right arrow for next */
+  bottom: 15px;
+  left: 15px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  z-index: 100;
+  background-color: #e3000e;
+  color: #fff;
 }
