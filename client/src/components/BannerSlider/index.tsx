@@ -10,7 +10,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 const banners = [
   {
     id: 1,
-    image: "/banner/food1.webp",
+    image: "/banner/slide1.jpg",
     alt: "Delicious Food 1",
     title: "Discover the Taste of Excellence",
     description:
@@ -18,21 +18,12 @@ const banners = [
   },
   {
     id: 2,
-    image: "/banner/food2.avif",
+    image: "/banner/slide2.jpg",
     alt: "Delicious Food 2",
     title: "A Feast for the Senses",
     description: "Savor every bite with our expertly crafted dishes.",
   },
-  {
-    id: 3,
-    image: "/banner/food.webp",
-    alt: "Delicious Food 3",
-    title: "Elevate Your Dining Experience",
-    description:
-      "Join us for an unforgettable journey of flavors and textures.",
-  },
 ];
-
 
 const HeroSection: FC = () => {
   return (
@@ -51,22 +42,31 @@ const HeroSection: FC = () => {
           clickable: true,
           type: "bullets",
         }}
-        // navigation
         modules={[Pagination, Autoplay]}
         className="h-full"
       >
-        {banners.map((banner) => (
+        {banners.map((banner, index) => (
           <SwiperSlide key={banner.id}>
             <div
               className="relative h-full bg-cover bg-center"
               style={{ backgroundImage: `url(${banner.image})` }}
             >
               <div className="absolute inset-0 bg-black opacity-40"></div>
-              <div className="relative z-10 container mx-auto h-full flex flex-col items-center justify-center text-center text-white">
-                <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                  {banner.title}
-                </h1>
-                <p className="mt-4 text-lg md:text-2xl">{banner.description}</p>
+              <div
+                className={`relative z-10 container mx-auto h-full flex flex-col justify-center text-white ${
+                  index === 0
+                    ? "md:text-left items-start ml-auto"
+                    : " md:text-right items-end mr-auto"
+                }`}
+              >
+                <div className="flex flex-col items-center md:items-start justify-center text-center md:text-left">
+                  <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+                    {banner.title}
+                  </h1>
+                  <p className="mt-4 text-lg md:text-2xl">
+                    {banner.description}
+                  </p>
+                </div>
               </div>
             </div>
           </SwiperSlide>

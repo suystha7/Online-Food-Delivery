@@ -40,9 +40,11 @@ header .logo img{
   height: auto !important;
 }
 
-header.scroll{
-  background-color: #fff;
+header.scroll {
+  background-color: transparent;
+  backdrop-filter: blur(50px);
 }
+
 
 header nav ul li a{
   color: #fff;
@@ -51,7 +53,7 @@ header nav ul li a{
 }
 
 header.scroll nav ul li a{
-  color: #2c2c2c;
+  color: white;
 }
 
 header nav ul li a:hover{
@@ -68,7 +70,7 @@ header .cartTab svg{
 }
 
 header.scroll .cartTab svg{
-  color: #171717 !important;
+  color: white !important;
 }
 
 header .cartTab span{
@@ -81,8 +83,4 @@ header .cartTab span{
   z-index: 100;
   background-color: #e3000e;
   color: #fff;
-}
-
-.swiper-pagination-bullet .swiper-pagination-bullet-active{
-  background-color: #fff;
 }
