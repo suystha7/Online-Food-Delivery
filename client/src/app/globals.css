@@ -128,17 +128,9 @@ header .btn-border {
   color: rgba(0, 0, 0, 0.7);
   padding: 6px 25px;
   font-weight: 600;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); */
+  transition: all 0.3s ease; /* Smooth transition */
 }
-
-header.scroll .btn-white{
-  background-color: #000;
-  color: #fff;
-  padding: 6px 25px;
-  font-weight: 600;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-
 .no-radius {
   border-radius: 0;
 }
@@ -161,6 +153,7 @@ header.scroll .btn-white{
   background-color: var(--accent-color);
   border: 2px solid var(--accent-color);
   color: #fff;
+  padding: 5px 15px;
 }
 
 .btn-red-1 {
