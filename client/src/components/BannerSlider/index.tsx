@@ -55,15 +55,15 @@ const HeroSection: FC = () => {
               <div
                 className={`relative z-10 container mx-auto h-full flex flex-col justify-center text-white ${
                   index === 0
-                    ? "md:text-left items-start ml-auto"
-                    : " md:text-right items-end mr-auto"
+                    ? "md:text-left items-start"
+                    : " md:text-right items-end"
                 }`}
               >
                 <div className="flex flex-col items-center md:items-start justify-center text-center md:text-left">
-                  <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+                  <h1 className="text-6xl md:text-6xl font-bold leading-tight break-words">
                     {banner.title}
                   </h1>
-                  <p className="mt-4 text-lg md:text-2xl">
+                  <p className="mt-4 text-lg md:text-2xl text-white">
                     {banner.description}
                   </p>
                 </div>
@@ -76,4 +76,4 @@ const HeroSection: FC = () => {
   );
 };
 
-export default HeroSection;
+export default HeroSection

@@ -3,6 +3,7 @@ import { Phone, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
+import Button from '@mui/material/Button';
 
 const Navbar: React.FC = () => {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
@@ -61,9 +62,11 @@ const Navbar: React.FC = () => {
           </span>
 
           <Link href="/cart" className="relative cartTab">
-            <ShoppingBag />
+            <ShoppingBag className="text-white"/>
             <span className="flex items-center justify-center text-xs">0</span>
           </Link>
+
+          <Button className="btn-white rounded-full ml-2">Sign In</Button>
         </div>
       </div>
     </header>

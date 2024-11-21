@@ -17,14 +17,17 @@ const Footer: React.FC = () => {
           <input
             type="email"
             placeholder="Enter your email"
-            className="px-4 py-2 border border-gray-300 rounded-l-lg w-2/3 md:w-1/3 focus:outline-none"
+            className="px-4 py-2 border border-gray-300 rounded-l-lg w-2/3 md:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
           <button className="bg-blue-600 text-white px-6 py-2 rounded-r-lg hover:bg-blue-700">
             Subscribe
           </button>
         </div>
       </div>
+
+      {/* Footer Content */}
       <div className="container px-8 pt-8 pb-10 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+        {/* Logo Section */}
         <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
           <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
             <span className="text-xl">LOGO</span>
@@ -33,8 +36,10 @@ const Footer: React.FC = () => {
             Air plant banjo lyft occupy retro adaptogen indego
           </p>
         </div>
+
+        {/* Links Section */}
         <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
-          {["COMPANY", "CATEGORIES", "CATEGORIES"].map((category, index) => (
+          {["COMPANY", "CATEGORIES", "SUPPORT"].map((category, index) => (
             <div key={index} className="lg:w-1/3 md:w-1/2 w-full px-4">
               <h2 className="title-font text-gray-900 font-bold tracking-widest text-md mb-3">
                 {category}
@@ -54,6 +59,8 @@ const Footer: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Footer Bottom Section */}
       <hr className="text-black" />
       <div className="bg-gray-100">
         <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
