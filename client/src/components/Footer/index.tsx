@@ -1,7 +1,32 @@
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import React from "react";
+"use client";
+import { ArrowUp, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import React, { useState, useEffect } from "react";
 
 const Footer: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => {
+    if (window.scrollY > 300) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", toggleVisibility);
+    return () => {
+      window.removeEventListener("scroll", toggleVisibility);
+    };
+  }, []);
+
   return (
     <footer className="text-gray-600 body-font bg-gray-100 mt-4">
       {/* Email Subscription Section */}
@@ -19,7 +44,7 @@ const Footer: React.FC = () => {
             placeholder="Enter your email"
             className="px-4 py-2 border border-red-400 rounded-l-lg w-2/3 md:w-1/3 focus:outline-none"
           />
-          <button className="btn-red text-white px-6 py-2 rounded-r-lg ">
+          <button className="btn-red text-white px-6 py-2 rounded-r-lg">
             Subscribe
           </button>
         </div>
@@ -81,6 +106,17 @@ const Footer: React.FC = () => {
           </span>
         </div>
       </div>
+
+      {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-20 right-6 p-3 rounded-full bg-brown text-white shadow-lg transition-opacity duration-300 transform ${
+          isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        } hover:scale-110 hover:animate-bounce`}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp size={24} />
+      </button>
     </footer>
   );
 };

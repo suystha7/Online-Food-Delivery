@@ -25,7 +25,7 @@ const FilterProducts: React.FC = () => {
   };
 
   return (
-    <section className="filterProducts py-10">
+    <section className="filterProducts py-10 min-h-screen" id="target-section">
       <div className="container mx-auto">
         <ul className="list list-inline text-center flex justify-center cursor-pointer mb-6">
           {products.map((product) => (

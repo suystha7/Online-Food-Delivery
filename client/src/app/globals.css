@@ -16,8 +16,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* --background: #0a0a0a; */
-    --foreground: #ededed;
+    --background: #eaeaea;
+    --foreground: #1a4e83;
   }
 }
 
@@ -54,10 +54,8 @@ h2 {
 
 /* Container */
 .container {
-  max-width: 1280px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
+  max-width: 1280px !important;
+  width: 1280px !important  ;
 }
 
 /* Header */
@@ -71,18 +69,18 @@ header .logo img {
 }
 
 header.scroll {
-  background-color: transparent;
-  backdrop-filter: blur(50px);
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(30px);
 }
 
 header nav ul li a {
-  color: #fff;
+  color: var(--background);
   font-weight: 600;
   text-transform: uppercase;
 }
 
 header.scroll nav ul li a {
-  color: white;
+  color: #000;
 }
 
 header nav ul li a:hover {
@@ -99,7 +97,7 @@ header .cartTab svg {
 }
 
 header.scroll .cartTab svg {
-  color: white !important;
+  color: #000;
 }
 
 header .cartTab span {
@@ -133,6 +131,14 @@ header .btn-border {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
+header.scroll .btn-white{
+  background-color: #000;
+  color: #fff;
+  padding: 6px 25px;
+  font-weight: 600;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
 .no-radius {
   border-radius: 0;
 }
@@ -157,9 +163,21 @@ header .btn-border {
   color: #fff;
 }
 
+.btn-red-1 {
+  background-color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  color: #fff;
+}
 .btn-red:hover {
   background: transparent;
   color: var(--accent-color);
+}
+
+.btn-red-1:hover {
+  transition: 0.2s all ease-in-out;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
 }
 
 /* Product Filters */
@@ -196,7 +214,7 @@ header .btn-border {
 
 .productItem .imgWrapper {
   border: 1px solid rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  /* overflow: hidden;   */
   cursor: pointer;
 }
 
