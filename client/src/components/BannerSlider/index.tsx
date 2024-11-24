@@ -22,7 +22,7 @@ const banners = [
     image: "/banner/slide2.jpg",
     alt: "Delicious Food 2",
     title: "A Feast for the Senses",
-    description: "From Rs. 200",
+    description: "Enjoy the food you love FROM Rs. 200",
   },
 ];
 

@@ -40,19 +40,13 @@ const Navbar: React.FC = () => {
                 <Link href="/">Home</Link>
               </li>
               <li>
-                <Link href="/">About</Link>
+                <Link href="#menu">Our Menu</Link>
               </li>
               <li>
-                <Link href="/">Our Menu</Link>
+                <Link href="#services">Services</Link>
               </li>
               <li>
-                <Link href="/">Shop</Link>
-              </li>
-              <li>
-                <Link href="/">Blog</Link>
-              </li>
-              <li>
-                <Link href="/">Contact Us</Link>
+                <Link href="#contact">Contact Us</Link>
               </li>
             </ul>
           </nav>

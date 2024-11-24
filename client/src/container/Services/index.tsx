@@ -27,19 +27,20 @@ const servicesData = [
 
 const Services: React.FC = () => {
   return (
-    <section className="text-center services py-5 bg-y">
+    <section className="services text-center py-16 bg-yellow-400" id="services">
       <div className="flex items-center justify-center gap-10">
         {servicesData.map((service) => (
-          <div key={service.id} className="box p-5 text-center w-[33%]">
+          <div key={service.id} className="box p-6 text-center w-[33%] mb-0">
             <Image
               src={service.icon}
               alt={service.title}
               width={100}
               height={100}
-              className="m-auto"
+              className="w-20 h-20 mb-4 mx-auto text-white"
             />
-            <h3 className="mt-4">{service.title}</h3>
-            <p className="mt-3 mb-8 text-sm">{service.description}</p>
+
+            <h3>{service.title}</h3>
+            <p>{service.description}</p>
           </div>
         ))}
       </div>

@@ -16,7 +16,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #eaeaea;
+    --background: #fffbeb; 
     --foreground: #1a4e83;
   }
 }
@@ -43,7 +43,8 @@ p {
   font-weight: 400;
 }
 
-h3, h4 {
+h3,
+h4 {
   font-weight: bold;
 }
 
@@ -55,7 +56,7 @@ h2 {
 /* Container */
 .container {
   max-width: 1280px !important;
-  width: 1280px !important  ;
+  width: 1280px !important;
 }
 
 /* Header */
@@ -206,15 +207,11 @@ header .btn-border {
 }
 
 .productItem .imgWrapper {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  /* overflow: hidden;   */
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   cursor: pointer;
+  border-radius: 2px;
 }
-
-.productItem .imgWrapper:hover img {
-  transform: scale(1.05);
-}
-
 .productItem .imgWrapper .MuiCheckbox-root {
   color: var(--accent-color);
 }
@@ -247,8 +244,160 @@ header .btn-border {
   font-weight: 600;
 }
 
-/* Services */
+/* Services Section */
+.services {
+  @apply py-16 bg-yellow-300;
+}
+
+.services .box {
+  @apply p-6 text-center transition-all duration-300;
+}
+
 .services h3 {
-  font-weight: bold;
-  font-size: 25px;
+  @apply text-2xl font-semibold text-brown mt-3 mb-2;
+}
+
+.services p {
+  @apply text-base text-gray-900 leading-relaxed;
+}
+
+/* Product Items */
+
+.productItem {
+  @apply overflow-hidden;
+}
+
+.imgWrapper {
+  @apply relative p-5;
+}
+
+.wishlist {
+  @apply absolute top-2 right-2 z-10;
+}
+
+.price {
+  @apply text-lg font-bold bg-yellow-400 text-white px-3 py-1;
+}
+
+.ratingWrapper {
+  @apply flex items-center justify-between mt-3;
+}
+
+.rating {
+  @apply text-gray-600;
+}
+
+.info {
+  @apply p-4 text-center;
+}
+
+.productTitle {
+  @apply text-xl font-semibold text-gray-900;
+}
+
+.productDescription {
+  @apply text-gray-500 mt-2 mb-3 text-base;
+}
+
+.addToCartButton {
+  @apply text-white py-2 px-4 transition-all duration-200;
+}
+
+.banner {
+  @apply py-20 bg-[#fdefc7] text-center; /* Adjust padding and background */
+}
+
+.info1 {
+  @apply w-[90%] sm:w-[75%] md:w-[60%] m-auto;
+}
+
+h2 {
+  @apply text-4xl sm:text-5xl font-semibold text-brown mb-4;
+}
+
+p {
+  @apply text-lg sm:text-sm text-gray-700 mb-8 leading-relaxed;
+}
+
+.btn-red {
+  @apply bg-[#e3000e] text-white py-2 px-6 font-semibold text-lg transition duration-300 ease-in-out;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .banner {
+    padding: 30px 0; /* Less padding on smaller screens */
+  }
+
+  h2 {
+    font-size: 2rem; /* Smaller heading on mobile */
+  }
+
+  p {
+    font-size: 1rem; /* Smaller text on mobile */
+  }
+}
+
+/* menu */
+
+.menu {
+  padding: 30px 0px;
+  /* background-color: #f7be27; */
+}
+.menu h2 {
+  color: #e3000e;
+  text-transform: uppercase;
+}
+
+.productItem_1{
+  @apply bg-amber-50
+}
+.productItem2 .imgWrapper img {
+  transition: all 0.5s;
+}
+
+.productItem2:hover .imgWrapper img{
+  transform: scale(1.05);
+}
+
+.productListing {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.recommend h2 {
+  margin-bottom: 30px;
+}
+
+.category img {
+  @apply rounded-full;
+}
+
+.category .relative {
+  position: relative;
+}
+
+.category .overlay-text {
+  @apply absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 text-white text-[15px] opacity-0 hover:opacity-100 transition-opacity duration-300;
+}
+
+.category {
+  @apply p-2.5;
+}
+.contact-container {
+  @apply max-w-xl mx-auto p-8 rounded-xl bg-white my-10;
+}
+.contact-heading {
+  @apply text-3xl font-semibold text-center mb-8 text-gray-800;
+}
+.contact-input,
+.contact-textarea {
+  @apply mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition duration-300 ease-in-out;
+}
+.contact-button {
+  @apply w-full px-6 py-3 mt-5 bg-accent text-white font-medium rounded-lg shadow-md transition duration-300 ease-in-out;
+
+  /* Hover effect */
+  @apply hover:bg-transparent hover:border-2 hover:border-accent hover:text-accent;
 }

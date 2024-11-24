@@ -1,16 +1,21 @@
-
-import Banner from "@/container/Banner";
+import Banner from "@/components/Banner";
 import BannerSlider from "@/components/BannerSlider";
-import FilterProducts from "@/components/FilterProducts";
 import Services from "@/container/Services";
+import RecommendFoods from "@/container/RecomendedFoods";
+import TopRated from "@/container/TopRated";
+// import Category from "@/container/Category";
+import Contact from "@/container/Contact";
 
 export default function Home() {
   return (
     <>
       <BannerSlider />
-      <FilterProducts />
-      <Banner />
+      {/* <Category /> */}
+      <RecommendFoods />
       <Services />
+      <Banner />
+      <TopRated />
+      <Contact />
     </>
   );
 }
