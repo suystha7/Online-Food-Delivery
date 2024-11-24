@@ -27,3 +27,5 @@ export enum PaymentMediumEnum {
 }
 
 export type PaymentMediumType = `${PaymentMediumEnum}`;
+
+export const BANNER_CNT_LIMIT = 3;

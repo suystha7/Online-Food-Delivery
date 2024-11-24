@@ -1,8 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
 interface ICart extends Document {
-  items: Array<{ productId: Schema.Types.ObjectId; quantity: number }>;
-  owner: Schema.Types.ObjectId;
+  items: Array<{ foodId: Types.ObjectId; quantity: number }>;
+  owner: Types.ObjectId;
 }
 
 const cartSchema = new Schema<ICart>(
@@ -14,9 +14,9 @@ const cartSchema = new Schema<ICart>(
     items: {
       type: [
         {
-          productId: {
+          foodId: {
             type: Schema.Types.ObjectId,
-            ref: "Product",
+            ref: "Food",
           },
           quantity: {
             type: Number,

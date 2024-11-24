@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema,Types } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 import {
   OrderStatusEnum,
@@ -9,8 +9,8 @@ import {
 
 interface IOrder extends Document {
   address: string;
-  customer: Schema.Types.ObjectId;
-  items: Array<{ productId: Schema.Types.ObjectId; quantity: number }>;
+  customer: Types.ObjectId;
+  items: Array<{ foodId: Types.ObjectId; quantity: number }>;
   isPaymentDone: boolean;
   orderPrice: number;
   paymentMedium: PaymentMediumType;
@@ -31,9 +31,9 @@ const orderSchema = new Schema<IOrder>(
     items: {
       type: [
         {
-          productId: {
+          foodId: {
             type: Schema.Types.ObjectId,
-            ref: "Product",
+            ref: "Food",
           },
           quantity: {
             type: Number,
