@@ -1,8 +1,9 @@
-"use client"
-import { Phone, ShoppingBag } from "lucide-react";
+"use client";
+import { LogIn, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
+import Button from "@mui/material/Button";
 
 const Navbar: React.FC = () => {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
@@ -39,31 +40,36 @@ const Navbar: React.FC = () => {
                 <Link href="/">Home</Link>
               </li>
               <li>
-                <Link href="/">About</Link>
+                <Link href="#menu">Our Menu</Link>
               </li>
               <li>
-                <Link href="/">Our Menu</Link>
+                <Link href="#services">Services</Link>
               </li>
               <li>
-                <Link href="/">Shop</Link>
-              </li>
-              <li>
-                <Link href="/">Blog</Link>
-              </li>
-              <li>
-                <Link href="/">Contact Us</Link>
+                <Link href="#contact">Contact Us</Link>
               </li>
             </ul>
           </nav>
 
-          <span className="text-y text-xl font-bold flex items-center">
-            <Phone className="text-[30px]" /> &nbsp; +977-9803348875
+          <span className="text-xl font-bold flex items-center">
+            {/* <Phone className="text-[30px]" /> &nbsp; 01-2345912 */}
           </span>
 
           <Link href="/cart" className="relative cartTab">
-            <ShoppingBag />
+            <ShoppingBag className="text-white" />
             <span className="flex items-center justify-center text-xs">0</span>
           </Link>
+
+          <Button className="btn-red rounded-full ml-2 relative group">
+            <span className=" group-hover:opacity-0 transition-opacity duration-300">
+              Sign In
+            </span>
+
+            <LogIn
+              size={20}
+              className="text-white absolute left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            />
+          </Button>
         </div>
       </div>
     </header>

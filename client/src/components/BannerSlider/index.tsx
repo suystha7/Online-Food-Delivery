@@ -6,6 +6,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Pagination, Autoplay } from "swiper/modules";
+import { Button } from "@mui/material";
+import { ArrowDown } from "lucide-react";
 
 const banners = [
   {
@@ -13,19 +15,27 @@ const banners = [
     image: "/banner/slide1.jpg",
     alt: "Delicious Food 1",
     title: "Discover the Taste of Excellence",
-    description:
-      "Indulge in the finest culinary creations from around the world.",
+    description: "Open only: 9:30AM - 9:30PM",
   },
   {
     id: 2,
     image: "/banner/slide2.jpg",
     alt: "Delicious Food 2",
     title: "A Feast for the Senses",
-    description: "Savor every bite with our expertly crafted dishes.",
+    description: "Enjoy the food you love FROM Rs. 200",
   },
 ];
 
 const HeroSection: FC = () => {
+  const handleScroll = (): void => {
+    if (typeof window !== "undefined") {
+      const targetSection = document.getElementById("target-section");
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <section className="relative h-screen">
       <Swiper
@@ -55,17 +65,27 @@ const HeroSection: FC = () => {
               <div
                 className={`relative z-10 container mx-auto h-full flex flex-col justify-center text-white ${
                   index === 0
-                    ? "md:text-left items-start ml-auto"
-                    : " md:text-right items-end mr-auto"
+                    ? "md:text-left items-start"
+                    : "md:text-right items-end ml-[15%]"
                 }`}
               >
-                <div className="flex flex-col items-center md:items-start justify-center text-center md:text-left">
-                  <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+                <div className="flex flex-col items-center md:items-start justify-center text-center md:text-left w-[50%]">
+                  <h1 className="text-6xl md:text-6xl font-bold leading-tight">
                     {banner.title}
                   </h1>
-                  <p className="mt-4 text-lg md:text-2xl">
+                  <p className="mt-6 text-lg md:text-2xl text-y">
                     {banner.description}
                   </p>
+                  <Button
+                    className="btn-red-1 btn-lg no-radius mt-8 relative group"
+                    onClick={handleScroll}
+                  >
+                    <span className="text-white">GET STARTED</span>
+                    <ArrowDown
+                      size={24}
+                      className="absolute left-1/2 transform -translate-x-1/2 bottom-0 opacity-0 group-hover:opacity-100 group-hover:translate-y-2 transition-all duration-300"
+                    />
+                  </Button>
                 </div>
               </div>
             </div>
