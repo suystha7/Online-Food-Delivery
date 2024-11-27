@@ -22,7 +22,8 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="contact-container" id='contact'>
+    <div className="bg-white py-10">
+      <div className="contact-container" id='contact'>
       <h2 className='text-center'>Contact Us</h2> 
       <form onSubmit={handleSubmit} className="space-y-">
         {/* Name Input */}
@@ -78,6 +79,7 @@ const Contact: React.FC = () => {
           Send Message
         </button>
       </form>
+    </div>
     </div>
   );
 };

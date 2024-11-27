@@ -21,7 +21,7 @@ const RecommendFoods: React.FC = () => {
     { id: 2, imageSrc: "/icon2.png", alt: "icon2", title: "DESSERTS" },
     { id: 3, imageSrc: "/icon3.png", alt: "icon3", title: "SALADS" },
     { id: 4, imageSrc: "/icon4.png", alt: "icon4", title: "SIDES" },
-    { id: 5, imageSrc: "/icon1.png", alt: "icon1", title: "BURGERS" },
+    { id: 5, imageSrc: "/icon8.png", alt: "icon1", title: "CHICKEN" },
     { id: 6, imageSrc: "/icon2.png", alt: "icon2", title: "DESSERTS" },
     { id: 7, imageSrc: "/icon3.png", alt: "icon3", title: "SALADS" },
     { id: 8, imageSrc: "/icon4.png", alt: "icon4", title: "SIDES" },
@@ -49,12 +49,11 @@ const RecommendFoods: React.FC = () => {
       >
         {products.map((product) => (
           <SwiperSlide key={product.id}>
-            <li
-              className={`list-inline-item text-center ${
+            <div
+              className={`text-center cursor-pointer p-4 ${
                 activeProduct === product.id ? "active" : ""
               }`}
               onClick={() => handleProductClick(product.id)}
-              style={{ listStyle: "none" }} // Remove default list styles
             >
               <Image
                 src={product.imageSrc}
@@ -66,14 +65,14 @@ const RecommendFoods: React.FC = () => {
               <h4 className="text-lg text-black py-2 mb-0 font-semibold">
                 {product.title}
               </h4>
-            </li>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
       {/* Product List */}
       <div className="productList flex justify-center">
-        <div className="container px-5 flex items-center gap-8 justify-center">
+        <div className="px-5 flex items-center gap-8 justify-center">
           <ProductItem />
           <ProductItem />
           <ProductItem />
