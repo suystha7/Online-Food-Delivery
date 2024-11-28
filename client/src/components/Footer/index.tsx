@@ -1,5 +1,11 @@
 "use client";
-import { ArrowUp, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import {
+  ArrowUp,
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  TwitterIcon,
+} from "lucide-react";
 import React, { useState, useEffect } from "react";
 
 const Footer: React.FC = () => {
@@ -31,13 +37,13 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="text-gray-600 body-font bg-gray-100">
-      {/* Newsletter Subscription Section */}
       <div className="w-full px-4 py-10 bg-gray-100 text-center">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">
           Subscribe to our Newsletter
         </h2>
         <p className="text-gray-600 mb-6">
-          Stay updated with our latest news and offers. Enter your email below to subscribe!
+          Stay updated with our latest news and offers. Enter your email below
+          to subscribe!
         </p>
         <div className="flex justify-center items-center">
           <input
@@ -53,43 +59,62 @@ const Footer: React.FC = () => {
 
       <hr className="text-gray-500" />
 
-      {/* Footer Content */}
-      <div className="bg-gray-100 flex items-center justify-between py-4">
-        <div className="container mx-auto px-5 flex flex-wrap justify-between  items-center">
-          {/* Copyright Text */}
-          <p className="text-gray-500 text-sm text-center sm:text-left">
-            © 2024 COMPANY NAME
-          </p>
+      <div className="bg-gray-100 text-gray-300">
+        <div className="container mx-auto px-6 py-5 flex flex-wrap justify-between items-center">
+          {/* Copyright Section */}
+          <div className="flex flex-col sm:flex-row items-center sm:items-start">
+            <p className="text-sm sm:text-left text-center mb-4 sm:mb-0">
+              © 2024 <span className="font-bold text-black">COMPANY NAME</span>.
+            </p>
+          </div>
 
           {/* Footer Links */}
-          <div className="flex items-center justify-center sm:justify-start space-x-4">
-            <a href="#" className="text-gray-500 text-sm hover:text-gray-700">
-              About
+          <div className="flex space-x-6 mb-4 sm:mb-0 text-black font-medium">
+            <a href="#" className="text-sm hover:text-black transition-colors">
+              Contact Us
             </a>
-            <a href="#" className="text-gray-500 text-sm hover:text-gray-700">
-              Company
+            <a href="#" className="text-sm hover:text-black transition-colors">
+              Our Company
             </a>
-            <a href="#" className="text-gray-500 text-sm hover:text-gray-700">
-              Links 
+            <a href="#" className="text-sm hover:text-black transition-colors">
+              Useful Links
             </a>
           </div>
 
           {/* Social Media Icons */}
-          <div className="inline-flex sm:ml-auto mt-4 sm:mt-0 justify-center sm:justify-start space-x-4">
-            {["facebook", "twitter", "instagram", "linkedin"].map((social, idx) => (
-              <a
-                key={idx}
-                href="#"
-                target="_blank"
-                className="text-gray-500 hover:text-gray-700"
-                aria-label={social}
-              >
-                {social === "facebook" && <Facebook className="w-5 h-5" />}
-                {social === "twitter" && <Twitter className="w-5 h-5" />}
-                {social === "instagram" && <Instagram className="w-5 h-5" />}
-                {social === "linkedin" && <Linkedin className="w-5 h-5" />}
-              </a>
-            ))}
+          <div className="flex space-x-4 text-gray-700">
+            <a
+              href="#"
+              target="_blank"
+              aria-label="Facebook"
+              className="hover:text-white transition-colors"
+            >
+              <FacebookIcon className="w-5 h-5" />
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              aria-label="Twitter"
+              className="hover:text-white transition-colors"
+            >
+              <TwitterIcon className="w-5 h-5" />
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              aria-label="Instagram"
+              className="hover:text-white transition-colors"
+            >
+              <InstagramIcon className="w-5 h-5" />
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              aria-label="LinkedIn"
+              className="hover:text-white transition-colors"
+            >
+              <LinkedinIcon className="w-5 h-5" />
+            </a>
           </div>
         </div>
       </div>

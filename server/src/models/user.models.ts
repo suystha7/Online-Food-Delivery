@@ -8,6 +8,7 @@ import {
   UserRolesEnum,
   UserRolesType,
 } from "../constant";
+import { Cart } from "./cart.models";
 
 export interface IImage {
   url: string;
@@ -15,22 +16,28 @@ export interface IImage {
 }
 
 export interface IUser extends Document {
-  // avatar: {
-  //   url: string;
-  //   localPath: string;
-  // };
   _id: string;
   avatar: IImage;
   email: string;
   emailVerificationToken: string;
-  emailVerificationExpiry: string;
+  emailVerificationExpiry: number;
   forgotPasswordToken: string;
-  forgotPasswordExpiry: string;
+  forgotPasswordExpiry: number;
   fullName: string;
+  isEmailVerified: boolean;
   password: string;
   phoneNumber: string;
   refreshToken: string;
   role: UserRolesType;
+
+  isPasswordCorrect: (password: string) => Promise<boolean>;
+  generateTemporaryToken: () => {
+    unhashedToken: string;
+    hashedToken: string;
+    tokenExpiry: number;
+  };
+  generateAccessToken: () => string;
+  generateRefreshToken: () => string;
 }
 
 export const imageSchema = new Schema<IImage>({
@@ -55,13 +62,14 @@ const userSchema = new Schema<IUser>(
       lowercase: true,
     },
     emailVerificationToken: { type: String },
-    emailVerificationExpiry: { type: String },
+    emailVerificationExpiry: { type: Number },
     forgotPasswordToken: { type: String },
-    forgotPasswordExpiry: { type: String },
+    forgotPasswordExpiry: { type: Number },
     fullName: {
       type: String,
       required: true,
     },
+    isEmailVerified: { type: Boolean, default: false },
     password: {
       type: String,
       required: true,
@@ -80,7 +88,7 @@ const userSchema = new Schema<IUser>(
       default: "USER",
     },
   },
-  { timestamps: true }
+  { methods: {}, timestamps: true }
 );
 
 userSchema.pre(
@@ -91,6 +99,20 @@ userSchema.pre(
     next();
   }
 );
+
+userSchema.post("save", async function (user, next) {
+  const cart = await Cart.findOne({ owner: user._id });
+
+  if (!cart) await Cart.create({ owner: user._id, items: [] });
+
+  next();
+});
+
+userSchema.methods.isPasswordCorrect = async function (
+  password: string
+): Promise<boolean> {
+  return await bcrypt.compare(password, this.password);
+};
 
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
@@ -117,20 +139,20 @@ userSchema.methods.generateRefreshToken = function (): string {
 };
 
 userSchema.methods.generateTemporaryToken = function (): {
-  unHashedToken: string;
+  unhashedToken: string;
   hashedToken: string;
   tokenExpiry: number;
 } {
-  const unHashedToken = crypto.randomBytes(20).toString("hex");
+  const unhashedToken = crypto.randomBytes(20).toString("hex");
 
   const hashedToken = crypto
     .createHash("sha256")
-    .update(unHashedToken)
+    .update(unhashedToken)
     .digest("hex");
 
   const tokenExpiry = Date.now() + TEMPORARY_TOKEN_EXPIRY;
 
-  return { unHashedToken, hashedToken, tokenExpiry };
+  return { unhashedToken, hashedToken, tokenExpiry };
 };
 
 export const User = mongoose.model<IUser>("User", userSchema);

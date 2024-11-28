@@ -1,10 +1,10 @@
-import { Schema } from "mongoose";
+import { Schema, Types } from "mongoose";
 import { JwtPayload } from "jsonwebtoken";
 import { IUser } from "../models/user.models";
 import { UserRolesType } from "../constant";
 
 interface IJwtPayload extends JwtPayload {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   email: string;
   role: UserRolesType;
 }

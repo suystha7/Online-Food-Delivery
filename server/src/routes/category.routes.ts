@@ -6,14 +6,14 @@ import {
 import { validate } from "../validators/validate";
 import {
   createCategory,
-  deleteCategory,
-  getAllCategories,
   getCategoryById,
+  getAllCategories,
   updateCategory,
+  removeCategory
 } from "../controllers/category.controllers";
 import { upload } from "../middlewares/multer.middlewares";
 import { verifyJwt, verifyPermission } from "../middlewares/auth.middlewares";
-import { mongoIdValidator } from "../validators/mongodb.validators";
+import { mongoIdParamValidator } from "../validators/mongodb.validators";
 import { UserRolesEnum } from "../constant";
 
 const router = Router();
@@ -32,11 +32,12 @@ router
 
 router
   .route("/:categoryId")
-  .get(mongoIdValidator("categoryId"), validate, getCategoryById)
+  .get(mongoIdParamValidator("categoryId"), validate, getCategoryById)
   .patch(
     verifyJwt,
     verifyPermission([UserRolesEnum.ADMIN]),
-    mongoIdValidator("categoryId"),
+    upload.single("mainImage"),
+    mongoIdParamValidator("categoryId"),
     categoryUpdateValidator(),
     validate,
     updateCategory
@@ -44,9 +45,9 @@ router
   .delete(
     verifyJwt,
     verifyPermission([UserRolesEnum.ADMIN]),
-    mongoIdValidator("categoryId"),
+    mongoIdParamValidator("categoryId"),
     validate,
-    deleteCategory
+    removeCategory
   );
 
 export default router;

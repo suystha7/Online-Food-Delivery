@@ -36,5 +36,6 @@ export const verifyPermission = (roles: Array<string> = []) =>
     if (!req.user?._id) throw new ApiError(401, "Unauthorized request");
 
     if (roles.includes(req.user.role)) next();
-    else throw new ApiError(403, "You are not allowed to perform");
+    else
+      throw new ApiError(403, "You are not authorized to access this resource");
   });
