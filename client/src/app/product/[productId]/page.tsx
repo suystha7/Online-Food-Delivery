@@ -197,15 +197,14 @@ const ProductDetails: React.FC = () => {
               <h3 className="text-yellow-500 font-extrabold text-4xl mt-3">
                 Rs. 280
               </h3>
+              <h4 className="text-lg font-medium text-black mt-3">
+                Category: Burgers
+              </h4>
               <p className="my-4 text-base">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 Consequatur eveniet rem tenetur culpa vitae? Incidunt voluptate
                 dignissimos ad tempora.
               </p>
-
-              <h4 className="text-lg font-medium text-black">
-                Category: Burgers
-              </h4>
 
               <div className="flex items-center mt-4">
                 <div className="qtyDrop flex items-center gap-4">
@@ -249,10 +248,10 @@ const ProductDetails: React.FC = () => {
               </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-              <h4 className="text-brown text-2xl font-bold mb-3">
+              {/* <h4 className="text-brown text-2xl font-bold mb-3">
                 Description
-              </h4>
-              <p>
+              </h4> */}
+              <p className="text-base">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
                 placeat eos velit minus vitae natus facilis illum ducimus
                 assumenda optio voluptatibus quasi, beatae consequuntur possimus
@@ -261,7 +260,7 @@ const ProductDetails: React.FC = () => {
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={1}>
-              <h4 className="text-brown text-2xl font-bold mb-3">Reviews</h4>
+              {/* <h4 className="text-brown text-2xl font-bold mb-3">Reviews</h4> */}
               <p className="text-base">There are no reviews yet</p>
               <h4 className="text-2xl text-black/60 font-medium">
                 Be the first to review "Classic Burger"
@@ -315,7 +314,7 @@ const ProductDetails: React.FC = () => {
             </CustomTabPanel>
           </Box>
 
-          <div className="productItem_1" id="menu">
+          <div className="" id="menu">
             <section className="menu">
               <div>
                 <h3 className="font-semibold text-3xl text-red-500">
