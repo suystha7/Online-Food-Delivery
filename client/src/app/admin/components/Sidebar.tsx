@@ -5,8 +5,6 @@ import {
   ChevronLeft,
   ChevronRight,
   ClipboardList,
-  Logs,
-  ScrollText,
   Users,
 } from "lucide-react";
 import Link from "next/link";
