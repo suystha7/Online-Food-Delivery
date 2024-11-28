@@ -52,7 +52,7 @@ const Header: React.FC = () => {
           </nav>
 
           <Link href="/cart" className="relative cartTab">
-            <ShoppingBag className="text-[#642f21]" />
+            <ShoppingBag className="text-white" />
             <span className="flex items-center justify-center text-xs">0</span>
           </Link>
 

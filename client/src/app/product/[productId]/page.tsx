@@ -236,7 +236,7 @@ const ProductDetails: React.FC = () => {
                 aria-label="basic tabs example"
               >
                 <Tab
-                  label="Description"
+                  label="More Info"
                   {...a11yProps(0)}
                   className="itemTab"
                 />
@@ -261,9 +261,9 @@ const ProductDetails: React.FC = () => {
 
             <CustomTabPanel value={value} index={1}>
               {/* <h4 className="text-brown text-2xl font-bold mb-3">Reviews</h4> */}
-              <p className="text-base">There are no reviews yet</p>
+              <p className="text-base">There are no rated yet</p>
               <h4 className="text-2xl text-black/60 font-medium">
-                Be the first to review "Classic Burger"
+                Be the first to rate "Classic Burger"
               </h4>
               <p className="text-sm mb-3 font-semibold">
                 Your email address will not be published. Required fields are
@@ -277,9 +277,9 @@ const ProductDetails: React.FC = () => {
                   setRating(newValue || 0);
                 }}
               />
-              <p className="text-lg mt-3 font-medium">Your Review *</p>
+              {/* <p className="text-lg mt-3 font-medium">Your Review *</p> */}
 
-              <form className="w-full">
+              {/* <form className="w-full">
                 <div className="form-group w-full mt-4">
                   <TextField
                     id="outlined-basic"
@@ -310,7 +310,7 @@ const ProductDetails: React.FC = () => {
                 <br />
 
                 <Button className="btn-red">Submit</Button>
-              </form>
+              </form> */}
             </CustomTabPanel>
           </Box>
 
