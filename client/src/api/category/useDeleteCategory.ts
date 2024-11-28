@@ -4,25 +4,29 @@ import axiosInstance from "../axiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ApiError from "../ApiError";
 
-const deleteUser = async ({ userId }: { userId: string }): Promise<boolean> => {
+const deleteCategory = async ({
+  categoryId,
+}: {
+  categoryId: string;
+}): Promise<boolean> => {
   return await asyncHandler(
     (): Promise<ApiResponse<boolean>> =>
-      axiosInstance.delete(`/users/${userId}`)
+      axiosInstance.delete(`/categories/${categoryId}`)
   );
 };
 
-const getDeleteUser = () => {
+const useDeleteCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteUser,
+    mutationFn: deleteCategory,
     onError: (err: ApiError) => err,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["current-user"],
+        queryKey: ["get-categories"],
       });
     },
   });
 };
 
-export default getDeleteUser;
+export default useDeleteCategory;

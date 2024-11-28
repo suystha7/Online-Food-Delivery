@@ -1,4 +1,4 @@
-class ImageClass {
+export class ImageClass {
   constructor(
     public _id: string,
     public url: string,
