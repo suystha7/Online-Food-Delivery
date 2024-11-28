@@ -13,6 +13,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   const isAuthPage = pathname === "/signin" || pathname === "/signup";
+  const isAdminPage = pathname.startsWith("/admin"); 
 
   return (
     <html lang="en">
@@ -27,9 +28,9 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
-        {!isAuthPage && <Navbar />}
+        {!isAuthPage && !isAdminPage && <Navbar />}
         {children}
-        {!isAuthPage && <Footer />}
+        {!isAuthPage && !isAdminPage && <Footer />}
       </body>
     </html>
   );
