@@ -14,7 +14,7 @@ export const verifyJwt = asyncHandler(async (req, res, next) => {
   try {
     const payload = jwt.verify(
       token,
-      process.env.ACCESS_TOKEN_SECRET!
+      process.env.ACCESS_TOKEN_SECRET_KEY!
     ) as IJwtPayload;
 
     const user = await User.findById(payload?._id).select(

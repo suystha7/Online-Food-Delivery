@@ -59,7 +59,7 @@ export const registerUser = asyncHandler<IUser>(async (req, res) => {
     .json(
       new ApiResponse(
         201,
-        { user: createdUser },
+        createdUser,
         "User has been registered successfully and verification email has been sent to your email"
       )
     );
@@ -159,7 +159,7 @@ export const getCurrentUser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { user: req.user },
+        req.user,
         "Current user has been fetched successfully"
       )
     );
@@ -265,7 +265,7 @@ export const forgotPassword = asyncHandler<{ email: string }>(
       subject: "Reset your password",
       mailgenContent: generateResetForgottenPasswordMailgenContent(
         user.fullName,
-        `${req.protocol}://${req.get("host")}/api/v1/users/reset-email/${unhashedToken}` //set frontend url
+        `${req.protocol}://${req.get("host")}/api/v1/users/reset-password/${unhashedToken}` //set frontend url
         // `http://localhost:3000/reset-password/${unhashedToken}` //set frontend url
       ),
     });
