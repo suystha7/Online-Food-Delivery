@@ -32,6 +32,17 @@ export default function Sidebar() {
         isOpen ? "w-48" : "w-18"
       } bg-white text-black min-h-screen p-4 transition-all duration-300 ease-in-out`}
     >
+      {/* Logo */}
+      <div className="flex justify-center items-center">
+        <img
+          src="/logo.png"
+          alt="Logo"
+          className={`transition-all duration-300 ease-in-out ${
+            isOpen ? "w-32 h-auto" : "w-16 h-auto"
+          }`}
+        />
+      </div>
+
       <button
         onClick={toggleSidebar}
         className="absolute top-[11%] right-[-10px] transform -translate-y-1/2 p-2 rounded-full bg-white border-r"
@@ -47,7 +58,7 @@ export default function Sidebar() {
         )}
       </button>
 
-      <ul className="mt-28 space-y-8 cursor-pointer">
+      <ul className="mt-16 space-y-8 cursor-pointer">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = pathName === item.href;
@@ -58,15 +69,21 @@ export default function Sidebar() {
               className={`${
                 isActive
                   ? "bg-gray-200 text-brown rounded-xl font-medium"
-                  : "hover:bg-gray-100 hover:text-gray-900 rounded-xl "
+                  : "hover:bg-gray-100 hover:text-gray-900 rounded-xl"
               }`}
             >
               <Link
                 href={item.href}
-                className="flex items-center space-x-4 p-2"
+                className={`flex items-center justify-center space-x-4 ${
+                  isOpen ? "p-3" : "p-2"
+                }`}
               >
-                <Icon className="text-xl" />
-                {isOpen && <span className="text-lg">{item.name}</span>}
+                <Icon className="text-xl text-center" />
+                {isOpen && (
+                  <span className="text-lg flex justify-start w-full">
+                    {item.name}
+                  </span>
+                )}
               </Link>
             </li>
           );

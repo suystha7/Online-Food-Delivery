@@ -38,7 +38,7 @@ body {
 
 /* Typography */
 p {
-  font-size: 16px;
+  font-size: 20px;
   color: var(--text-color-light);
   font-weight: 400;
 }
@@ -174,31 +174,32 @@ header .btn-border {
   color: #fff;
 }
 
-/* Target the active state of the img tag */
-.filterProducts .category-swiper .swiper-slide .active img {
+.category-swiper .swiper-slide .active img {
   opacity: 1;
   transform: scale(1.1);
   transition: transform 0.3s ease-in-out;
 }
 
-.filterProducts .category-swiper .swiper-slide .active img {
+ .category-swiper .swiper-slide .active img {
   color: #fff;
 }
 
-.filterProducts .category-swiper .swiper-slide .active h4 {
+.category-swiper .swiper-slide .active h4 {
   color: var(--accent-color);
   font-weight: bold;
 }
 
-/* Ensure proper spacing of SwiperSlide items */
-.filterProducts .category-swiper .swiper-slide {
+.category-swiper .swiper-slide {
   padding: 2px;
 }
 
-.filterProducts .list-inline li img {
+ .list-inline li img {
   opacity: 0.4;
 }
 
+.filterProducts{
+  padding-bottom: 30px;
+}
 .filterProducts .list-inline h4 {
   color: #1b1b1b;
 }
