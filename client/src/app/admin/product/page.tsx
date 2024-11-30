@@ -1,7 +1,7 @@
 "use client";
+import React, { useState } from "react";
 import { Button } from "@mui/material";
-import { ChevronLeft, ChevronRight, Pencil, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Image {
@@ -36,11 +36,16 @@ const ProductTable: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProducts, setSelectedProducts] = useState<Set<number>>(
+    new Set()
+  );
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormInputs>();
 
@@ -52,50 +57,143 @@ const ProductTable: React.FC = () => {
     currentPage * itemsPerPage
   );
 
+  const openModal = (product: Product | null) => {
+    setSelectedProduct(product);
+
+    if (product) {
+      // Populate the form with the product's data
+      setValue("name", product.name);
+      setValue("category", product.category);
+      setValue("description", product.description);
+      setValue("price", product.price);
+      setValue("discount", product.discount);
+      setValue("stock", product.stock);
+      setValue("mainImage", product.mainImage.url);
+      setValue("subImages", product.subImages.map((img) => img.url).join(", "));
+    } else {
+      reset(); // Clear the form for adding a new product
+    }
+
+    setIsModalOpen(true);
+  };
+
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    const newProduct: Product = {
-      id: products.length + 1,
+    const updatedProduct: Product = {
+      id: selectedProduct ? selectedProduct.id : products.length + 1,
+      mainImage: { url: data.mainImage, alt: `${data.name} main image` },
+      subImages: data.subImages
+        ? data.subImages.split(",").map((url) => ({ url: url.trim() }))
+        : [],
       name: data.name,
       category: data.category,
       description: data.description,
       price: data.price,
       discount: data.discount || 0,
-      mainImage: { url: data.mainImage, alt: `${data.name} main image` },
-      subImages: data.subImages
-        ? data.subImages.split(",").map((url) => ({ url: url.trim() }))
-        : [],
       stock: data.stock || 0,
     };
 
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
+    if (selectedProduct) {
+      // Edit mode: update the product
+      setProducts((prev) =>
+        prev.map((product) =>
+          product.id === selectedProduct.id ? updatedProduct : product
+        )
+      );
+    } else {
+      // Add mode: add a new product
+      setProducts((prev) => [...prev, updatedProduct]);
+    }
+
     reset();
+    setSelectedProduct(null);
     setIsModalOpen(false);
+  };
+
+  const toggleSelectProduct = (productId: number) => {
+    setSelectedProducts((prev) => {
+      const updated = new Set(prev);
+      if (updated.has(productId)) {
+        updated.delete(productId);
+      } else {
+        updated.add(productId);
+      }
+      return updated;
+    });
+  };
+
+  const handleDeleteSelected = () => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => !selectedProducts.has(product.id))
+    );
+    setSelectedProducts(new Set());
   };
 
   return (
     <div className="flex flex-col min-h-screen p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl font-bold pl-5">Products Details</h1>
-        <button
-          className="btn-red text-white px-6 py-2 rounded"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Add Product
-        </button>
+        {selectedProducts.size > 0 ? (
+          <div className="flex gap-4">
+            {selectedProducts.size === 1 && (
+              <Button
+                className="btn-red"
+                onClick={() => {
+                  const productId = Array.from(selectedProducts)[0];
+                  const productToEdit = products.find(
+                    (product) => product.id === productId
+                  );
+                  if (productToEdit) {
+                    openModal(productToEdit);
+                  }
+                }}
+              >
+                Edit
+              </Button>
+            )}
+
+            <Button className="btn-red" onClick={handleDeleteSelected}>
+              {selectedProducts.size > 1 ? "Delete Multiple" : "Delete"}
+            </Button>
+          </div>
+        ) : (
+          <button
+            className="btn-red text-white px-6 py-2 rounded"
+            onClick={() => openModal(null)}
+          >
+            Add Product
+          </button>
+        )}
       </div>
 
       <div className="flex-grow">
         <table className="border-collapse border text-center w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="border px-4 py-2 text-center">S.N.</th>
+              <th className="border px-4 py-2">
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedProducts(
+                        new Set(products.map((product) => product.id))
+                      );
+                    } else {
+                      setSelectedProducts(new Set());
+                    }
+                  }}
+                  checked={
+                    selectedProducts.size === products.length &&
+                    products.length > 0
+                  }
+                />
+              </th>
+              <th className="border px-4 py-2">S.N.</th>
+              <th className="border px-4 py-2">Main Image</th>
               <th className="border px-4 py-2">Title</th>
               <th className="border px-4 py-2">Price</th>
               <th className="border px-4 py-2">Category</th>
               <th className="border px-4 py-2">Stock</th>
               <th className="border px-4 py-2">Discount</th>
-              <th className="border px-4 py-2">Main Image</th>{" "}
-              <th className="border px-4 py-2 text-center">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-gray-50">
@@ -108,14 +206,16 @@ const ProductTable: React.FC = () => {
             ) : (
               paginatedData.map((product, index) => (
                 <tr key={product.id}>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="checkbox"
+                      onChange={() => toggleSelectProduct(product.id)}
+                      checked={selectedProducts.has(product.id)}
+                    />
+                  </td>
                   <td className="border px-4 py-2 text-center">
                     {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
-                  <td className="border px-4 py-2">{product.name}</td>
-                  <td className="border px-4 py-2">Rs.{product.price}</td>
-                  <td className="border px-4 py-2">{product.category}</td>
-                  <td className="border px-4 py-2">{product.stock}</td>
-                  <td className="border px-4 py-2">{product.discount}%</td>
                   <td className="border px-4 py-2">
                     <img
                       src={product.mainImage.url}
@@ -123,25 +223,11 @@ const ProductTable: React.FC = () => {
                       className="w-16 h-16 object-cover"
                     />
                   </td>
-                  <td className="flex items-center justify-center px-4 py-2 text-center mt-4">
-                    <div className="relative group">
-                      <button className="text-green-600 mr-2">
-                        <Pencil className="w-5 h-5" />
-                      </button>
-                      <div className="absolute left-1/2 transform -translate-x-1/2 top-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1">
-                        Edit 
-                      </div>
-                    </div>
-
-                    <div className="relative group">
-                      <button className="text-red-600">
-                        <Trash2 className="w-5 h-5" />
-                      </button>
-                      <div className="absolute left-1/2 transform -translate-x-1/2 top-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1">
-                        Delete
-                      </div>
-                    </div>
-                  </td>
+                  <td className="border px-4 py-2">{product.name}</td>
+                  <td className="border px-4 py-2">Rs.{product.price}</td>
+                  <td className="border px-4 py-2">{product.category}</td>
+                  <td className="border px-4 py-2">{product.stock}</td>
+                  <td className="border px-4 py-2">{product.discount}%</td>
                 </tr>
               ))
             )}
@@ -149,7 +235,6 @@ const ProductTable: React.FC = () => {
         </table>
       </div>
 
-      {/* Pagination */}
       <div className="flex justify-center items-center mt-4 mb-4">
         <Button
           className="px-4 py-2 bg-white mr-2 disabled:bg-gray-300"
@@ -162,7 +247,7 @@ const ProductTable: React.FC = () => {
           Page {currentPage} of {totalPages}
         </span>
         <Button
-          className="px-4 py-2 bg-white   ml-2 disabled:bg-gray-300"
+          className="px-4 py-2 bg-white ml-2 disabled:bg-gray-300"
           disabled={currentPage === totalPages || products.length === 0}
           onClick={() => setCurrentPage(currentPage + 1)}
         >
@@ -170,11 +255,12 @@ const ProductTable: React.FC = () => {
         </Button>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white w-full max-w-4xl p-6 rounded shadow-lg">
-            <h2 className="text-xl font-semibold mb-4">Add Product</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              {selectedProduct ? "Edit Product" : "Add Product"}
+            </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex flex-col">
@@ -183,7 +269,9 @@ const ProductTable: React.FC = () => {
                     type="text"
                     className="px-4 py-2 border rounded"
                     placeholder="Enter product title"
-                    {...register("name", { required: "Title is required" })}
+                    {...register("name", {
+                      required: "Title is required",
+                    })}
                   />
                   {errors.name && (
                     <p className="text-red-600 text-sm">
@@ -230,6 +318,35 @@ const ProductTable: React.FC = () => {
                   )}
                 </div>
 
+                <div className="flex flex-col col-span-2">
+                  <label className="text-gray-700">Main Image URL</label>
+                  <input
+                    type="text"
+                    className="px-4 py-2 border rounded"
+                    placeholder="Enter main image URL"
+                    {...register("mainImage", {
+                      required: "Main image is required",
+                    })}
+                  />
+                  {errors.mainImage && (
+                    <p className="text-red-600 text-sm">
+                      {errors.mainImage.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col col-span-2">
+                  <label className="text-gray-700">
+                    Sub Images (comma separated URLs)
+                  </label>
+                  <input
+                    type="text"
+                    className="px-4 py-2 border rounded"
+                    placeholder="Enter sub images URLs"
+                    {...register("subImages")}
+                  />
+                </div>
+
                 <div className="flex flex-col">
                   <label className="text-gray-700">Price</label>
                   <input
@@ -265,35 +382,6 @@ const ProductTable: React.FC = () => {
                     className="px-4 py-2 border rounded"
                     placeholder="Enter stock quantity"
                     {...register("stock", { valueAsNumber: true })}
-                  />
-                </div>
-
-                <div className="flex flex-col col-span-2">
-                  <label className="text-gray-700">Main Image URL</label>
-                  <input
-                    type="text"
-                    className="px-4 py-2 border rounded"
-                    placeholder="Enter main image URL"
-                    {...register("mainImage", {
-                      required: "Main image is required",
-                    })}
-                  />
-                  {errors.mainImage && (
-                    <p className="text-red-600 text-sm">
-                      {errors.mainImage.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex flex-col col-span-2">
-                  <label className="text-gray-700">
-                    Sub Images (comma separated URLs)
-                  </label>
-                  <input
-                    type="text"
-                    className="px-4 py-2 border rounded"
-                    placeholder="Enter sub images URLs"
-                    {...register("subImages")}
                   />
                 </div>
               </div>

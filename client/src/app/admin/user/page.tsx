@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@mui/material";
 import { ChevronLeft, ChevronRight, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 
@@ -14,7 +15,7 @@ interface User {
 }
 
 // Mock Data for Users
-const usersData: User[] = Array.from({ length: 20 }, (_, i) => ({
+const usersData: User[] = Array.from({ length: 5 }, (_, i) => ({
   id: i + 1,
   avatarUrl: `https://via.placeholder.com/50?text=U${i + 1}`,
   fullName: `User ${i + 1}`,
@@ -37,16 +38,7 @@ const UserTable: React.FC = () => {
 
   return (
     <div className="p-4">
-      <div className="flex items-center justify-center gap-2 mb-6">
-        <input
-          type="text"
-          placeholder="User name"
-          className="border rounded px-6 py-2 w-64 outline-red-600"
-        />
-        <button className="btn-red text-white px-6 py-2 rounded">Add User</button>
-      </div>
-
-      <table className="w-[80%] border-collapse border mx-auto">
+      <table className="w-[80%] border-collapse border mx-auto mt-16">
         <thead className="bg-gray-50">
           <tr>
             <th className="border px-4 py-2">S.N.</th>
@@ -57,7 +49,6 @@ const UserTable: React.FC = () => {
             <th className="border px-4 py-2">Role</th>
             <th className="border px-4 py-2">Verified</th>
             <th className="border px-4 py-2">Created At</th>
-            <th className="border px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody className="bg-gray-50">
@@ -81,37 +72,29 @@ const UserTable: React.FC = () => {
                 {user.isEmailVerified ? "Yes" : "No"}
               </td>
               <td className="border px-4 py-2 text-center">{user.createdAt}</td>
-              <td className="border px-4 py-2 text-center">
-                <button className="text-green-600 mr-2">
-                  <Pencil className="w-5 h-5" />
-                </button>
-                <button className="text-red-600">
-                  <Trash className="w-5 h-5" />
-                </button>
-              </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      <div className="flex justify-center items-center mt-4">
-        <button
-          className="px-4 py-2 bg-gray-50 rounded-full mr-2"
-          disabled={currentPage === 1}
+      <div className="flex justify-center items-center mt-4 mb-4">
+        <Button
+          className="px-4 py-2 bg-white mr-2 disabled:bg-gray-300"
+          disabled={currentPage === 1 || usersData.length === 0}
           onClick={() => setCurrentPage(currentPage - 1)}
         >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <span className="px-4">
+          <ChevronLeft className="w-5 h-5 text-black" />
+        </Button>
+        <span className="px-4 text-lg">
           Page {currentPage} of {totalPages}
         </span>
-        <button
-          className="px-4 py-2 bg-gray-50 rounded-full ml-2"
-          disabled={currentPage === totalPages}
+        <Button
+          className="px-4 py-2 bg-white ml-2 disabled:bg-gray-300"
+          disabled={currentPage === totalPages || usersData.length === 0}
           onClick={() => setCurrentPage(currentPage + 1)}
         >
-          <ChevronRight className="w-5 h-5" />
-        </button>
+          <ChevronRight className="w-5 h-5 text-black" />
+        </Button>
       </div>
     </div>
   );
