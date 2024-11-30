@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@mui/material";
-import { ChevronLeft, ChevronRight, Pencil, Trash } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 interface User {
