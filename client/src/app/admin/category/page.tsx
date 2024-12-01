@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@mui/material";
-import { ChevronLeft, ChevronRight, Pencil, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 interface Category {
@@ -10,21 +10,28 @@ interface Category {
   createdAt: string;
 }
 
-// Mock Data with Image URLs (You can replace this with an actual backend call if needed)
-const initialCategoriesData: Category[] = Array.from({ length: 0 }, (_, i) => ({
-  id: i + 1,
-  name: `Category ${i + 1}`,
-  imageUrl: `https://via.placeholder.com/50?text=C${i + 1}`,
-  createdAt: new Date().toISOString().split("T")[0],
-}));
+const initialCategoriesData: Category[] = Array.from(
+  { length: 10 },
+  (_, i) => ({
+    id: i + 1,
+    name: `Category ${i + 1}`,
+    imageUrl: `https://via.placeholder.com/50?text=C${i + 1}`,
+    createdAt: new Date().toISOString().split("T")[0],
+  })
+);
 
 const Category: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>(
     initialCategoriesData
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [newCategoryName, setNewCategoryName] = useState(""); // State for the input field
-  const [newCategoryImage, setNewCategoryImage] = useState<File | null>(null); // State for the image file
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryImage, setNewCategoryImage] = useState<File | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<Set<number>>(
+    new Set()
+  );
+  const [editMode, setEditMode] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const itemsPerPage = 8;
 
   const totalPages = Math.ceil(categories.length / itemsPerPage);
@@ -33,67 +40,165 @@ const Category: React.FC = () => {
     currentPage * itemsPerPage
   );
 
-  // Function to handle adding a new category
   const handleAddCategory = () => {
-    if (newCategoryName.trim() === "" || !newCategoryImage) return; // Don't add if the input is empty or no image selected
-
-    // Create an image URL for the uploaded image
+    if (newCategoryName.trim() === "" || !newCategoryImage) return;
     const imageUrl = URL.createObjectURL(newCategoryImage);
-
     const newCategory: Category = {
-      id: categories.length + 1, // Assigning a new ID based on the current length
+      id: categories.length + 1,
       name: newCategoryName,
-      imageUrl, // Use the generated image URL
+      imageUrl,
       createdAt: new Date().toISOString().split("T")[0],
     };
-
     setCategories((prevCategories) => [...prevCategories, newCategory]);
+    setNewCategoryName("");
+    setNewCategoryImage(null);
+    setCurrentPage(1);
+  };
 
-    setNewCategoryName(""); // Clear the input field
-    setNewCategoryImage(null); // Clear the selected image
-    setCurrentPage(1); // Reset the page to 1 to show the new category on the first page
+  const handleSelectCategory = (id: number) => {
+    setSelectedCategories((prev) => {
+      const newSelected = new Set(prev);
+      if (newSelected.has(id)) {
+        newSelected.delete(id);
+      } else {
+        newSelected.add(id);
+      }
+      return newSelected;
+    });
+  };
+
+  const handleSelectAllOnPage = () => {
+    if (selectedCategories.size === paginatedData.length) {
+      // Unselect all categories if all are selected
+      setSelectedCategories(new Set());
+    } else {
+      // Select all categories on the current page
+      const newSelectedCategories = new Set<number>();
+      paginatedData.forEach((category) =>
+        newSelectedCategories.add(category.id)
+      );
+      setSelectedCategories(newSelectedCategories);
+    }
+  };
+
+  const handleDeleteSelected = () => {
+    const updatedCategories = categories.filter((category) => {
+      return (
+        !selectedCategories.has(category.id) ||
+        !paginatedData.includes(category)
+      );
+    });
+    setCategories(updatedCategories);
+    setSelectedCategories(new Set()); // Reset selected categories
+  };
+
+  const handleEditSelected = () => {
+    if (selectedCategories.size === 1) {
+      const categoryToEdit = categories.find((category) =>
+        selectedCategories.has(category.id)
+      );
+      if (categoryToEdit) {
+        setEditingCategory(categoryToEdit);
+        setNewCategoryName(categoryToEdit.name);
+        setNewCategoryImage(null);
+        setEditMode(true);
+      }
+    } else {
+      alert("Please select only one category to edit.");
+    }
+  };
+
+  const handleUpdateCategory = () => {
+    if (editingCategory && newCategoryName.trim() !== "") {
+      const updatedCategories = categories.map((category) =>
+        category.id === editingCategory.id
+          ? {
+              ...category,
+              name: newCategoryName,
+              imageUrl: newCategoryImage
+                ? URL.createObjectURL(newCategoryImage)
+                : category.imageUrl,
+            }
+          : category
+      );
+      setCategories(updatedCategories);
+      setEditMode(false);
+      setSelectedCategories(new Set());
+      setNewCategoryName("");
+      setNewCategoryImage(null);
+    }
   };
 
   return (
-    <div className="min-h-screen flex flex-col p-4">
-      {/* Add Category Form */}
-      <div className="flex items-center justify-center gap-4 mb-6">
-        <input
-          type="text"
-          placeholder="Category Name"
-          value={newCategoryName}
-          onChange={(e) => setNewCategoryName(e.target.value)} // Update the input value
-          className="border rounded px-6 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-red-500"
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setNewCategoryImage(e.target.files?.[0] ?? null)} // Set the selected image
-          className="border rounded px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-red-500"
-        />
-        <button
-          onClick={handleAddCategory}
-          className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
-        >
-          Add
-        </button>
-      </div>
+    <div className="min-h-screen flex flex-col p-4 max-w-5xl mx-auto">
+      {selectedCategories.size > 0 && !editMode && (
+        <div className="flex justify-end gap-4 mb-6">
+          {selectedCategories.size === 1 && (
+            <Button onClick={handleEditSelected} className="btn-red">
+              Edit
+            </Button>
+          )}
+          <Button onClick={handleDeleteSelected} className="btn-red">
+            {selectedCategories.size === 1 ? "Delete" : "Delete Multiple"}
+          </Button>
+        </div>
+      )}
 
-      {/* Categories Table */}
+      {(editMode || selectedCategories.size === 0) && (
+        <div className="flex items-center justify-end gap-4 mb-6 flex-col sm:flex-row">
+          <input
+            type="text"
+            placeholder="Category Name"
+            value={newCategoryName}
+            onChange={(e) => setNewCategoryName(e.target.value)}
+            className="border rounded px-6 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-red-500 mb-4 sm:mb-0"
+          />
+          <div className="flex items-center gap-4">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setNewCategoryImage(e.target.files?.[0] ?? null)}
+              className="border rounded px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+          </div>
+          <button
+            onClick={editMode ? handleUpdateCategory : handleAddCategory}
+            className="btn-red"
+          >
+            {editMode || selectedCategories.size > 0 ? "Update" : "Add"}
+          </button>
+        </div>
+      )}
+
       <div className="flex-grow">
-        <table className="w-[60%] mx-auto border-collapse border bg-white">
+        <table className="w-full mx-auto border-collapse border bg-white">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border px-6 py-3 text-left">S.N.</th>
-              <th className="border px-6 py-3 text-left">Image</th>
-              <th className="border px-6 py-3 text-left">Category Name</th>
-              <th className="border px-6 py-3 text-left">Created At</th>
-              <th className="border px-6 py-3 text-left">Actions</th>
+              <th className="border px-6 py-3 text-center">
+                <input
+                  type="checkbox"
+                  checked={selectedCategories.size === paginatedData.length}
+                  onChange={handleSelectAllOnPage}
+                  className="cursor-pointer"
+                />
+              </th>
+              <th className="border px-6 py-3 text-center">S.N.</th>
+              <th className="border px-6 py-3 text-center">Image</th>
+              <th className="border px-6 py-3 text-center">Category Name</th>
+              <th className="border px-6 py-3 text-center">Created At</th>
             </tr>
           </thead>
           <tbody>
             {paginatedData.map((category, index) => (
               <tr key={category.id} className="border-b hover:bg-gray-50">
+                <td className="border px-6 py-4 text-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.has(category.id)}
+                    onChange={() => handleSelectCategory(category.id)}
+                    className="cursor-pointer"
+                  />
+                </td>
                 <td className="border px-6 py-4 text-center">
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </td>
@@ -106,36 +211,16 @@ const Category: React.FC = () => {
                 </td>
                 <td className="border px-6 py-4">{category.name}</td>
                 <td className="border px-6 py-4">{category.createdAt}</td>
-                <td className="flex items-center justify-center px-4 py-2 text-center mt-6">
-                  <div className="relative group">
-                    <button className="text-green-600 mr-2">
-                      <Pencil className="w-5 h-5" />
-                    </button>
-                    <div className="absolute left-1/2 transform -translate-x-1/2 top-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1">
-                      Edit
-                    </div>
-                  </div>
-
-                  <div className="relative group">
-                    <button className="text-red-600">
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                    <div className="absolute left-1/2 transform -translate-x-1/2 top-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1">
-                      Delete
-                    </div>
-                  </div>
-                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* Pagination Controls */}
       <div className="flex justify-center items-center mt-4 mb-4">
         <Button
           className="px-4 py-2 bg-white mr-2 disabled:bg-gray-300"
-          disabled={currentPage === 1 || categories.length === 0} // Disable if no categories
+          disabled={currentPage === 1 || categories.length === 0}
           onClick={() => setCurrentPage(currentPage - 1)}
         >
           <ChevronLeft className="w-5 h-5 text-black" />
@@ -144,8 +229,8 @@ const Category: React.FC = () => {
           Page {currentPage} of {totalPages}
         </span>
         <Button
-          className="px-4 py-2 bg-white   ml-2 disabled:bg-gray-300"
-          disabled={currentPage === totalPages || categories.length === 0} // Disable if no categories
+          className="px-4 py-2 bg-white ml-2 disabled:bg-gray-300"
+          disabled={currentPage === totalPages || categories.length === 0}
           onClick={() => setCurrentPage(currentPage + 1)}
         >
           <ChevronRight className="w-5 h-5 text-black" />

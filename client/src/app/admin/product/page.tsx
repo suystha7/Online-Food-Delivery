@@ -122,10 +122,30 @@ const ProductTable: React.FC = () => {
   };
 
   const handleDeleteSelected = () => {
+    // Filter the products based on whether they are selected and within the current page
     setProducts((prevProducts) =>
-      prevProducts.filter((product) => !selectedProducts.has(product.id))
+      prevProducts.filter((product, index) => {
+        const pageStartIndex = (currentPage - 1) * itemsPerPage;
+        const pageEndIndex = currentPage * itemsPerPage;
+        const isProductOnCurrentPage =
+          index >= pageStartIndex && index < pageEndIndex;
+        return !(isProductOnCurrentPage && selectedProducts.has(product.id));
+      })
     );
     setSelectedProducts(new Set());
+  };
+
+  const handleSelectAllChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      // Select all items on the current page
+      const currentPageIds = new Set(
+        paginatedData.map((product) => product.id)
+      );
+      setSelectedProducts(currentPageIds);
+    } else {
+      // Deselect all items on the current page
+      setSelectedProducts(new Set());
+    }
   };
 
   return (
@@ -150,7 +170,6 @@ const ProductTable: React.FC = () => {
                 Edit
               </Button>
             )}
-
             <Button className="btn-red" onClick={handleDeleteSelected}>
               {selectedProducts.size > 1 ? "Delete Multiple" : "Delete"}
             </Button>
@@ -172,18 +191,10 @@ const ProductTable: React.FC = () => {
               <th className="border px-4 py-2">
                 <input
                   type="checkbox"
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedProducts(
-                        new Set(products.map((product) => product.id))
-                      );
-                    } else {
-                      setSelectedProducts(new Set());
-                    }
-                  }}
+                  onChange={handleSelectAllChange}
                   checked={
-                    selectedProducts.size === products.length &&
-                    products.length > 0
+                    selectedProducts.size === paginatedData.length &&
+                    paginatedData.length > 0
                   }
                 />
               </th>

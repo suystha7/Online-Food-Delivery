@@ -94,12 +94,12 @@ const OrdersTable: React.FC = () => {
   return (
     <div className="p-4">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold pl-5">Orders Details</h1>
       </div>
 
       {selectedOrders.size > 0 && (
-        <div className="mt-4 text-center flex items-center justify-center gap-4 mb-6">
+        <div className=" text-center flex items-center justify-end gap-4 mb-6">
           <select
             className="bg-white text-black px-4 py-2 rounded"
             value={statusToUpdate}
