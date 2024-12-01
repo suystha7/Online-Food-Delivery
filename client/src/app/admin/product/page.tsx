@@ -122,7 +122,6 @@ const ProductTable: React.FC = () => {
   };
 
   const handleDeleteSelected = () => {
-    // Filter the products based on whether they are selected and within the current page
     setProducts((prevProducts) =>
       prevProducts.filter((product, index) => {
         const pageStartIndex = (currentPage - 1) * itemsPerPage;
@@ -137,13 +136,11 @@ const ProductTable: React.FC = () => {
 
   const handleSelectAllChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      // Select all items on the current page
       const currentPageIds = new Set(
         paginatedData.map((product) => product.id)
       );
       setSelectedProducts(currentPageIds);
     } else {
-      // Deselect all items on the current page
       setSelectedProducts(new Set());
     }
   };
@@ -184,7 +181,7 @@ const ProductTable: React.FC = () => {
         )}
       </div>
 
-      <div className="flex-grow">
+      <div className="flex-grow overflow-x-auto">
         <table className="border-collapse border text-center w-full">
           <thead className="bg-gray-50">
             <tr>
@@ -249,164 +246,116 @@ const ProductTable: React.FC = () => {
       <div className="flex justify-center items-center mt-4 mb-4">
         <Button
           className="px-4 py-2 bg-white mr-2 disabled:bg-gray-300"
-          disabled={currentPage === 1 || products.length === 0}
-          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1 || paginatedData.length === 0}
+          onClick={() => setCurrentPage((prev) => prev - 1)}
         >
-          <ChevronLeft className="w-5 h-5 text-black" />
+          <ChevronLeft />
         </Button>
-        <span className="px-4 text-lg">
+        <span className="font-bold">
           Page {currentPage} of {totalPages}
         </span>
         <Button
           className="px-4 py-2 bg-white ml-2 disabled:bg-gray-300"
-          disabled={currentPage === totalPages || products.length === 0}
-          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPages || paginatedData.length === 0}
+          onClick={() => setCurrentPage((prev) => prev + 1)}
         >
-          <ChevronRight className="w-5 h-5 text-black" />
+          <ChevronRight />
         </Button>
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white w-full max-w-4xl p-6 rounded shadow-lg">
-            <h2 className="text-xl font-semibold mb-4">
-              {selectedProduct ? "Edit Product" : "Add Product"}
-            </h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="flex flex-col">
-                  <label className="text-gray-700">Title</label>
-                  <input
-                    type="text"
-                    className="px-4 py-2 border rounded"
-                    placeholder="Enter product title"
-                    {...register("name", {
-                      required: "Title is required",
-                    })}
-                  />
-                  {errors.name && (
-                    <p className="text-red-600 text-sm">
-                      {errors.name.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex flex-col">
-                  <label className="text-gray-700">Category</label>
-                  <select
-                    className="px-4 py-2 border rounded"
-                    {...register("category", {
-                      required: "Category is required",
-                    })}
-                  >
-                    <option value="">Select a category</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Books">Books</option>
-                    <option value="Home Appliances">Home Appliances</option>
-                    <option value="Furniture">Furniture</option>
-                  </select>
-                  {errors.category && (
-                    <p className="text-red-600 text-sm">
-                      {errors.category.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex flex-col col-span-2">
-                  <label className="text-gray-700">Description</label>
-                  <textarea
-                    className="px-4 py-2 border rounded"
-                    placeholder="Enter product description"
-                    {...register("description", {
-                      required: "Description is required",
-                    })}
-                  />
-                  {errors.description && (
-                    <p className="text-red-600 text-sm">
-                      {errors.description.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex flex-col col-span-2">
-                  <label className="text-gray-700">Main Image URL</label>
-                  <input
-                    type="text"
-                    className="px-4 py-2 border rounded"
-                    placeholder="Enter main image URL"
-                    {...register("mainImage", {
-                      required: "Main image is required",
-                    })}
-                  />
-                  {errors.mainImage && (
-                    <p className="text-red-600 text-sm">
-                      {errors.mainImage.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex flex-col col-span-2">
-                  <label className="text-gray-700">
-                    Sub Images (comma separated URLs)
-                  </label>
-                  <input
-                    type="text"
-                    className="px-4 py-2 border rounded"
-                    placeholder="Enter sub images URLs"
-                    {...register("subImages")}
-                  />
-                </div>
-
-                <div className="flex flex-col">
-                  <label className="text-gray-700">Price</label>
-                  <input
-                    type="number"
-                    className="px-4 py-2 border rounded"
-                    placeholder="Enter product price"
-                    {...register("price", {
-                      required: "Price is required",
-                      valueAsNumber: true,
-                    })}
-                  />
-                  {errors.price && (
-                    <p className="text-red-600 text-sm">
-                      {errors.price.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex flex-col">
-                  <label className="text-gray-700">Discount (%)</label>
-                  <input
-                    type="number"
-                    className="px-4 py-2 border rounded"
-                    placeholder="Enter discount (optional)"
-                    {...register("discount", { valueAsNumber: true })}
-                  />
-                </div>
-
-                <div className="flex flex-col">
-                  <label className="text-gray-700">Stock</label>
-                  <input
-                    type="number"
-                    className="px-4 py-2 border rounded"
-                    placeholder="Enter stock quantity"
-                    {...register("stock", { valueAsNumber: true })}
-                  />
-                </div>
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10">
+          <div className="bg-white p-8 rounded-lg shadow-xl max-w-4xl w-full">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+            >
+              {/* Left Column */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium">
+                  Product Name
+                </label>
+                <input
+                  {...register("name", { required: true })}
+                  className="border w-full p-2 mt-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">Category</label>
+                <select
+                  {...register("category", { required: true })}
+                  className="border w-full p-2 mt-2"
+                >
+                  <option value="">Select Category</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="fashion">Fashion</option>
+                  <option value="home-appliances">Home Appliances</option>
+                  <option value="books">Books</option>
+                  {/* Add more categories here as needed */}
+                </select>
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">Description</label>
+                <textarea
+                  {...register("description", { required: true })}
+                  className="border w-full p-2 mt-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">Price</label>
+                <input
+                  {...register("price", { required: true })}
+                  type="number"
+                  className="border w-full p-2 mt-2"
+                />
               </div>
 
-              <div className="flex justify-end gap-4 mt-4">
+              {/* Right Column */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium">Discount</label>
+                <input
+                  {...register("discount", { required: false })}
+                  type="number"
+                  className="border w-full p-2 mt-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">Stock</label>
+                <input
+                  {...register("stock", { required: true })}
+                  type="number"
+                  className="border w-full p-2 mt-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">
+                  Main Image URL
+                </label>
+                <input
+                  {...register("mainImage", { required: true })}
+                  className="border w-full p-2 mt-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">
+                  Sub Image URLs (comma-separated)
+                </label>
+                <input
+                  {...register("subImages")}
+                  className="border w-full p-2 mt-2"
+                />
+              </div>
+
+              {/* Button Section */}
+              <div className="flex justify-end col-span-2 gap-4">
                 <Button
-                  type="button"
-                  className="px-6 py-2 bg-gray-300 rounded text-black"
+                  className="btn-red"
                   onClick={() => setIsModalOpen(false)}
                 >
                   Cancel
                 </Button>
                 <Button type="submit" className="btn-red">
-                  Save Product
+                  {selectedProduct ? "Update Product" : "Add Product"}
                 </Button>
               </div>
             </form>

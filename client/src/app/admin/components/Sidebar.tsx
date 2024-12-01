@@ -5,18 +5,34 @@ import {
   ChevronLeft,
   ChevronRight,
   ClipboardList,
-  // Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const pathName = usePathname();
 
+  // Track screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Adjust 768px as needed
+    };
+
+    handleResize(); // Check initial screen size
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const toggleSidebar = () => {
-    setIsOpen(!isOpen);
+    if (!isMobile) {
+      setIsOpen(!isOpen);
+    }
   };
 
   const menuItems = [
@@ -30,7 +46,9 @@ export default function Sidebar() {
     <div
       className={`relative ${
         isOpen ? "w-48" : "w-18"
-      } bg-white text-black min-h-screen p-4 transition-all duration-300 ease-in-out`}
+      } bg-white text-black min-h-screen p-4 transition-all duration-300 ease-in-out ${
+        isMobile && !isOpen ? "w-18" : "" // Handle small screen width
+      }`}
     >
       {/* Logo */}
       <div className="flex justify-center items-center">
