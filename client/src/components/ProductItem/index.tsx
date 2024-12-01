@@ -4,9 +4,11 @@ import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useCart } from "@/context/CartContext";
 
 const ProductItem: React.FC = () => {
   const { productId } = useParams();
+  const { addToCart } = useCart();
 
   return (
     <div className="productItem">
@@ -35,8 +37,8 @@ const ProductItem: React.FC = () => {
         <p className="productDescription">
           Mushroom patty, vegan cheese, lettuce, tomatoes, avocado ligula
         </p>
-        <Link href={`/product/${productId}`} passHref>
-          <Button className="addToCartButton">ADD TO CART</Button>
+        <Link href='#' passHref>
+          <Button className="addToCartButton" onClick={addToCart}>ADD TO CART</Button>
         </Link>
       </div>
     </div>

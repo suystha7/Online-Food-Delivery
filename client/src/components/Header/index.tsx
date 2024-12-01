@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
+import { useCart } from "@/context/CartContext";
 
 const Header: React.FC = () => {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
+  const { cartCount } = useCart();
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -53,14 +55,16 @@ const Header: React.FC = () => {
 
           <Link href="/cart" className="relative cartTab">
             <ShoppingBag className="text-white" />
-            <span className="flex items-center justify-center text-xs">0</span>
+            <span className="flex items-center justify-center text-xs">
+              {cartCount}
+            </span>
           </Link>
 
           <Link href="/signin">
             <Button className="btn-red ml-2 relative group">
-              <span className=" group-hover:opacity-0 transition-opacity duration-300">
+              <span className="group-hover:opacity-0 transition-opacity duration-300">
                 Sign In
-              </span>
+              </span>   
 
               <LogIn
                 size={20}

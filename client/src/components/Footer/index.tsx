@@ -1,40 +1,13 @@
 "use client";
 import {
-  ArrowUp,
   FacebookIcon,
   InstagramIcon,
   LinkedinIcon,
   TwitterIcon,
 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 const Footer: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  // Function to toggle the visibility of the scroll to top button
-  const toggleVisibility = () => {
-    if (window.scrollY > 300) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  };
-
-  // Scroll to the top of the page
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", toggleVisibility);
-    return () => {
-      window.removeEventListener("scroll", toggleVisibility);
-    };
-  }, []);
-
   return (
     <footer className="text-gray-600 body-font bg-gray-100">
       <div className="w-full px-4 py-10 bg-gray-100 text-center">
@@ -118,17 +91,6 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Scroll to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className={`fixed bottom-20 right-6 p-3 rounded-full bg-brown text-white shadow-lg transition-opacity duration-300 transform ${
-          isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-        } hover:scale-110 hover:animate-bounce`}
-        aria-label="Scroll to top"
-      >
-        <ArrowUp size={24} />
-      </button>
     </footer>
   );
 };
