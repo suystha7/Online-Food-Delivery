@@ -131,16 +131,23 @@ const OrdersTable: React.FC = () => {
       <table className="w-full border-collapse border">
         <thead className="bg-gray-50">
           <tr>
+            {/* Select All Checkbox */}
             <th className="border px-4 py-2 text-center">
               <input
                 type="checkbox"
-                checked={selectedOrders.size === orders.length}
+                checked={paginatedOrders.every((order) =>
+                  selectedOrders.has(order.id)
+                )}
                 onChange={() => {
-                  if (selectedOrders.size === orders.length) {
-                    setSelectedOrders(new Set());
+                  const newSelection = new Set(selectedOrders);
+                  if (paginatedOrders.every((order) => newSelection.has(order.id))) {
+                    // Unselect all orders on the current page
+                    paginatedOrders.forEach((order) => newSelection.delete(order.id));
                   } else {
-                    setSelectedOrders(new Set(orders.map((order) => order.id)));
+                    // Select all orders on the current page
+                    paginatedOrders.forEach((order) => newSelection.add(order.id));
                   }
+                  setSelectedOrders(newSelection);
                 }}
               />
             </th>

@@ -5,7 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ClipboardList,
-  Users,
+  // Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,7 +23,7 @@ export default function Sidebar() {
     { name: "Category", href: "/admin/category", icon: ChartColumnStacked },
     { name: "Products", href: "/admin/product", icon: ClipboardList },
     { name: "Orders", href: "/admin/order", icon: BookmarkCheck },
-    { name: "Users", href: "/admin/user", icon: Users },
+    // { name: "Users", href: "/admin/user", icon: Users },
   ];
 
   return (

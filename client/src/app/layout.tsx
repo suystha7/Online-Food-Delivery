@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import "./globals.css";
 import Navbar from "@/components/Header";
 import Footer from "@/components/Footer";
+import { CartProvider } from "@/context/CartContext";
 
 export default function RootLayout({
   children,
@@ -13,7 +14,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   const isAuthPage = pathname === "/signin" || pathname === "/signup";
-  const isAdminPage = pathname.startsWith("/admin"); 
+  const isAdminPage = pathname.startsWith("/admin");
 
   return (
     <html lang="en">
@@ -28,9 +29,11 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
-        {!isAuthPage && !isAdminPage && <Navbar />}
-        {children}
-        {!isAuthPage && !isAdminPage && <Footer />}
+        <CartProvider>
+          {!isAuthPage && !isAdminPage && <Navbar />}
+          {children}
+          {!isAuthPage && !isAdminPage && <Footer />}
+        </CartProvider>
       </body>
     </html>
   );

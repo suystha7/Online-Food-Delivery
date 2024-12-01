@@ -39,14 +39,15 @@ const Cart: React.FC = () => {
   };
 
   const decrement = (id: number) => {
-    setCategories(
-      (prev) =>
-        prev
-          .map((item) =>
-            item.id === id ? { ...item, qty: item.qty - 1 } : item
-          )
-          .filter((item) => item.qty > 0) // Remove items with qty 0
+    setCategories((prev) =>
+      prev.map((item) =>
+        item.id === id && item.qty > 1 ? { ...item, qty: item.qty - 1 } : item
+      )
     );
+  };
+
+  const deleteItem = (id: number) => {
+    setCategories((prev) => prev.filter((item) => item.id !== id));
   };
 
   const subtotal = categories.reduce(
@@ -153,7 +154,10 @@ const Cart: React.FC = () => {
                       </td>
                       <td className="border border-gray-300 px-4 py-2 text-gray-700">
                         <div className="relative group">
-                          <button className="text-red-600">
+                          <button
+                            onClick={() => deleteItem(category.id)}
+                            className="text-red-600"
+                          >
                             <Trash2 className="w-5 h-5" />
                           </button>
                           <div className="absolute left-1/2 transform -translate-x-1/2 top-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1">
@@ -187,7 +191,10 @@ const Cart: React.FC = () => {
                   Rs. {total.toFixed(2)}
                 </p>
               </div>
-              <Button className="btn-red flex items-center justify-center">
+              <Button
+                onClick={() => router.push("/shippingDetails")}
+                className="btn-red"
+              >
                 Proceed to Checkout
               </Button>
             </div>
