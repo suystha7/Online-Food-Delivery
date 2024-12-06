@@ -6,6 +6,7 @@ import {
   ChevronRight,
   ClipboardList,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -39,44 +40,44 @@ export default function Sidebar() {
     { name: "Category", href: "/admin/category", icon: ChartColumnStacked },
     { name: "Products", href: "/admin/product", icon: ClipboardList },
     { name: "Orders", href: "/admin/order", icon: BookmarkCheck },
-    // { name: "Users", href: "/admin/user", icon: Users },
   ];
 
   return (
     <div
       className={`relative ${
         isOpen ? "w-48" : "w-18"
-      } bg-white text-black min-h-screen p-4 transition-all duration-300 ease-in-out ${
-        isMobile && !isOpen ? "w-18" : "" // Handle small screen width
-      }`}
+      } bg-white text-black min-h-screen p-4 transition-[width] duration-300 ease-in-out`}
     >
       {/* Logo */}
       <div className="flex justify-center items-center">
-        <img
-          src="/logo.png"
-          alt="Logo"
-          className={`transition-all duration-300 ease-in-out ${
-            isOpen ? "w-32 h-auto" : "w-16 h-auto"
-          }`}
-        />
+        <div className="transition-opacity duration-500 ease-in-out flex items-center">
+          {isOpen && (
+            <Link href="/" className="flex items-center">
+              <Image src="/logo.png" width={100} height={100} alt="logo" />
+            </Link>
+          )}
+          {!isOpen && (
+            <span className="text-2xl font-bold mt-16">
+             
+            </span>
+          )}
+        </div>
       </div>
 
+      {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="absolute top-[11%] right-[-10px] transform -translate-y-1/2 p-2 rounded-full bg-white border-r"
+        className="absolute top-[11%] right-[-10px] transform p-2 rounded-full bg-white border-r hover:animate-move"
       >
         {isOpen ? (
-          <span className="text-sm">
-            <ChevronLeft className="w-4 h-4" />
-          </span>
+          <ChevronLeft className="w-4 h-4" />
         ) : (
-          <span className="text-sm">
-            <ChevronRight className="w-4 h-4" />
-          </span>
+          <ChevronRight className="w-4 h-4" />
         )}
       </button>
 
-      <ul className="mt-16 space-y-8 cursor-pointer">
+      {/* Menu Items */}
+      <ul className="mt-16 space-y-8 cursor-pointer transition-opacity duration-500 ease-in-out">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = pathName === item.href;
@@ -92,7 +93,7 @@ export default function Sidebar() {
             >
               <Link
                 href={item.href}
-                className={`flex items-center justify-center space-x-4 ${
+                className={`flex items-center space-x-4 ${
                   isOpen ? "p-3" : "p-2"
                 }`}
               >
