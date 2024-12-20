@@ -67,7 +67,7 @@ export default function Sidebar() {
       {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="absolute top-[11%] right-[-10px] transform p-2 rounded-full bg-white border-r hover:animate-move"
+        className="absolute top-[11%] right-[-10px] transform p-2 rounded-full bg-white border-r hover:animate-move shadow-sm "
       >
         {isOpen ? (
           <ChevronLeft className="w-4 h-4" />
@@ -77,7 +77,7 @@ export default function Sidebar() {
       </button>
 
       {/* Menu Items */}
-      <ul className="mt-16 space-y-8 cursor-pointer transition-opacity duration-500 ease-in-out">
+      <ul className="mt-20 space-y-8 cursor-pointer transition-opacity duration-500 ease-in-out">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = pathName === item.href;

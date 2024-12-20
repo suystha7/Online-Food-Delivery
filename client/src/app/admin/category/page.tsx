@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 interface Category {
@@ -21,9 +21,7 @@ const initialCategoriesData: Category[] = Array.from(
 );
 
 const Category: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>(
-    initialCategoriesData
-  );
+  const [categories, setCategories] = useState<Category[]>(initialCategoriesData);
   const [currentPage, setCurrentPage] = useState(1);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newCategoryImage, setNewCategoryImage] = useState<File | null>(null);
@@ -32,13 +30,21 @@ const Category: React.FC = () => {
   );
   const [editMode, setEditMode] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  const itemsPerPage = 8;
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: string }>({
+    key: "name",
+    direction: "ascending",
+  });
 
+  const itemsPerPage = 8;
   const totalPages = Math.ceil(categories.length / itemsPerPage);
-  const paginatedData = categories.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const paginatedData = categories
+    .sort((a, b) => {
+      const { key, direction } = sortConfig;
+      if (a[key] < b[key]) return direction === "ascending" ? -1 : 1;
+      if (a[key] > b[key]) return direction === "ascending" ? 1 : -1;
+      return 0;
+    })
+    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleAddCategory = () => {
     if (newCategoryName.trim() === "" || !newCategoryImage) return;
@@ -69,10 +75,8 @@ const Category: React.FC = () => {
 
   const handleSelectAllOnPage = () => {
     if (selectedCategories.size === paginatedData.length) {
-      // Unselect all categories if all are selected
       setSelectedCategories(new Set());
     } else {
-      // Select all categories on the current page
       const newSelectedCategories = new Set<number>();
       paginatedData.forEach((category) =>
         newSelectedCategories.add(category.id)
@@ -83,13 +87,10 @@ const Category: React.FC = () => {
 
   const handleDeleteSelected = () => {
     const updatedCategories = categories.filter((category) => {
-      return (
-        !selectedCategories.has(category.id) ||
-        !paginatedData.includes(category)
-      );
+      return !selectedCategories.has(category.id);
     });
     setCategories(updatedCategories);
-    setSelectedCategories(new Set()); // Reset selected categories
+    setSelectedCategories(new Set());
   };
 
   const handleEditSelected = () => {
@@ -127,6 +128,14 @@ const Category: React.FC = () => {
       setNewCategoryName("");
       setNewCategoryImage(null);
     }
+  };
+
+  const handleSort = (key: string) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
   };
 
   return (
@@ -183,9 +192,51 @@ const Category: React.FC = () => {
                 />
               </th>
               <th className="border px-6 py-3 text-center">S.N.</th>
-              <th className="border px-6 py-3 text-center">Image</th>
-              <th className="border px-6 py-3 text-center">Category Name</th>
-              <th className="border px-6 py-3 text-center">Created At</th>
+              <th
+                className="border px-6 py-3 text-center cursor-pointer"
+                onClick={() => handleSort("imageUrl")}
+              >
+                Image{" "}
+                {sortConfig.key === "imageUrl" && (
+                  <span>
+                    {sortConfig.direction === "ascending" ? (
+                      <ChevronUp className="inline-block" />
+                    ) : (
+                      <ChevronDown className="inline-block" />
+                    )}
+                  </span>
+                )}
+              </th>
+              <th
+                className="border px-6 py-3 text-center cursor-pointer"
+                onClick={() => handleSort("name")}
+              >
+                Category Name{" "}
+                {sortConfig.key === "name" && (
+                  <span>
+                    {sortConfig.direction === "ascending" ? (
+                      <ChevronUp className="inline-block" />
+                    ) : (
+                      <ChevronDown className="inline-block" />
+                    )}
+                  </span>
+                )}
+              </th>
+              <th
+                className="border px-6 py-3 text-center cursor-pointer"
+                onClick={() => handleSort("createdAt")}
+              >
+                Created At{" "}
+                {sortConfig.key === "createdAt" && (
+                  <span>
+                    {sortConfig.direction === "ascending" ? (
+                      <ChevronUp className="inline-block" />
+                    ) : (
+                      <ChevronDown className="inline-block" />
+                    )}
+                  </span>
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>

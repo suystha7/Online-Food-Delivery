@@ -20,7 +20,7 @@ const config: Config = {
       keyframes: {
         move: {
           "0%, 100%": { transform: "translateX(0)" },
-          "50%": { transform: "translateX(5px)" }, // Move smoothly to the right
+          "50%": { transform: "translateX(2px)" }, // Move smoothly to the right
         },
       },
       animation: {
