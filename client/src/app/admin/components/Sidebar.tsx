@@ -56,11 +56,7 @@ export default function Sidebar() {
               <Image src="/logo.png" width={100} height={100} alt="logo" />
             </Link>
           )}
-          {!isOpen && (
-            <span className="text-2xl font-bold mt-16">
-             
-            </span>
-          )}
+          {!isOpen && <span className="text-2xl font-bold mt-16"></span>}
         </div>
       </div>
 
@@ -85,7 +81,7 @@ export default function Sidebar() {
           return (
             <li
               key={index}
-              className={`${
+              className={`relative group ${
                 isActive
                   ? "bg-gray-200 text-brown rounded-xl font-medium"
                   : "hover:bg-gray-100 hover:text-gray-900 rounded-xl"
@@ -104,6 +100,16 @@ export default function Sidebar() {
                   </span>
                 )}
               </Link>
+              {/* Tooltip */}
+              {!isOpen && (
+                <span className="absolute top-2 left-12 bg-gray-900 text-white text-sm rounded shadow-sm px-2 py-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-300">
+                  {item.name}
+                  <span
+                    className="absolute top-1/2 left-[-4px] -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"
+                    aria-hidden="true"
+                  ></span>
+                </span>
+              )}
             </li>
           );
         })}
