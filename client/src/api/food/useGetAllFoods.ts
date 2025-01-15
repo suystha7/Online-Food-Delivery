@@ -5,7 +5,7 @@ import ApiResponse from "../ApiResponse";
 import { Foods } from "./FoodTypes";
 import axiosInstance from "../axiosInstance";
 
-const getAllFoods = async ({
+export const getAllFoods = async ({
   page = 1,
   limit = 8,
 }: {
@@ -25,7 +25,7 @@ const getAllFoods = async ({
 
 const useGetAllFoods = ({ page, limit }: { page?: number; limit?: number }) => {
   return useQuery({
-    queryKey: ["get-foods"],
+    queryKey: ["get-foods", page],
     queryFn: () => getAllFoods({ page, limit }),
     throwOnError: (err: ApiError) => false,
   });

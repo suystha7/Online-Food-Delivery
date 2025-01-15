@@ -39,6 +39,8 @@ export interface IFoodBodyFields {
   price: number;
   stock: number;
   discount: number;
+  mainImage: File;
+  subImages?: FileList;
 }
 
 export interface IFoodParams {

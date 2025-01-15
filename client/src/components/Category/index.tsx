@@ -1,40 +1,29 @@
-"use client"
+"use client";
+
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import useGetAllCategories from "@/api/category/useGetAllCategories";
+import { getCapitalizedForm } from "@/utils/helpers";
 import "swiper/css";
 
-const Category = () => {
-  interface Product {
-    id: number;
-    imageSrc: string;
-    alt: string;
-    title: string;
-  }
+interface ICategoryProps {
+  selectedCategory: string;
+  setSelectedCategory: Dispatch<SetStateAction<string>>;
+}
 
-  const [activeProduct, setActiveProduct] = useState<number | null>(null);
+const Category = ({selectedCategory,setSelectedCategory}:ICategoryProps) => {
+  const { data } = useGetAllCategories({ page: 1, limit: 0 });
 
-  const products: Product[] = [
-    { id: 1, imageSrc: "/icon1.png", alt: "icon1", title: "BURGERS" },
-    { id: 2, imageSrc: "/icon2.png", alt: "icon2", title: "DESSERTS" },
-    { id: 3, imageSrc: "/icon3.png", alt: "icon3", title: "SALADS" },
-    { id: 4, imageSrc: "/icon4.png", alt: "icon4", title: "SIDES" },
-    { id: 5, imageSrc: "/icon8.png", alt: "icon1", title: "CHICKEN" },
-    { id: 6, imageSrc: "/icon2.png", alt: "icon2", title: "DESSERTS" },
-    { id: 7, imageSrc: "/icon3.png", alt: "icon3", title: "SALADS" },
-    { id: 8, imageSrc: "/icon4.png", alt: "icon4", title: "SIDES" },
-    { id: 9, imageSrc: "/icon1.png", alt: "icon1", title: "BURGERS" },
-    { id: 10, imageSrc: "/icon2.png", alt: "icon2", title: "DESSERTS" },
-    { id: 11, imageSrc: "/icon3.png", alt: "icon3", title: "SALADS" },
-    { id: 12, imageSrc: "/icon4.png", alt: "icon4", title: "SIDES" },
-  ];
+  // const [activeCategory, setCategoryProduct] = useState<string>("");
 
-  const handleProductClick = (id: number) => {
-    setActiveProduct(id === activeProduct ? null : id);
+  const handleProductClick = (id: string) => {
+    setSelectedCategory(id === selectedCategory ? "" : id);
   };
   return (
     <div className="py-6">
+      {/* <h3 className="text-center text-3xl tracking-widest mb-2">Category</h3> */}
       <Swiper
         slidesPerView={8}
         autoplay={{
@@ -44,23 +33,26 @@ const Category = () => {
         modules={[Navigation, Pagination, Autoplay]}
         className="category-swiper mb-6"
       >
-        {products.map((product) => (
-          <SwiperSlide key={product.id}>
+        {data?.categories.map((category) => (
+          <SwiperSlide key={category._id}>
             <div
-              className={`text-center cursor-pointer p-4 ${
-                activeProduct === product.id ? "active" : ""
+              className={`flex flex-col items-center text-center p-4 ${
+                selectedCategory === category._id ? "active" : ""
               }`}
-              onClick={() => handleProductClick(product.id)}
             >
               <Image
-                src={product.imageSrc}
-                alt={product.alt}
+                src={category.mainImage.url}
+                alt={"Category Image"}
                 width={60}
                 height={60}
-                className="mx-auto"
+                className="cursor-pointer"
+                onClick={() => handleProductClick(category._id)}
               />
-              <h4 className="text-lg text-black py-2 mb-0 font-semibold">
-                {product.title}
+              <h4
+                className="text-lg text-black font-semibold cursor-pointer mt-1"
+                onClick={() => handleProductClick(category._id)}
+              >
+                {getCapitalizedForm({ sentence: category.name })}
               </h4>
             </div>
           </SwiperSlide>

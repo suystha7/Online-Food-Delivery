@@ -13,7 +13,7 @@ export const createCategory = asyncHandler<ICategory>(async (req, res) => {
   const { name } = req.body;
   const mainImage = req.file;
 
-  const alreadyCategory = await Category.findOne({ name });
+  const alreadyCategory = await Category.findOne({ name: name.toUpperCase() });
 
   if (alreadyCategory) throw new ApiError(409, "Category already exists");
 
@@ -97,7 +97,16 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
 
     if (!category) throw new ApiError(404, "Category does not exist");
 
-    if (name) updates = { ...updates, name };
+    if (name && name.toUpperCase() !== category.name) {
+      const alreadyCategory = await Category.findOne({
+        name: name.toUpperCase(),
+      });
+
+      if (alreadyCategory) throw new ApiError(409, "Category already exists");
+
+      updates = { ...updates, name };
+    }
+
     if (req.file)
       updates = {
         ...updates,
@@ -106,6 +115,8 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
           localPath: getFileLocalPath(req.file?.filename),
         },
       };
+
+    console.log(updates);
 
     const updatedCategory = await Category.findByIdAndUpdate(
       categoryId,
@@ -117,7 +128,7 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
 
     if (category.mainImage.url !== updatedCategory?.mainImage.url)
       removeLocalFile(category.mainImage.localPath);
-    
+
     return res
       .status(201)
       .json(

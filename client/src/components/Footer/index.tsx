@@ -9,8 +9,8 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="text-gray-600 body-font bg-gray-100">
-      <div className="w-full px-4 py-10 bg-gray-100 text-center">
+    <footer className=" text-gray-600 body-font bg-gray-100">
+      {/* <div className="w-full px-4 py-10 bg-gray-100 text-center">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">
           Subscribe to our Newsletter
         </h2>
@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
             Subscribe
           </button>
         </div>
-      </div>
+      </div> */}
 
       <hr className="text-gray-500" />
 

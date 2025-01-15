@@ -10,6 +10,12 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import useGetFoodById from "@/api/food/useGetFoodById";
+import {
+  getAmountWithNepaliCurrency,
+  getCapitalizedForm,
+} from "@/utils/helpers";
+import { useParams } from "next/navigation";
 
 interface CustomTabPanelProps {
   children: React.ReactNode;
@@ -94,7 +100,11 @@ const products = [
   },
 ];
 
-const ProductDetails: React.FC = () => {
+const FoodDetails = () => {
+  const params = useParams();
+
+  const { data: food } = useGetFoodById({ foodId: params.foodId as string });
+
   const [qty, setQty] = useState<number>(1);
   const [slideIndex, setSlideIndex] = useState<number>(0);
   const [rating, setRating] = useState<number>(1);
@@ -191,39 +201,40 @@ const ProductDetails: React.FC = () => {
               </div>
             </div>
 
-            {/* Product details */}
-            <div className="flex flex-col mt-8 pt-5">
-              <h1 className="text-5xl font-bold text-brown">Classic Burger</h1>
-              <h3 className="text-yellow-500 font-extrabold text-4xl mt-3">
-                Rs. 280
-              </h3>
-              <h4 className="text-lg font-medium text-black mt-3">
-                Category: Burgers
-              </h4>
-              <p className="my-4 text-base">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Consequatur eveniet rem tenetur culpa vitae? Incidunt voluptate
-                dignissimos ad tempora.
-              </p>
+            {/* Food details */}
+            {food && (
+              <div className="flex flex-col mt-8 pt-5">
+                <h1 className="text-5xl font-bold text-brown">
+                  {getCapitalizedForm({ sentence: food?.name })}
+                </h1>
 
-              <div className="flex items-center mt-4">
-                <div className="qtyDrop flex items-center gap-4">
-                  <Button className="action" onClick={plus}>
-                    <Plus />
-                  </Button>
-                  <input
-                    type="number"
-                    value={qty}
-                    readOnly
-                    className="qty-input"
-                  />
-                  <Button className="action" onClick={minus}>
-                    <Minus />
+                <h3 className="text-yellow-500 font-extrabold text-4xl mt-3">
+                  {getAmountWithNepaliCurrency({ amount: food?.price })}
+                </h3>
+
+                <p className="my-4 text-base">{food?.description}</p>
+
+                <div className="flex items-center mt-4">
+                  <div className="qtyDrop flex items-center gap-4">
+                    <Button className="action" onClick={minus}>
+                      <Minus />
+                    </Button>
+                    <input
+                      type="number"
+                      value={qty}
+                      readOnly
+                      className="qty-input"
+                    />
+                    <Button className="action" onClick={plus}>
+                      <Plus />
+                    </Button>
+                  </div>
+                  <Button className="btn-red no-radius ml-4">
+                    Add to Cart
                   </Button>
                 </div>
-                <Button className="btn-red no-radius ml-4">Add to Cart</Button>
               </div>
-            </div>
+            )}
           </div>
 
           <br />
@@ -235,11 +246,7 @@ const ProductDetails: React.FC = () => {
                 onChange={handleChange}
                 aria-label="basic tabs example"
               >
-                <Tab
-                  label="More Info"
-                  {...a11yProps(0)}
-                  className="itemTab"
-                />
+                <Tab label="More Info" {...a11yProps(0)} className="itemTab" />
                 <Tab
                   label="Reviews (0)"
                   {...a11yProps(1)}
@@ -330,7 +337,7 @@ const ProductDetails: React.FC = () => {
                     disableOnInteraction: false, // Keep autoplay on interaction
                   }}
                   modules={[Navigation, Pagination, Autoplay]}
-                  className="productListing mt-4"
+                  className="foodListing mt-4"
                   breakpoints={{
                     640: {
                       slidesPerView: 1,
@@ -351,7 +358,7 @@ const ProductDetails: React.FC = () => {
                       key={product.id}
                       className="flex items-center justify-center"
                     >
-                      <div className="productItem">
+                      <div className="foodItem">
                         <div className="imgWrapper">
                           <Image
                             src={product.image}
@@ -395,4 +402,4 @@ const ProductDetails: React.FC = () => {
   );
 };
 
-export default ProductDetails;
+export default FoodDetails;

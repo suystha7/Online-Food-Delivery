@@ -13,6 +13,7 @@ const categorySchema = new Schema<ICategory>(
       type: String,
       required: true,
       trim: true,
+      set: (value: string) => value.toUpperCase(),
     },
     mainImage: {
       type: imageSchema,

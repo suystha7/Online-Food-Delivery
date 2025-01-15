@@ -8,6 +8,9 @@ import foodRouter from "./routes/food.routes";
 import cartRouter from "./routes/cart.routes";
 import bannerRouter from "./routes/banner.routes";
 import errorHandler from "./middlewares/error.middlewares";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 

@@ -16,7 +16,15 @@ const updateCategory = async ({
 }): Promise<Category> => {
   return await asyncHandler(
     (): Promise<ApiResponse<Category>> =>
-      axiosInstance.patch(`/categories/${categoryId}`, { name, mainImage })
+      axiosInstance.patch(
+        `/categories/${categoryId}`,
+        { name, mainImage },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
   );
 };
 

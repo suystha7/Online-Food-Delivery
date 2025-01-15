@@ -59,7 +59,7 @@ const TopRated = () => {
   ];
 
   return (
-    <div className="productItem_1" id="menu">
+    <div className="foodItem_1" id="menu">
       <section className="menu">
         <div className="container mx-auto text-center">
           <h2 className="">Top Rated Foods</h2>
@@ -77,7 +77,7 @@ const TopRated = () => {
               disableOnInteraction: false, // Keep autoplay on interaction
             }}
             modules={[Navigation, Pagination, Autoplay]}
-            className="productListing mt-4"
+            className="foodListing mt-4"
             breakpoints={{
               640: {
                 slidesPerView: 1,
@@ -95,7 +95,7 @@ const TopRated = () => {
           >
             {products.map((product) => (
               <SwiperSlide key={product.id} className="flex items-center justify-center">
-                <div className="productItem">
+                <div className="foodItem">
                   <div className="imgWrapper">
                     <Image src={product.image} alt={product.title} width={100} height={100} />
 

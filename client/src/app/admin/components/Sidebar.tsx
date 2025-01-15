@@ -1,4 +1,5 @@
 "use client";
+import { ROUTE_PATHS } from "@/constants";
 import {
   BookmarkCheck,
   ChartColumnStacked,
@@ -12,24 +13,24 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isSidebarMinimized, setIsSiebarMinimized] = useState(false);
   const pathName = usePathname();
 
   const toggleSidebar = () => {
-    setIsOpen(!isOpen);
+    setIsSiebarMinimized((prev) => !prev);
   };
 
-  const menuItems = [
-    { name: "Category", href: "/admin/category", icon: ChartColumnStacked },
-    { name: "Products", href: "/admin/product", icon: ClipboardList },
-    { name: "Orders", href: "/admin/order", icon: BookmarkCheck },
+  const navItems = [
+    { name: "Category", href: ROUTE_PATHS.category, icon: ChartColumnStacked },
+    { name: "Foods", href: ROUTE_PATHS.food, icon: ClipboardList },
+    { name: "Orders", href: ROUTE_PATHS.adminOrder, icon: BookmarkCheck },
     // { name: "Users", href: "/admin/user", icon: Users },
   ];
 
   return (
     <div
       className={`relative ${
-        isOpen ? "w-48" : "w-18"
+        !isSidebarMinimized ? "w-48" : "w-18"
       } bg-white text-black min-h-screen p-4 transition-all duration-300 ease-in-out`}
     >
       {/* Logo */}
@@ -38,48 +39,46 @@ export default function Sidebar() {
           src="/logo.png"
           alt="Logo"
           className={`transition-all duration-300 ease-in-out ${
-            isOpen ? "w-32 h-auto" : "w-16 h-auto"
+            !isSidebarMinimized ? "w-32 h-auto" : "w-16 h-auto"
           }`}
         />
       </div>
 
       <button
+        className="absolute top-[5.5rem] right-0 transform translate-x-[50%] p-2 rounded-full bg-white border-r"
         onClick={toggleSidebar}
-        className="absolute top-[11%] right-[-10px] transform -translate-y-1/2 p-2 rounded-full bg-white border-r"
       >
-        {isOpen ? (
-          <span className="text-sm">
+        <span className="text-sm">
+          {!isSidebarMinimized ? (
             <ChevronLeft className="w-4 h-4" />
-          </span>
-        ) : (
-          <span className="text-sm">
+          ) : (
             <ChevronRight className="w-4 h-4" />
-          </span>
-        )}
+          )}
+        </span>
       </button>
 
-      <ul className="mt-16 space-y-8 cursor-pointer">
-        {menuItems.map((item, index) => {
+      <ul className="mt-16 space-y-4">
+        {navItems.map((item, index) => {
           const Icon = item.icon;
-          const isActive = pathName === item.href;
+          const isActive = pathName.startsWith(item.href);
 
           return (
             <li
               key={index}
-              className={`${
+              className={`font-medium text-brown ${
                 isActive
-                  ? "bg-gray-200 text-brown rounded-xl font-medium"
-                  : "hover:bg-gray-100 hover:text-gray-900 rounded-xl"
+                  ? "bg-gray-200  rounded-xl font-semibold"
+                  : "hover:bg-gray-100 rounded-xl"
               }`}
             >
               <Link
                 href={item.href}
                 className={`flex items-center justify-center space-x-4 ${
-                  isOpen ? "p-3" : "p-2"
+                  !isSidebarMinimized ? "p-3" : "p-2"
                 }`}
               >
                 <Icon className="text-xl text-center" />
-                {isOpen && (
+                {!isSidebarMinimized && (
                   <span className="text-lg flex justify-start w-full">
                     {item.name}
                   </span>
