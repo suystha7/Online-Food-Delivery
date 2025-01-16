@@ -1,10 +1,10 @@
 "use client";
 
-import Banner from "@/components/Banner";
+// import Banner from "@/components/Banner";
 import BannerSlider from "@/components/BannerSlider";
-import Services from "@/container/Services";
-import TopRated from "@/container/TopRated";
-import Contact from "@/container/Contact";
+// import Services from "@/container/Services";
+// import TopRated from "@/container/TopRated";
+// import Contact from "@/container/Contact";
 import Category from "@/components/Category";
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";

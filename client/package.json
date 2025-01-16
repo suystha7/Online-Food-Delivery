@@ -15,7 +15,7 @@
     "@mui/icons-material": "^6.1.8",
     "@mui/material": "^6.1.8",
     "@mui/styled-engine-sc": "^6.1.8",
-    "@tanstack/react-query": "^5.61.5",
+    "@tanstack/react-query": "^5.64.1",
     "@tanstack/react-table": "^8.20.6",
     "axios": "^1.7.8",
     "lucide-react": "^0.460.0",
