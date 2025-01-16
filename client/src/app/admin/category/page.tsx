@@ -1,293 +1,57 @@
 "use client";
-import { Button } from "@mui/material";
-import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
-import { useState } from "react";
 
-interface Category {
-  id: number;
-  name: string;
-  imageUrl: string;
-  createdAt: string;
-}
-
-const initialCategoriesData: Category[] = Array.from(
-  { length: 10 },
-  (_, i) => ({
-    id: i + 1,
-    name: `Category ${i + 1}`,
-    imageUrl: `https://via.placeholder.com/50?text=C${i + 1}`,
-    createdAt: new Date().toISOString().split("T")[0],
-  })
-);
+import useCreateCategory from "@/api/category/useCreateCategory";
+import { useEffect, useState } from "react";
+import { CategoryCreateFormFields } from "@/constants";
+import PageLayout from "../components/PageLayout";
+import CategoryTable from "./CategoryTable";
+import { CategoryCreateOrUpdateDrawer } from "@/components/drawers";
 
 const Category: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>(initialCategoriesData);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [newCategoryImage, setNewCategoryImage] = useState<File | null>(null);
-  const [selectedCategories, setSelectedCategories] = useState<Set<number>>(
-    new Set()
-  );
-  const [editMode, setEditMode] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  const [sortConfig, setSortConfig] = useState<{ key: string; direction: string }>({
-    key: "name",
-    direction: "ascending",
-  });
+  const [isDrawerOpen, toggleDrawer] = useState(false);
 
-  const itemsPerPage = 8;
-  const totalPages = Math.ceil(categories.length / itemsPerPage);
-  const paginatedData = categories
-    .sort((a, b) => {
-      const { key, direction } = sortConfig;
-      if (a[key] < b[key]) return direction === "ascending" ? -1 : 1;
-      if (a[key] > b[key]) return direction === "ascending" ? 1 : -1;
-      return 0;
-    })
-    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const { mutateAsync, isPending, isSuccess, error, reset } =
+    useCreateCategory();
 
-  const handleAddCategory = () => {
-    if (newCategoryName.trim() === "" || !newCategoryImage) return;
-    const imageUrl = URL.createObjectURL(newCategoryImage);
-    const newCategory: Category = {
-      id: categories.length + 1,
-      name: newCategoryName,
-      imageUrl,
-      createdAt: new Date().toISOString().split("T")[0],
-    };
-    setCategories((prevCategories) => [...prevCategories, newCategory]);
-    setNewCategoryName("");
-    setNewCategoryImage(null);
-    setCurrentPage(1);
-  };
+  const categoryCreateSubmitHandler = async (
+    formData: CategoryCreateFormFields
+  ) => {
+    const { name, mainImage } = formData;
 
-  const handleSelectCategory = (id: number) => {
-    setSelectedCategories((prev) => {
-      const newSelected = new Set(prev);
-      if (newSelected.has(id)) {
-        newSelected.delete(id);
-      } else {
-        newSelected.add(id);
-      }
-      return newSelected;
+    await mutateAsync({
+      name,
+      mainImage,
     });
   };
 
-  const handleSelectAllOnPage = () => {
-    if (selectedCategories.size === paginatedData.length) {
-      setSelectedCategories(new Set());
-    } else {
-      const newSelectedCategories = new Set<number>();
-      paginatedData.forEach((category) =>
-        newSelectedCategories.add(category.id)
-      );
-      setSelectedCategories(newSelectedCategories);
+  useEffect(() => {
+    if (isSuccess) {
+      toggleDrawer(false);
     }
-  };
-
-  const handleDeleteSelected = () => {
-    const updatedCategories = categories.filter((category) => {
-      return !selectedCategories.has(category.id);
-    });
-    setCategories(updatedCategories);
-    setSelectedCategories(new Set());
-  };
-
-  const handleEditSelected = () => {
-    if (selectedCategories.size === 1) {
-      const categoryToEdit = categories.find((category) =>
-        selectedCategories.has(category.id)
-      );
-      if (categoryToEdit) {
-        setEditingCategory(categoryToEdit);
-        setNewCategoryName(categoryToEdit.name);
-        setNewCategoryImage(null);
-        setEditMode(true);
-      }
-    } else {
-      alert("Please select only one category to edit.");
-    }
-  };
-
-  const handleUpdateCategory = () => {
-    if (editingCategory && newCategoryName.trim() !== "") {
-      const updatedCategories = categories.map((category) =>
-        category.id === editingCategory.id
-          ? {
-              ...category,
-              name: newCategoryName,
-              imageUrl: newCategoryImage
-                ? URL.createObjectURL(newCategoryImage)
-                : category.imageUrl,
-            }
-          : category
-      );
-      setCategories(updatedCategories);
-      setEditMode(false);
-      setSelectedCategories(new Set());
-      setNewCategoryName("");
-      setNewCategoryImage(null);
-    }
-  };
-
-  const handleSort = (key: string) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
+  }, [isSuccess]);
 
   return (
-    <div className="min-h-screen flex flex-col p-4 max-w-5xl mx-auto">
-      {selectedCategories.size > 0 && !editMode && (
-        <div className="flex justify-end gap-4 mb-6">
-          {selectedCategories.size === 1 && (
-            <Button onClick={handleEditSelected} className="btn-red">
-              Edit
-            </Button>
-          )}
-          <Button onClick={handleDeleteSelected} className="btn-red">
-            {selectedCategories.size === 1 ? "Delete" : "Delete Multiple"}
-          </Button>
-        </div>
+    <>
+      {isDrawerOpen && (
+        <CategoryCreateOrUpdateDrawer
+          isDrawerOpen={isDrawerOpen}
+          hideDrawer={() => {
+            reset();
+            toggleDrawer(false);
+          }}
+          categoryCreateOrUpdateSubmitHandler={categoryCreateSubmitHandler}
+          apiError={error?.errorResponse?.message || error?.errorMessage}
+        />
       )}
 
-      {(editMode || selectedCategories.size === 0) && (
-        <div className="flex items-center justify-end gap-4 mb-6 flex-col sm:flex-row">
-          <input
-            type="text"
-            placeholder="Category Name"
-            value={newCategoryName}
-            onChange={(e) => setNewCategoryName(e.target.value)}
-            className="border rounded px-6 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-red-500 mb-4 sm:mb-0"
-          />
-          <div className="flex items-center gap-4">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setNewCategoryImage(e.target.files?.[0] ?? null)}
-              className="border rounded px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-red-500"
-            />
-          </div>
-          <button
-            onClick={editMode ? handleUpdateCategory : handleAddCategory}
-            className="btn-red"
-          >
-            {editMode || selectedCategories.size > 0 ? "Update" : "Add"}
-          </button>
-        </div>
-      )}
-
-      <div className="flex-grow">
-        <table className="w-full mx-auto border-collapse border bg-white">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border px-6 py-3 text-center">
-                <input
-                  type="checkbox"
-                  checked={selectedCategories.size === paginatedData.length}
-                  onChange={handleSelectAllOnPage}
-                  className="cursor-pointer"
-                />
-              </th>
-              <th className="border px-6 py-3 text-center">S.N.</th>
-              <th
-                className="border px-6 py-3 text-center cursor-pointer"
-                onClick={() => handleSort("imageUrl")}
-              >
-                Image{" "}
-                {sortConfig.key === "imageUrl" && (
-                  <span>
-                    {sortConfig.direction === "ascending" ? (
-                      <ChevronUp className="inline-block" />
-                    ) : (
-                      <ChevronDown className="inline-block" />
-                    )}
-                  </span>
-                )}
-              </th>
-              <th
-                className="border px-6 py-3 text-center cursor-pointer"
-                onClick={() => handleSort("name")}
-              >
-                Category Name{" "}
-                {sortConfig.key === "name" && (
-                  <span>
-                    {sortConfig.direction === "ascending" ? (
-                      <ChevronUp className="inline-block" />
-                    ) : (
-                      <ChevronDown className="inline-block" />
-                    )}
-                  </span>
-                )}
-              </th>
-              <th
-                className="border px-6 py-3 text-center cursor-pointer"
-                onClick={() => handleSort("createdAt")}
-              >
-                Created At{" "}
-                {sortConfig.key === "createdAt" && (
-                  <span>
-                    {sortConfig.direction === "ascending" ? (
-                      <ChevronUp className="inline-block" />
-                    ) : (
-                      <ChevronDown className="inline-block" />
-                    )}
-                  </span>
-                )}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.map((category, index) => (
-              <tr key={category.id} className="border-b hover:bg-gray-50">
-                <td className="border px-6 py-4 text-center">
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.has(category.id)}
-                    onChange={() => handleSelectCategory(category.id)}
-                    className="cursor-pointer"
-                  />
-                </td>
-                <td className="border px-6 py-4 text-center">
-                  {(currentPage - 1) * itemsPerPage + index + 1}
-                </td>
-                <td className="border px-6 py-4 text-center">
-                  <img
-                    src={category.imageUrl}
-                    alt={category.name}
-                    className="w-14 h-14 object-cover mx-auto"
-                  />
-                </td>
-                <td className="border px-6 py-4">{category.name}</td>
-                <td className="border px-6 py-4">{category.createdAt}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="flex justify-center items-center mt-4 mb-4">
-        <Button
-          className="px-4 py-2 bg-white mr-2 disabled:bg-gray-300"
-          disabled={currentPage === 1 || categories.length === 0}
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          <ChevronLeft className="w-5 h-5 text-black" />
-        </Button>
-        <span className="px-4 text-lg">
-          Page {currentPage} of {totalPages}
-        </span>
-        <Button
-          className="px-4 py-2 bg-white ml-2 disabled:bg-gray-300"
-          disabled={currentPage === totalPages || categories.length === 0}
-          onClick={() => setCurrentPage(currentPage + 1)}
-        >
-          <ChevronRight className="w-5 h-5 text-black" />
-        </Button>
-      </div>
-    </div>
+      <PageLayout
+        title="Category"
+        addBtnText="Add Category"
+        addBtnClickHandler={() => toggleDrawer(true)}
+      >
+        <CategoryTable />
+      </PageLayout>
+    </>
   );
 };
 

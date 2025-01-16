@@ -5,7 +5,7 @@ import ApiResponse from "../ApiResponse";
 import { Categories } from "./CategoryTypes";
 import axiosInstance from "../axiosInstance";
 
-const getAllCategories = async ({
+export const getAllCategories = async ({
   page = 1,
   limit = 8,
 }: {
@@ -31,7 +31,7 @@ const useGetAllCategories = ({
   limit?: number;
 }) => {
   return useQuery({
-    queryKey: ["get-categories"],
+    queryKey: ["get-categories", page],
     queryFn: () => getAllCategories({ page, limit }),
     throwOnError: (err: ApiError) => false,
   });

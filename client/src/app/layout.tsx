@@ -1,10 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import "./globals.css";
-import Navbar from "@/components/Header";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
+import Provider from "./providers";
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -29,11 +30,13 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
-        <CartProvider>
-          {!isAuthPage && !isAdminPage && <Navbar />}
-          {children}
-          {!isAuthPage && !isAdminPage && <Footer />}
-        </CartProvider>
+        <Provider>
+          <CartProvider>
+            {!isAuthPage && !isAdminPage && <Header />}
+            <main className="min-h-screen">{children}</main>
+            {!isAuthPage && !isAdminPage && <Footer />}
+          </CartProvider>
+        </Provider>
       </body>
     </html>
   );

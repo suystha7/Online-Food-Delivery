@@ -1,15 +1,21 @@
-"use client"
+"use client";
+
 import Banner from "@/components/Banner";
 import BannerSlider from "@/components/BannerSlider";
 import Services from "@/container/Services";
-import RecommendFoods from "@/container/RecomendedFoods";
 import TopRated from "@/container/TopRated";
 import Contact from "@/container/Contact";
 import Category from "@/components/Category";
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
+import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
+import Menu from "@/components/Menu";
 
 export default function Home() {
+  const { data, error, isPending, isSuccess } = useGetCurrentUser();
+
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
   const [isVisible, setIsVisible] = useState(false);
 
   // Function to toggle the visibility of the scroll to top button
@@ -35,15 +41,22 @@ export default function Home() {
       window.removeEventListener("scroll", toggleVisibility);
     };
   }, []);
+
   return (
     <>
       <BannerSlider />
-      <Category />
-      <RecommendFoods />
-      <Services />
-      <Banner />
-      <TopRated />
-      <Contact />
+
+      <Category
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
+
+      <Menu selectedCategory={selectedCategory} />
+
+      {/* <Services /> */}
+      {/* <Banner /> */}
+      {/* <TopRated /> */}
+      {/* <Contact /> */}
 
       <button
         onClick={scrollToTop}

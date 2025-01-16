@@ -6,12 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import ApiError from "../ApiError";
 
 const getFood = async ({ foodId }: IFoodParams): Promise<Food> => {
+  console.log(foodId)
   return await asyncHandler(
     (): Promise<ApiResponse<Food>> => axiosInstance.get(`/foods/${foodId}`)
   );
 };
 
-const useGetFood = ({ foodId }: { foodId: string }) => {
+const useGetFoodById = ({ foodId }: { foodId: string }) => {
   return useQuery({
     queryKey: ["get-food", `${foodId}`],
     queryFn: () => getFood({ foodId }),
@@ -19,4 +20,4 @@ const useGetFood = ({ foodId }: { foodId: string }) => {
   });
 };
 
-export default useGetFood;
+export default useGetFoodById;

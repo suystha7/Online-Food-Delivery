@@ -2,7 +2,7 @@ import asyncHandler from "@/utils/asyncHandler";
 import ApiResponse from "../ApiResponse";
 import { Category } from "./CategoryTypes";
 import axiosInstance from "../axiosInstance";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ApiError from "../ApiError";
 
 const createCategory = async ({
@@ -27,9 +27,16 @@ const createCategory = async ({
 };
 
 const useCreateCategory = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: createCategory,
     onError: (err: ApiError) => err,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["get-categories"],
+      });
+    },
   });
 };
 

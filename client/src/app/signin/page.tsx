@@ -1,94 +1,86 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FormButton } from "@/components/FormButton";
-import { FormInput } from "@/components/FormInput";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signinValidationSchema } from "@/schema/signin.schema";
+import { BUTTON_TYPES, ROUTE_PATHS, SigninFormFields } from "@/constants";
+import useLogin from "@/api/auth/useLogin";
+import { Button, ErrorMessage, Input } from "@/components/basic";
 
 const SignIn = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const [errors, setErrors] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SigninFormFields>({
+    resolver: zodResolver(signinValidationSchema),
+    shouldFocusError: false,
   });
 
-  // Email validation
-  const validateEmail = (email: string) => /\S+@\S+\.\S+/.test(email);
+  const { mutateAsync, isPending, isSuccess, error } = useLogin();
 
-  // Password validation (at least 8 characters, one number)
-  const validatePassword = (password: string) =>
-    /^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/.test(password);
+  const signinSubmitHandler = async (formData: SigninFormFields) => {
+    const { email, password } = formData;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    let valid = true;
-
-    // Email Validation
-    if (!validateEmail(email)) {
-      setErrors((prev) => ({ ...prev, email: "Enter a valid email" }));
-      valid = false;
-    } else {
-      setErrors((prev) => ({ ...prev, email: "" }));
-    }
-
-    // Password Validation
-    if (!validatePassword(password)) {
-      setErrors((prev) => ({
-        ...prev,
-        password: "Password must be at least 8 characters and contain a number",
-      }));
-      valid = false;
-    } else {
-      setErrors((prev) => ({ ...prev, password: "" }));
-    }
-
-    if (valid) {
-      console.log("Form submitted:", { email, password });
-      // Redirect to Sign In page after successful registration
-      router.push("/signin");
-    }
+    await mutateAsync({
+      email,
+      password,
+    });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.replace(ROUTE_PATHS.home);
+    }
+  }, [isSuccess]);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="w-full max-w-md p-8 space-y-6  rounded-lg">
         <h2 className="text-center">SIGN IN</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <FormInput
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+        <form
+          onSubmit={handleSubmit(signinSubmitHandler)}
+          className="space-y-4"
+        >
+          {error && (
+            <ErrorMessage
+              message={error?.errorResponse?.message || "Something went wrong"}
+            />
+          )}
+
+          <Input
             type="email"
-            error={errors.email}
+            label="Email"
+            errorMessage={errors.email?.message || ""}
+            {...register("email")}
           />
 
-          {/* Password Input */}
-          <div className="relative">
-            <FormInput
-              label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              type={passwordVisible ? "text" : "password"} // Toggle between text and password type
-              error={errors.password}
-            />
-            <div
-              className="absolute top-11 right-3 transform -translate-y-1/2 cursor-pointer"
-              onClick={() => setPasswordVisible(!passwordVisible)}
-            >
-              {passwordVisible ? <FaEyeSlash /> : <FaEye />}{" "}
-            </div>
-          </div>
-          <FormButton type="submit">Sign In</FormButton>
+          <Input
+            type="password"
+            label="Password"
+            errorMessage={errors.password?.message || ""}
+            {...register("password")}
+          />
+          <Button
+            type="submit"
+            buttonType={BUTTON_TYPES.primaryButton}
+            isLoading={isPending}
+            className="w-full"
+          >
+            Sign In
+          </Button>
         </form>
+
         <p className="text-center text-sm">
           Dont have an account?{" "}
-          <a href="/signup" className="text-blue-600 hover:underline">
+          <a
+            href={ROUTE_PATHS.signup}
+            className="text-blue-600 hover:underline"
+          >
             Sign Up
           </a>
         </p>

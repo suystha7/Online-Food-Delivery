@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
   --text-color-light: rgba(0, 0, 0, 0.7);
@@ -26,7 +26,7 @@ body {
   color: var(--foreground);
   font-family: "Poppins", sans-serif;
   color: #171717;
-}
+} */
 
 /* Utility Classes */
 .text-y {

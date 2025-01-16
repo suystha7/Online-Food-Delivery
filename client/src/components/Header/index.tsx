@@ -5,10 +5,14 @@ import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
 import { useCart } from "@/context/CartContext";
+import { ROUTE_PATHS } from "@/constants";
+import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
 
 const Header: React.FC = () => {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
   const { cartCount } = useCart();
+
+  const { data } = useGetCurrentUser();
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -53,25 +57,29 @@ const Header: React.FC = () => {
             </ul>
           </nav>
 
-          <Link href="/cart" className="relative cartTab">
+          <Link href={ROUTE_PATHS.cart} className="relative cartTab">
             <ShoppingBag className="text-white" />
             <span className="flex items-center justify-center text-xs">
               {cartCount}
             </span>
           </Link>
 
-          <Link href="/signin">
-            <Button className="btn-red ml-2 relative group">
-              <span className="group-hover:opacity-0 transition-opacity duration-300">
-                Sign In
-              </span>   
+          {data ? (
+            <span>logged in</span>
+          ) : (
+            <Link href={ROUTE_PATHS.signin}>
+              <Button className="btn-red ml-2 relative group">
+                <span className="group-hover:opacity-0 transition-opacity duration-300">
+                  Sign In
+                </span>
 
-              <LogIn
-                size={20}
-                className="text-red-500 absolute left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-              />
-            </Button>
-          </Link>
+                <LogIn
+                  size={20}
+                  className="text-red-500 absolute left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                />
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </header>
