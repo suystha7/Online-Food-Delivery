@@ -27,7 +27,7 @@ export default function DeleteModal(props: IDeleteModalProps) {
           {heading ?? "Do you want to delete this item?"}
         </h3>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex justify-end gap-3">
           <Button
             className=" bg-red-500"
             isLoading={isLoading}

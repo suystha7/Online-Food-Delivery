@@ -62,7 +62,7 @@ const Cart: React.FC = () => {
       {categories.length > 0 ? (
         <>
           {/* Cart header */}
-          <div className="mb-6">
+          <div className="my-6">
             <h2 className="text-3xl font-bold text-gray-800">Your Cart</h2>
             <p className="text-gray-600 text-base">
               There are{" "}
@@ -207,7 +207,7 @@ const Cart: React.FC = () => {
             Your cart is empty
           </h2>
           <p className="text-gray-600 mt-2">
-            Looks like you haven't added anything to your cart yet.
+            Looks like you havent added anything to your cart yet.
           </p>
           <button
             onClick={() => router.push("/")}

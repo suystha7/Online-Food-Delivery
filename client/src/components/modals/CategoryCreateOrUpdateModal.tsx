@@ -44,7 +44,7 @@ const CategoryCreateOrUpdateModal = (
     <>
       <Modal
         heading={`${isUpdateMode ? "Update Category" : "Create Category"}`}
-        className="px-8 py-4 w-[95%] lg:w-1/3"
+        className="px-8 py-4 w-[95%] lg:w-1/3 h-fit"
         hideModal={hideModal}
       >
         <form

@@ -105,14 +105,14 @@ header.scroll .cartTab svg {
 }
 
 header .cartTab span {
-  position: absolute;
+  /* position: absolute;
   bottom: 15px;
   left: 15px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background-color: var(--accent-color);
-  color: #fff;
+  color: #fff; */
 }
 
 /* Buttons */
@@ -452,8 +452,8 @@ h2 {
   min-width: 40px;
   height: 40px;
   border-radius: 100%;
-  background-color: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.8);
+  /* background-color: transparent; */
+  /* border: 1px solid rgba(0, 0, 0, 0.8); */
 }
 
 .qtyDrop .action svg {
