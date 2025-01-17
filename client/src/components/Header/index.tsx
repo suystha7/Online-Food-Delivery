@@ -1,5 +1,5 @@
 "use client";
-import { LogIn, ShoppingBag } from "lucide-react";
+import { LogIn, ShoppingBag, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { useCart } from "@/context/CartContext";
 import { ROUTE_PATHS } from "@/constants";
 import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
+import { IconButton } from "@mui/material";
 
 const Header: React.FC = () => {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
@@ -58,14 +59,30 @@ const Header: React.FC = () => {
           </nav>
 
           <Link href={ROUTE_PATHS.cart} className="relative cartTab">
-            <ShoppingBag className="text-white" />
-            <span className="flex items-center justify-center text-xs">
-              {cartCount}
-            </span>
+            <div className="relative">
+              <IconButton
+                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200  focus:outline-none"
+                aria-label="Shopping Bag Button"
+              >
+                <ShoppingBag className="w-6 h-6 text-gray-700" />
+              </IconButton>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 flex items-center justify-center h-4 w-4 text-xs font-bold text-white bg-red-500 rounded-full">
+                  {cartCount}
+                </span>
+              )}
+            </div>
           </Link>
 
           {data ? (
-            <span>logged in</span>
+            <div>
+              <IconButton
+                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none"
+                aria-label="User Icon Button"
+              >
+                <User className="w-6 h-6 text-gray-700" />
+              </IconButton>
+            </div>
           ) : (
             <Link href={ROUTE_PATHS.signin}>
               <Button className="btn-red ml-2 relative group">
