@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -12,7 +12,6 @@ const ShippingDetails: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-    trigger,
   } = useForm({
     defaultValues: {
       fullName: "",
@@ -21,29 +20,30 @@ const ShippingDetails: React.FC = () => {
       postalCode: "",
       phoneNumber: "",
     },
-    mode: "onChange", // Validate form fields as they change
+    mode: "onChange",
   });
 
-  const [paymentMethod, setPaymentMethod] = React.useState<string>("COD"); // Default to COD
+  const [paymentMethod, setPaymentMethod] = React.useState<string>("");
 
   const handlePaymentChange = (method: string) => {
-    setPaymentMethod(method);
+    if (isValid) setPaymentMethod(method);
   };
 
-  const onSubmit = (data: any) => {
-    console.log(data, paymentMethod); // Log the form data and selected payment method
+  const onSubmit = () => {
+    if (!paymentMethod) {
+      alert("Please select a payment method.");
+      return;
+    }
 
     if (paymentMethod === "COD") {
-      // Redirect to order review page if COD is selected
       router.push("/orderReview");
     } else if (paymentMethod === "Stripe") {
-      // Redirect to payment page if Stripe is selected
-      router.push("/payment");
+      router.push("/stripePayment");
     }
   };
 
   return (
-    <div className="flex max-w-3xl mx-auto">
+    <div className="flex max-w-3xl mx-auto mt-16">
       <div className="w-full p-6 my-24 bg-white">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">
           Shipping Details
@@ -52,85 +52,85 @@ const ShippingDetails: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <div>
-              <label className="block text-gray-700">Full Name</label>
-              <input
-                type="text"
+              <TextField
+                fullWidth
+                label="Full Name"
+                variant="outlined"
                 {...register("fullName", { required: "Full name is required" })}
-                className="w-full p-3 border border-gray-300 rounded-md"
+                error={!!errors.fullName}
+                helperText={errors.fullName?.message}
               />
-              {errors.fullName && (
-                <p className="text-red-500">{errors.fullName.message}</p>
-              )}
             </div>
             <div>
-              <label className="block text-gray-700">Address</label>
-              <input
-                type="text"
+              <TextField
+                fullWidth
+                label="Address"
+                variant="outlined"
                 {...register("address", { required: "Address is required" })}
-                className="w-full p-3 border border-gray-300 rounded-md"
+                error={!!errors.address}
+                helperText={errors.address?.message}
               />
-              {errors.address && (
-                <p className="text-red-500">{errors.address.message}</p>
-              )}
             </div>
             <div>
-              <label className="block text-gray-700">City</label>
-              <input
-                type="text"
+              <TextField
+                fullWidth
+                label="City"
+                variant="outlined"
                 {...register("city", { required: "City is required" })}
-                className="w-full p-3 border border-gray-300 rounded-md"
+                error={!!errors.city}
+                helperText={errors.city?.message}
               />
-              {errors.city && (
-                <p className="text-red-500">{errors.city.message}</p>
-              )}
             </div>
             <div>
-              <label className="block text-gray-700">Postal Code</label>
-              <input
-                type="text"
+              <TextField
+                fullWidth
+                label="Postal Code"
+                variant="outlined"
                 {...register("postalCode", {
-                  required: "Postal code is required",
+                  required: "Full name is required",
                 })}
-                className="w-full p-3 border border-gray-300 rounded-md"
+                error={!!errors.postalCode}
+                helperText={errors.postalCode?.message}
               />
-              {errors.postalCode && (
-                <p className="text-red-500">{errors.postalCode.message}</p>
-              )}
             </div>
             <div>
-              <label className="block text-gray-700">Phone Number</label>
-              <input
-                type="text"
+              <TextField
+                fullWidth
+                label="Phone Number"
+                variant="outlined"
                 {...register("phoneNumber", {
-                  required: "Phone number is required",
+                  required: "Phone Number is required",
                 })}
-                className="w-full p-3 border border-gray-300 rounded-md"
+                error={!!errors.phoneNumber}
+                helperText={errors.phoneNumber?.message}
               />
-              {errors.phoneNumber && (
-                <p className="text-red-500">{errors.phoneNumber.message}</p>
-              )}
             </div>
           </div>
         </form>
       </div>
 
-      <div className="p-5 my-24 bg-white w-[80%]">
-        <h3 className="text-3xl font-bold text-gray-800 mb-14">
+      <div className="p-5 my-24 bg-white w-[90%]">
+        <h3 className="text-3xl font-bold text-gray-800 mb-11 mt-1">
           Payment Method
         </h3>
-        <div className="flex flex-col mt-4 gap-4 justify-center">
+        <p className="text-gray-600 text-base mb-6">
+          Choose your preferred payment method from the options below.
+        </p>
+        <div className="flex flex-col gap-4 justify-center">
           <div
             className={`cursor-pointer p-4 border rounded-md flex-1 text-center ${
               paymentMethod === "COD"
                 ? "bg-gray-100 border-red-500"
                 : "border-gray-600"
-            }`}
+            } ${!isValid ? "opacity-50 pointer-events-none" : ""}`}
             onClick={() => handlePaymentChange("COD")}
           >
             <h1 className="font-semibold text-black text-xl">
               Cash on Delivery (COD)
             </h1>
-            <p className="text-gray-600 mt-2">Pay with cash upon delivery.</p>
+            <p className="text-gray-600 mt-2 text-lg">
+              Pay with cash upon delivery.
+            </p>
           </div>
 
           <div
@@ -138,25 +138,35 @@ const ShippingDetails: React.FC = () => {
               paymentMethod === "Stripe"
                 ? "bg-gray-100 border-red-500"
                 : "border-gray-600"
-            }`}
+            } ${!isValid ? "opacity-50 pointer-events-none" : ""}`}
             onClick={() => handlePaymentChange("Stripe")}
           >
-            <h1 className="font-semibold text-black text-xl">Stripe</h1>
-            <p className="text-gray-600 mt-2">
-              Pay with your credit or debit card.
+            <h1 className="font-semibold text-black text-xl">Stripe Payment</h1>
+            <p className="text-gray-600 mt-2 text-lg">
+              Pay with your credit/debit card.
             </p>
           </div>
         </div>
         <div className="mt-6">
-          <Button
-            type="submit"
-            className={`w-full btn-red ${!isValid ? "text-white" : ""}`} // Add 'text-white' when disabled
-            disabled={!isValid}
-          >
-            {paymentMethod === "COD"
-              ? "Proceed to Order Review"
-              : "Proceed to Stripe Payment"}
-          </Button>
+          <div className="mt-6">
+            <Button
+              size="large"
+              variant="contained"
+              sx={{ backgroundColor: "red" }}
+              type="submit"
+              className={`w-full ${
+                !isValid || !paymentMethod ? "text-white" : ""
+              }`}
+              disabled={!isValid || !paymentMethod}
+              onClick={handleSubmit(onSubmit)}
+            >
+              {paymentMethod === "COD"
+                ? "Proceed to Order Review"
+                : paymentMethod === "Stripe"
+                ? "Proceed to Stripe Payment"
+                : "Proceed to Payment"}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

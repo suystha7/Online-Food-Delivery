@@ -6,29 +6,15 @@ import {
   ChevronLeft,
   ChevronRight,
   ClipboardList,
+  // Users,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Sidebar() {
   const [isSidebarMinimized, setIsSiebarMinimized] = useState(false);
   const pathName = usePathname();
-
-  // Track screen size changes
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Adjust 768px as needed
-    };
-
-    handleResize(); // Check initial screen size
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   const toggleSidebar = () => {
     setIsSiebarMinimized((prev) => !prev);
@@ -38,7 +24,7 @@ export default function Sidebar() {
     { name: "Category", href: ROUTE_PATHS.category, icon: ChartColumnStacked },
     { name: "Foods", href: ROUTE_PATHS.food, icon: ClipboardList },
     { name: "Orders", href: ROUTE_PATHS.adminOrder, icon: BookmarkCheck },
-    // { name: "Users", href: "/admin/user", icon: Users },
+    // { name: "Users", href: "/admin/user", icon: Users },  
   ];
 
   return (
@@ -58,7 +44,6 @@ export default function Sidebar() {
         />
       </div>
 
-      {/* Toggle Button */}
       <button
         className="absolute top-[5.5rem] right-0 transform translate-x-[50%] p-2 rounded-full bg-white border-r"
         onClick={toggleSidebar}
@@ -99,16 +84,6 @@ export default function Sidebar() {
                   </span>
                 )}
               </Link>
-              {/* Tooltip */}
-              {!isOpen && (
-                <span className="absolute top-2 left-12 bg-gray-900 text-white text-sm rounded shadow-sm px-2 py-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-300">
-                  {item.name}
-                  <span
-                    className="absolute top-1/2 left-[-4px] -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"
-                    aria-hidden="true"
-                  ></span>
-                </span>
-              )}
             </li>
           );
         })}

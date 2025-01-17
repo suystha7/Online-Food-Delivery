@@ -1,16 +1,31 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FormButton } from "@/components/FormButton";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signinValidationSchema } from "@/schema/signin.schema";
 import { BUTTON_TYPES, ROUTE_PATHS, SigninFormFields } from "@/constants";
 import useLogin from "@/api/auth/useLogin";
-import { Button, ErrorMessage, Input } from "@/components/basic";
+import { Button, ErrorMessage } from "@/components/basic";
+import {
+  Divider,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+} from "@mui/material";
+import Link from "next/link";
+import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 
 const SignIn = () => {
   const router = useRouter();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = (event: React.MouseEvent) => {
+    event.preventDefault();
+  };
 
   const {
     register,
@@ -39,9 +54,18 @@ const SignIn = () => {
   }, [isSuccess]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full max-w-md p-8 space-y-6  rounded-lg">
+    <div className="flex justify-center items-center min-h-screen ">
+      <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
         <h2 className="text-center">SIGN IN</h2>
+        <p className="text-center text-sm my-2">
+          Dont have an account?{" "}
+          <a
+            href={ROUTE_PATHS.signup}
+            className="text-blue-600 hover:underline"
+          >
+            Sign Up
+          </a>
+        </p>
         <form
           onSubmit={handleSubmit(signinSubmitHandler)}
           className="space-y-4"
@@ -51,39 +75,85 @@ const SignIn = () => {
               message={error?.errorResponse?.message || "Something went wrong"}
             />
           )}
-
-          <Input
-            type="email"
+          <TextField
+            fullWidth
             label="Email"
-            errorMessage={errors.email?.message || ""}
+            variant="outlined"
             {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
 
-          <Input
-            type="password"
+          <TextField
+            fullWidth
             label="Password"
-            errorMessage={errors.password?.message || ""}
+            variant="outlined"
+            type={showPassword ? "text" : "password"}
             {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
+
+          <div style={{ marginTop: "16px", textAlign: "right" }}>
+            <div>
+              <Link href="/forgetPassword" style={{ color: "inherit" }}>
+                Forget Password?
+              </Link>
+            </div>
+          </div>
+
           <Button
             type="submit"
             buttonType={BUTTON_TYPES.primaryButton}
             isLoading={isPending}
             className="w-full"
           >
-            Sign In
+            Submit
           </Button>
-        </form>
 
-        <p className="text-center text-sm">
-          Dont have an account?{" "}
-          <a
-            href={ROUTE_PATHS.signup}
-            className="text-blue-600 hover:underline"
+          <Divider
+            sx={{
+              my: 2.5,
+              typography: "overline",
+              color: "text.disabled",
+              "&::before, ::after": {
+                borderTopStyle: "dashed",
+              },
+            }}
           >
-            Sign Up
-          </a>
-        </p>
+            OR
+          </Divider>
+          <Stack
+            direction={"row"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            spacing={2}
+          >
+            <IconButton>
+              <FaGoogle color="#DF3E30" />
+            </IconButton>
+            <IconButton color="inherit">
+              <FaGithub />
+            </IconButton>
+            <IconButton>
+              <FaFacebook color="#1C9CEA" />
+            </IconButton>
+          </Stack>
+        </form>
       </div>
     </div>
   );

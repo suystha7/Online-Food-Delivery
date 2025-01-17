@@ -4,6 +4,7 @@ import { signinValidationSchema } from "./schema/signin.schema";
 import { categoryCreateValidationSchema } from "./schema/categoryCreate.schema";
 import { foodCreateValidationSchema } from "./schema/foodCreate.schema";
 import { selectOptionSchema } from "./schema/selectOption.schema";
+import { forgetPasswordValidationSchema } from "./schema/forgetPassword.schema";
 
 export enum ROUTE_PATHS {
   home = "/",
@@ -33,6 +34,8 @@ export const ALLOWED_IMAGE_FILE_TYPES = [
 export type SignupFormFields = z.infer<typeof signupValidationSchema>;
 
 export type SigninFormFields = z.infer<typeof signinValidationSchema>;
+
+export type ForgetPassFields = z.infer<typeof forgetPasswordValidationSchema>;
 
 export type SelectOptionType<T> = z.infer<
   ReturnType<typeof selectOptionSchema<T>>

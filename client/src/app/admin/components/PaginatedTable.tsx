@@ -2,7 +2,7 @@
 // import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
 // import { PERIOD_FILTER } from "@/constants";
 
-import { Button } from "@/components/basic";
+// import { Button } from "@/components/basic";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./PaginatedTable.css";
 import { Dispatch, SetStateAction } from "react";

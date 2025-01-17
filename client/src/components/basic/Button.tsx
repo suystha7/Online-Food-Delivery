@@ -26,7 +26,7 @@ const Button = (props: ButtonProps) => {
     switch (buttonType) {
       case BUTTON_TYPES.primaryButton:
         // return "bg-darkRed text-zinc-50 rounded";
-        return "bg-blue-700 text-white hover:bg-blue-600";
+        return "bg-red-500 text-white hover:bg-red-700";
       case BUTTON_TYPES.secondaryButton:
         return "bg-gray-300 text-black hover:bg-gray-200";
       default:
@@ -37,7 +37,7 @@ const Button = (props: ButtonProps) => {
   return (
     <button
       type={type}
-      className={`font-semibold rounded-md px-4 py-2 disabled:pointer-events-none disabled:opacity-50 ${buttonStyles} ${className}`}
+      className={`font-semibold rounded-sm px-4 py-2 disabled:pointer-events-none disabled:opacity-50 ${buttonStyles} ${className}`}
       onClick={onClickHandler}
       disabled={isDisabled}
     >

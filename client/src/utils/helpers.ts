@@ -10,7 +10,7 @@ export const getCapitalizedForm = ({
 };
 
 export const getAmountWithNepaliCurrency = ({ amount }: { amount: number }) => {
-  return amount.toLocaleString("ne-NP", {
+  return amount.toLocaleString("en-NP", {
     currency: "NPR",
     style: "currency",
     maximumFractionDigits: 2,

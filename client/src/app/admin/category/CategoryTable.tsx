@@ -23,7 +23,7 @@ export default function CategoryTable() {
 
   const { data, isPending, isError, error } = useGetAllCategories({
     page,
-    limit: 1,
+    limit: 5,
   });
 
   const tableHeadingList = [
