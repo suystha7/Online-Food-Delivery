@@ -22,7 +22,7 @@ const Category = ({selectedCategory,setSelectedCategory}:ICategoryProps) => {
     setSelectedCategory(id === selectedCategory ? "" : id);
   };
   return (
-    <div className="py-6">
+    <div className="p-6">
       {/* <h3 className="text-center text-3xl tracking-widest mb-2">Category</h3> */}
       <Swiper
         slidesPerView={8}

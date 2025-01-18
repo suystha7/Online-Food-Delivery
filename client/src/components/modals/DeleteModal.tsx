@@ -23,7 +23,7 @@ export default function DeleteModal(props: IDeleteModalProps) {
       <div>
         {apiError && <ErrorMessage message={apiError} />}
 
-        <h3 className="text-center text-xl mb-6">
+        <h3 className="text-center text-xl mb-4">
           {heading ?? "Do you want to delete this item?"}
         </h3>
 

@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
 import Menu from "@/components/Menu";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const { data, error, isPending, isSuccess } = useGetCurrentUser();
@@ -44,6 +46,8 @@ export default function Home() {
 
   return (
     <>
+      <Header />
+
       <BannerSlider />
 
       <Category
@@ -57,6 +61,8 @@ export default function Home() {
       {/* <Banner /> */}
       {/* <TopRated /> */}
       {/* <Contact /> */}
+
+      <Footer />
 
       <button
         onClick={scrollToTop}

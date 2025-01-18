@@ -13,9 +13,9 @@ const ErrorMessage = (props: ErrorMessageProps) => {
   } = props;
 
   return (
-    <div className={`flex items-center text-red-500 ${className}`}>
+    <div className={`flex items-center text-red-500  mb-2 ${className}`}>
       {isErrorIconShown && <ErrorIcon color="error" fontSize="small" />}
-      <span className={"text-xs ml-1"}>{message}</span>
+      <span className={"text-xs font-medium ml-1"}>{message}</span>
     </div>
   );
 };

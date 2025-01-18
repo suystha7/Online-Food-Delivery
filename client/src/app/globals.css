@@ -182,7 +182,7 @@ header .btn-border {
 
 .category-swiper .swiper-wrapper{
   justify-content: center;
-  gap: 1rem;
+  /* gap: 1rem; */
 }
 
 .category-swiper .swiper-slide .active img {
@@ -514,7 +514,7 @@ input[type="number"]::-webkit-outer-spin-button {
 /* Scroll bar track */
 ::-webkit-scrollbar {
   width: 6px;
-  height: 4px;
+  height: 2.5px;
 }
 
 /* Track */

@@ -1,31 +1,47 @@
 "use client";
-import { LogIn, ShoppingBag } from "lucide-react";
+import { LogIn, ShoppingBag, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
-import { useCart } from "@/context/CartContext";
 import { ROUTE_PATHS } from "@/constants";
 import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
+import useGetCart from "@/api/cart/useGetCart";
+import Spinner from "../icons/Spinner";
+import { IconButton } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { NAV_ITEM_LIST } from "@/data";
 
 const Header: React.FC = () => {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
-  const { cartCount } = useCart();
 
-  const { data } = useGetCurrentUser();
+  const router = useRouter();
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { data: cartData } = useGetCart();
+
+  const { data, isPending } = useGetCurrentUser();
+
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
+  const handleOptionClick = (path: string) => {
+    router.push(path);
+    setIsDropdownOpen(false);
+  };
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
+    const handleScroll = () => {
       if (headerRef.current) {
         const pos = window.pageYOffset;
-        if (pos > 20) {
-          headerRef.current.classList.add("scroll");
-        } else {
-          headerRef.current.classList.remove("scroll");
-        }
+        headerRef.current.classList.toggle("scroll", pos > 20);
       }
-    });
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const dropDownItemStyle = `px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer text-base border-b border-gray-200`;
 
   return (
     <header
@@ -35,51 +51,134 @@ const Header: React.FC = () => {
       <div className="flex items-center justify-between">
         <div className="logo ml-16">
           <Link href="/">
-            <Image src="/logo.png" width={100} height={100} alt="logo" />
+            <Image
+              src="/logo.png"
+              width={100}
+              height={150}
+              style={{
+                width: "auto",
+                height: "auto",
+              }}
+              alt="logo"
+              priority
+            />
           </Link>
         </div>
 
-        <div className="ml-auto flex items-center justify-end gap-4 w-[75%]">
+        <div className="flex items-center gap-4 w-[75%]">
           <nav>
             <ul className="flex gap-8 items-center mb-0 text-lg">
-              <li>
-                <Link href="/">Home</Link>
-              </li>
-              <li>
-                <Link href="#menu">Our Menu</Link>
-              </li>
-              <li>
-                <Link href="#services">Services</Link>
-              </li>
-              <li>
-                <Link href="#contact">Contact Us</Link>
-              </li>
+              {NAV_ITEM_LIST.map((navItem) => (
+                <li key={navItem.id}>
+                  <Link href={navItem.navigateTo}>{navItem.text}</Link>
+                </li>
+              ))}
             </ul>
           </nav>
 
-          <Link href={ROUTE_PATHS.cart} className="relative cartTab">
-            <ShoppingBag className="text-white" />
-            <span className="flex items-center justify-center text-xs">
-              {cartCount}
-            </span>
-          </Link>
+          <div className="ml-auto flex gap-8 items-center">
+            {/* <Link href={ROUTE_PATHS.cart} className="relative">
+              <IconButton
+                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none"
+                aria-label="Shopping Bag Button"
+              >
+                <ShoppingBag className="w-6 h-6 text-gray-700" />
+              </IconButton>
 
-          {data ? (
-            <span>logged in</span>
-          ) : (
-            <Link href={ROUTE_PATHS.signin}>
-              <Button className="btn-red ml-2 relative group">
-                <span className="group-hover:opacity-0 transition-opacity duration-300">
-                  Sign In
+              {cartData && cartData.items.length > 0 && (
+                <span className="absolute -top-2 -right-1 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-red-500 rounded-full">
+                  {cartData.items.length}
                 </span>
-
-                <LogIn
-                  size={20}
-                  className="text-red-500 absolute left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                />
-              </Button>
+              )}
+            </Link> */}
+            <Link href={ROUTE_PATHS.cart} className="relative cartTab">
+              <ShoppingBag className="text-gray-400 w-8 h-8" />
+              {cartData && cartData.items.length > 0 && (
+                <span className="flex items-center justify-center text-xs">
+                  {cartData.items.length}
+                </span>
+              )}
             </Link>
-          )}
+
+            {/* User Dropdown */}
+            {data ? (
+              <div className="relative">
+                <div className="cursor-pointer" onClick={toggleDropdown}>
+                  {data.avatar.url ? (
+                    <img
+                      src={data.avatar.url}
+                      alt="User Profile Image"
+                      className="w-[54px] h-[54px] rounded-full border-2 border-primary object-cover"
+                    />
+                  ) : (
+                    <IconButton
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none"
+                      aria-label="User Icon Button"
+                    >
+                      <User className="w-6 h-6 text-gray-700" />
+                    </IconButton>
+                  )}
+                </div>
+
+                {isDropdownOpen && (
+                  <div
+                    className="absolute right-0 mt-2 w-52 bg-white shadow-lg rounded-lg border border-gray-200 z-10"
+                    role="menu"
+                  >
+                    <ul className="flex flex-col p-2">
+                      <li
+                        className={`${dropDownItemStyle}`}
+                        role="menuitem"
+                        onClick={() => handleOptionClick("/update-profile")}
+                      >
+                        Update Profile
+                      </li>
+
+                      <li
+                        className={`${dropDownItemStyle}`}
+                        role="menuitem"
+                        onClick={() => handleOptionClick("/change-password")}
+                      >
+                        Change Password
+                      </li>
+
+                      {data.role === "ADMIN" && (
+                        <li
+                          className={`${dropDownItemStyle}`}
+                          role="menuitem"
+                          onClick={() => handleOptionClick("/admin/category")}
+                        >
+                          Dashboard
+                        </li>
+                      )}
+
+                      <li
+                        className={`${dropDownItemStyle} text-red-600 hover:bg-red-100 `}
+                        role="menuitem"
+                        onClick={() => handleOptionClick("/logout")}
+                      >
+                        Logout
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ) : isPending ? (
+              <Spinner className="fill-gray-500"/>
+            ) : (
+              <Link href={ROUTE_PATHS.signin}>
+                <Button className="btn-red ml-2 relative group">
+                  <span className="group-hover:opacity-0 transition-opacity duration-300">
+                    Sign In
+                  </span>
+                  <LogIn
+                    size={20}
+                    className="text-red-500 absolute left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  />
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </header>

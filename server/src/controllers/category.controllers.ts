@@ -2,6 +2,7 @@ import { Category, ICategory } from "../models/category.models";
 import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
+import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinary";
 import {
   getFileLocalPath,
   getFileStaticPath,
@@ -19,11 +20,19 @@ export const createCategory = asyncHandler<ICategory>(async (req, res) => {
 
   if (!mainImage) throw new ApiError(400, "Main image is required");
 
+  const cloudinaryResponse = await uploadToCloudinary({
+    localFilePath: mainImage.path,
+  });
+
+  if (!cloudinaryResponse) {
+    throw new ApiError(500, "File cannot be uploaded to cloudinary");
+  }
+
   const category = new Category({
     name,
     mainImage: {
-      url: getFileStaticPath(req, mainImage.filename),
-      localPath: getFileLocalPath(mainImage.filename),
+      public_id: cloudinaryResponse.public_id,
+      url: cloudinaryResponse.url,
     },
   });
 
@@ -107,16 +116,23 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
       updates = { ...updates, name };
     }
 
-    if (req.file)
+    if (req.file) {
+      const cloudinaryResponse = await uploadToCloudinary({
+        localFilePath: req.file.path,
+      });
+
+      if (!cloudinaryResponse) {
+        throw new ApiError(500, "File cannot be uploaded to cloudinary");
+      }
+
       updates = {
         ...updates,
         mainImage: {
-          url: getFileStaticPath(req, req.file?.filename),
-          localPath: getFileLocalPath(req.file?.filename),
+          public_id: cloudinaryResponse?.public_id,
+          url: cloudinaryResponse.url,
         },
       };
-
-    console.log(updates);
+    }
 
     const updatedCategory = await Category.findByIdAndUpdate(
       categoryId,
@@ -126,8 +142,9 @@ export const updateCategory = asyncHandler<ICategory, { categoryId: string }>(
       { new: true }
     );
 
-    if (category.mainImage.url !== updatedCategory?.mainImage.url)
-      removeLocalFile(category.mainImage.localPath);
+    if (category.mainImage.url !== updatedCategory?.mainImage.url) {
+      await deleteFromCloudinary({ public_id: category.mainImage.public_id });
+    }
 
     return res
       .status(201)
@@ -149,7 +166,9 @@ export const removeCategory = asyncHandler<any, { categoryId: string }>(
 
     if (!deletedCategory) throw new ApiError(404, "Category does not exist");
 
-    removeLocalFile(deletedCategory.mainImage.localPath);
+    await deleteFromCloudinary({
+      public_id: deletedCategory.mainImage.public_id,
+    });
 
     return res
       .status(200)

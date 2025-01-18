@@ -63,7 +63,7 @@ export default function Menu({ selectedCategory }: IMenuProps) {
   }
 
   return (
-    <section className="p-6" id="target-section">
+    <section className="p-6" id="menu">
       <div className="flex gap-6">
         {data?.foods.map((food) => (
           <FoodCard key={food._id} food={food} />

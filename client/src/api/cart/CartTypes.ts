@@ -8,6 +8,6 @@ export class Cart {
   constructor(
     public _id: string,
     public items: Array<CartItem>,
-    public cartTotal: number
+    public cartTotal: number,
   ) {}
 }
