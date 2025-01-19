@@ -16,6 +16,9 @@ const useGetCart = () => {
     queryKey: ["get-cart"],
     queryFn: getCart,
     throwOnError: (err: ApiError) => false,
+    staleTime: 0,
+    gcTime: 0,
+    retry:false,
   });
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useGetAllCategories from "@/api/category/useGetAllCategories";
@@ -22,8 +22,7 @@ const Category = ({selectedCategory,setSelectedCategory}:ICategoryProps) => {
     setSelectedCategory(id === selectedCategory ? "" : id);
   };
   return (
-    <div className="py-6">
-      {/* <h3 className="text-center text-3xl tracking-widest mb-2">Category</h3> */}
+    <div className="p-6">
       <Swiper
         slidesPerView={8}
         autoplay={{
@@ -31,12 +30,12 @@ const Category = ({selectedCategory,setSelectedCategory}:ICategoryProps) => {
           disableOnInteraction: false,
         }}
         modules={[Navigation, Pagination, Autoplay]}
-        className="category-swiper mb-6"
+        className="category-swiper "
       >
         {data?.categories.map((category) => (
           <SwiperSlide key={category._id}>
             <div
-              className={`flex flex-col items-center text-center p-4 ${
+              className={`flex flex-col items-center text-center p-2 ${
                 selectedCategory === category._id ? "active" : ""
               }`}
             >
@@ -49,7 +48,7 @@ const Category = ({selectedCategory,setSelectedCategory}:ICategoryProps) => {
                 onClick={() => handleProductClick(category._id)}
               />
               <h4
-                className="text-lg text-black font-semibold cursor-pointer mt-1"
+                className="text-lg text-black font-semibold cursor-pointer mt-3"
                 onClick={() => handleProductClick(category._id)}
               >
                 {getCapitalizedForm({ sentence: category.name })}

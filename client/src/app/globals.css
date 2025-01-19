@@ -78,7 +78,7 @@ header.scroll {
 
 header nav ul li a {
   /* color: #fff; */
-  color: #9c9797;
+  color: #f7be27;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -180,9 +180,9 @@ header .btn-border {
   color: #fff;
 }
 
-.category-swiper .swiper-wrapper{
+.category-swiper .swiper-wrapper {
   justify-content: center;
-  gap: 1rem;
+  /* gap: 1rem; */
 }
 
 .category-swiper .swiper-slide .active img {
@@ -217,20 +217,18 @@ header .btn-border {
 }
 
 /* Product List */
-.foodList .foodItem {
-  /* width: 22% !important; */
+
+.foodItem{
+  width: 350px;
 }
 
 .foodItem .imgWrapper img {
-  width: 100%;
-  height: 250px;
   transition: all 0.3s;
   border-top-right-radius: 10px;
 }
 
 .foodItem .imgWrapper {
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-bottom: none;
+  background-color: #fff;
   overflow: hidden;
   cursor: pointer;
 }
@@ -240,12 +238,8 @@ header .btn-border {
 }
 
 .foodItem .info {
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-top: none;
   font-size: 20px;
   color: var(--secondary-color);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
 }
 
 .foodItem .info h4 {
@@ -278,7 +272,7 @@ header .btn-border {
 
 /* Services Section */
 .services {
-  @apply py-16 bg-yellow-300;
+  @apply py-10 bg-yellow-300;
 }
 
 .services .box {
@@ -308,7 +302,7 @@ header .btn-border {
 }
 
 .price {
-  @apply text-lg font-bold bg-yellow-400 text-white px-3 py-1;
+  @apply text-lg font-bold bg-yellow-300 text-white px-3 py-1 rounded-md;
 }
 
 .ratingWrapper {
@@ -384,10 +378,6 @@ h2 {
 .menu h2 {
   color: #e3000e;
   text-transform: uppercase;
-}
-
-.foodItem_1 {
-  @apply bg-amber-50;
 }
 
 .foodItem2 .imgWrapper img {
@@ -511,20 +501,17 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: #e3000e;
 }
 
-/* Scroll bar track */
 ::-webkit-scrollbar {
   width: 6px;
-  height: 4px;
+  height: 2.5px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #d2d0d0;
 }
 
-/* Scroll thumb */
 ::-webkit-scrollbar-thumb {
-  background: rgb(29 78 216);
+  background-color: red;
   border-radius: 8px;
   cursor: pointer;
 }

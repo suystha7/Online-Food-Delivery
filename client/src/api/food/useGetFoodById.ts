@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import ApiError from "../ApiError";
 
 const getFood = async ({ foodId }: IFoodParams): Promise<Food> => {
-  console.log(foodId)
   return await asyncHandler(
     (): Promise<ApiResponse<Food>> => axiosInstance.get(`/foods/${foodId}`)
   );

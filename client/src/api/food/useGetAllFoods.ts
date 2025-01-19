@@ -7,7 +7,7 @@ import axiosInstance from "../axiosInstance";
 
 export const getAllFoods = async ({
   page = 1,
-  limit = 8,
+  limit = 5,
 }: {
   page?: number;
   limit?: number;

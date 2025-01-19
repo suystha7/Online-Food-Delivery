@@ -2,7 +2,7 @@ export class ImageClass {
   constructor(
     public _id: string,
     public url: string,
-    public localPath: string
+    public public_id: string
   ) {}
 }
 
@@ -21,10 +21,10 @@ export class User {
   ) {}
 }
 
-export class LoginResponse{
+export class LoginResponse {
   constructor(
-    public accessToken:string,
-    public refreshToken:string,
-    public user:User,
-  ){}
+    public accessToken: string,
+    public refreshToken: string,
+    public user: User
+  ) {}
 }

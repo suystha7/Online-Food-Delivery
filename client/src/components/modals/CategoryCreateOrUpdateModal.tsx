@@ -27,7 +27,6 @@ const CategoryCreateOrUpdateModal = (
     categoryCreateOrUpdateSubmitHandler,
     apiError = "",
     isLoading = false,
-    category,
     isUpdateMode = false,
   } = props;
 

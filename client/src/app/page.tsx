@@ -1,18 +1,20 @@
 "use client";
 
-import Banner from "@/components/Banner";
 import BannerSlider from "@/components/BannerSlider";
+import Banner from "@/components/Banner";
 import Services from "@/container/Services";
 import TopRated from "@/container/TopRated";
 import Contact from "@/container/Contact";
 import Category from "@/components/Category";
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
-import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
+// import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
 import Menu from "@/components/Menu";
+import Header from "@/components/Header";
+// import Footer from "@/components/Footer";
 
 export default function Home() {
-  const { data, error, isPending, isSuccess } = useGetCurrentUser();
+  // const { data, error, isPending, isSuccess } = useGetCurrentUser();
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
@@ -44,7 +46,11 @@ export default function Home() {
 
   return (
     <>
+      <Header />
+
       <BannerSlider />
+
+      <Services />
 
       <Category
         selectedCategory={selectedCategory}
@@ -52,11 +58,12 @@ export default function Home() {
       />
 
       <Menu selectedCategory={selectedCategory} />
+      
+      <Banner />
+      <TopRated />
+      <Contact />
 
-      {/* <Services /> */}
-      {/* <Banner /> */}
-      {/* <TopRated /> */}
-      {/* <Contact /> */}
+      {/* <Footer /> */}
 
       <button
         onClick={scrollToTop}

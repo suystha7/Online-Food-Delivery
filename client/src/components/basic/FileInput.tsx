@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useState, ChangeEvent, useRef, useEffect } from "react";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { useId, useState, ChangeEvent, useRef } from "react";
+import { X } from "lucide-react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import { Button } from "./index";
 import { BUTTON_TYPES } from "@/constants";
@@ -19,10 +19,8 @@ export default function FileInput(props: IFileInputProps) {
   const {
     register,
     accept = "*",
-    label = "",
     errorMessage = "",
     isMultiple = false,
-    isRequired = true,
   } = props;
 
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -54,22 +52,12 @@ export default function FileInput(props: IFileInputProps) {
     newFiles.splice(idx, 1);
     setSelectedFiles(newFiles);
 
-    if (newFiles.length === 0 && inputRef.current) inputRef.current.value = ""; // to reset file selected after deleting all image through delete btn
+    if (newFiles.length === 0 && inputRef.current) inputRef.current.value = "";
   };
 
   return (
     <div className="">
-      <div className={`flex flex-col`}>
-        <div className="flex gap-1">
-          <label className="inline-block text-sm font-medium text-gray-700">
-            {label}
-          </label>
-
-          {isRequired && (
-            <span className="text-red-500 -translate-y-[2px]">*</span>
-          )}
-        </div>
-
+      {!selectedFiles.length ? (
         <div className="">
           <input
             id={id}
@@ -77,7 +65,7 @@ export default function FileInput(props: IFileInputProps) {
               ref(e);
               inputRef.current = e;
             }}
-            type={"file"}
+            type="file"
             multiple={isMultiple}
             hidden
             accept={accept}
@@ -94,40 +82,41 @@ export default function FileInput(props: IFileInputProps) {
             Select {isMultiple ? "Files" : "File"}
           </Button>
         </div>
-
-        {errorMessage && (
-          <p className="text-red-500 text-xs mt-1">{errorMessage}</p>
-        )}
-      </div>
-
-      {selectedFiles.length > 0 && (
+      ) : (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(56px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-4 mt-4">
           {selectedFiles.map((file, idx) => (
             <div
               className="flex flex-col gap-2 items-center justify-between"
               key={`${file.name}-${idx}`}
             >
-              {file.type.startsWith("image/") ? (
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt={file.name}
-                  className="w-[56px] h-[56px] md:w-[96px] md:h-[96px]  object-cover rounded-lg"
-                />
-              ) : (
-                <div className="w-[56px] md:w-[96px] flex items-center justify-center border border-gray-500 rounded-lg">
-                  <span className="text-sm whitespace-nowrap text-ellipsis overflow-hidden px-2">
-                    {file.name}
-                  </span>
-                </div>
-              )}
+              <div className="relative w-[56px] h-[56px] md:w-[96px] md:h-[96px]">
+                {file.type.startsWith("image/") ? (
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={file.name}
+                    className="object-cover w-full h-full rounded-lg"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center border border-gray-500 rounded-lg">
+                    <span className="text-sm whitespace-nowrap text-ellipsis overflow-hidden px-2">
+                      {file.name}
+                    </span>
+                  </div>
+                )}
 
-              <button onClick={() => removeFile(idx)}>
-                <RiDeleteBinLine />
-              </button>
+                <button
+                  onClick={() => removeFile(idx)}
+                  className="absolute -top-2 -right-3 bg-white p-1 rounded-full"
+                > 
+                  <X className="text-red-500" size={16} />
+                </button>
+              </div>
             </div>
           ))}
         </div>
       )}
+
+      {errorMessage && <p className="text-red-500 text-xs mt-1">{errorMessage}</p>}
     </div>
   );
 }

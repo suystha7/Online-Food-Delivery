@@ -6,26 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signinValidationSchema } from "@/schema/signin.schema";
 import { BUTTON_TYPES, ROUTE_PATHS, SigninFormFields } from "@/constants";
 import useLogin from "@/api/auth/useLogin";
-import { Button, ErrorMessage } from "@/components/basic";
-import {
-  Divider,
-  IconButton,
-  InputAdornment,
-  Stack,
-  TextField,
-} from "@mui/material";
-import Link from "next/link";
-import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
+import { Button, ErrorMessage, Input } from "@/components/basic";
+import { ForgotPasswordModal } from "@/components/modals";
 
 const SignIn = () => {
   const router = useRouter();
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
+    useState(false);
 
   const {
     register,
@@ -51,63 +39,48 @@ const SignIn = () => {
     if (isSuccess) {
       router.replace(ROUTE_PATHS.home);
     }
-  }, [isSuccess, router]);
-
-  const errorMessage = error?.errorResponse?.message  || "Something went wrong";
+  }, [isSuccess]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
-      <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
+    <>
+      {isForgotPasswordModalOpen && (
+        <ForgotPasswordModal
+          cancelHandler={() => setIsForgotPasswordModalOpen(false)}
+        />
+      )}
+
+      <div>
         <h2 className="text-center">SIGN IN</h2>
-        <p className="text-center text-sm my-2">
-          Dont have an account?{" "}
-          <Link href={ROUTE_PATHS.signup}>
-            <a className="text-blue-600 hover:underline">Sign Up</a>
-          </Link>
-        </p>
-        <form onSubmit={handleSubmit(signinSubmitHandler)} className="space-y-4">
-          {error && <ErrorMessage message={errorMessage} />}
+        <form
+          onSubmit={handleSubmit(signinSubmitHandler)}
+          className="space-y-4"
+        >
+          {error && (
+            <ErrorMessage
+              message={error?.errorResponse?.message || "Something went wrong"}
+            />
+          )}
 
-          <TextField
-            fullWidth
+          <Input
+            type="email"
             label="Email"
-            variant="outlined"
+            errorMessage={errors.email?.message || ""}
             {...register("email")}
-            error={!!errors.email}
-            helperText={errors.email?.message}
           />
 
-          <TextField
-            fullWidth
+          <Input
+            type="password"
             label="Password"
-            variant="outlined"
-            type={showPassword ? "text" : "password"}
+            errorMessage={errors.password?.message || ""}
             {...register("password")}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <FaEye /> : <FaEyeSlash />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
           />
 
-          <div style={{ marginTop: "16px", textAlign: "right" }}>
-            <div>
-              <Link href="/forgetPassword">
-                <a style={{ color: "inherit" }}>Forget Password?</a>
-              </Link>
-            </div>
-          </div>
+          <span
+            className="block text-right text-text-light text-xs font-medium cursor-pointer hover:underline"
+            onClick={() => setIsForgotPasswordModalOpen(true)}
+          >
+            Forgot Password?
+          </span>
 
           <Button
             type="submit"
@@ -115,42 +88,22 @@ const SignIn = () => {
             isLoading={isPending}
             className="w-full"
           >
-            Submit
+            Sign In
           </Button>
-
-          <Divider
-            sx={{
-              my: 2.5,
-              typography: "overline",
-              color: "text.disabled",
-              "&::before, ::after": {
-                borderTopStyle: "dashed",
-              },
-            }}
-          >
-            OR
-          </Divider>
-          <Stack
-            direction={"row"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            spacing={2}
-          >
-            <IconButton>
-              <FaGoogle color="#DF3E30" />
-            </IconButton>
-            <IconButton color="inherit">
-              <FaGithub />
-            </IconButton>
-            <IconButton>
-              <FaFacebook color="#1C9CEA" />
-            </IconButton>
-          </Stack>
         </form>
+
+        <p className="text-center text-sm mt-4">
+          Dont have an account?&nbsp;
+          <a
+            href={ROUTE_PATHS.signup}
+            className="text-blue-600 hover:underline"
+          >
+            Sign Up
+          </a>
+        </p>
       </div>
-    </div>
+    </>
   );
 };
 
 export default SignIn;
- 
