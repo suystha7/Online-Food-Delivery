@@ -1,6 +1,6 @@
 import useGetAllCategories from "@/api/category/useGetAllCategories";
 import { Food } from "@/api/food/FoodTypes";
-import { SelectOptionType } from "@/constants";
+// import { SelectOptionType } from "@/constants";
 import {
   getAmountWithNepaliCurrency,
   getCapitalizedForm,
@@ -64,7 +64,7 @@ export default function FoodTableRow(props: IFoodTableRowProps) {
                 editBtnClickHandler(item);
               }}
             >
-              <Pencil className="w-5 h-5 text-yellow-500" />
+              <Pencil className="w-5 h-5 text-green-500" />
             </button>
 
             <button

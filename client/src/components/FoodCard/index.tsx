@@ -3,7 +3,7 @@ import React from "react";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+// import { useParams } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { Food } from "@/api/food/FoodTypes";
 import {
@@ -52,7 +52,7 @@ const FoodCard = ({ food }: { food: Food }) => {
 
         <p className="productDescription">{food.description}</p>
 
-        <Link href="#" passHref>
+        <Link href="" passHref>
           <Button className="addToCartButton" onClick={addToCart}>
             ADD TO CART
           </Button>

@@ -6,20 +6,25 @@ import {
   ChevronLeft,
   ChevronRight,
   ClipboardList,
-  // Users,
+  LogOut,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Sidebar() {
-  const [isSidebarMinimized, setIsSiebarMinimized] = useState(false);
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const pathName = usePathname();
-
   const router = useRouter();
 
   const toggleSidebar = () => {
-    setIsSiebarMinimized((prev) => !prev);
+    setIsSidebarMinimized((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    // Add your logout logic here (e.g., API call or clearing tokens).
+    console.log("Logging out...");
+    router.push("/logout");
   };
 
   const navItems = [
@@ -48,18 +53,17 @@ export default function Sidebar() {
       </div>
 
       <button
-        className="absolute top-[5.5rem] right-0 transform translate-x-[50%] p-2 rounded-full bg-white border-r"
+        className="absolute top-[5.5rem] right-0 transform translate-x-[50%] p-2 rounded-full bg-white border shadow-sm"
         onClick={toggleSidebar}
       >
-        <span className="text-sm">
-          {!isSidebarMinimized ? (
-            <ChevronLeft className="w-4 h-4" />
-          ) : (
-            <ChevronRight className="w-4 h-4" />
-          )}
-        </span>
+        {isSidebarMinimized ? (
+          <ChevronRight className="w-4 h-4" />
+        ) : (
+          <ChevronLeft className="w-4 h-4" />
+        )}
       </button>
 
+      {/* Navigation Items */}
       <ul className="mt-16 space-y-4">
         {navItems.map((item, index) => {
           const Icon = item.icon;
@@ -70,8 +74,8 @@ export default function Sidebar() {
               key={index}
               className={`relative group font-medium text-brown ${
                 isActive
-                  ? "bg-gray-200  rounded-xl font-semibold"
-                  : "hover:bg-gray-100 rounded-xl"
+                  ? "bg-gray-200 text-gray-900 rounded-xl"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-xl"
               }`}
             >
               <Link
@@ -80,11 +84,9 @@ export default function Sidebar() {
                   !isSidebarMinimized ? "p-3" : "p-2"
                 }`}
               >
-                <Icon className="text-xl text-center" />
+                <Icon className="text-xl" />
                 {!isSidebarMinimized && (
-                  <span className="text-lg flex justify-start w-full">
-                    {item.name}
-                  </span>
+                  <span className="text-lg">{item.name}</span>
                 )}
               </Link>
 
@@ -102,6 +104,17 @@ export default function Sidebar() {
           );
         })}
       </ul>
+
+      {/* Logout Button */}
+      <div
+        className={`mt-96 flex items-center ${
+          isSidebarMinimized ? "justify-center" : "justify-start"
+        } cursor-pointer text-red-600 hover:bg-red-100 rounded-xl p-3`}
+        onClick={handleLogout}
+      >
+        <LogOut className="text-xl" />
+        {!isSidebarMinimized && <span className="ml-3 text-lg">Logout</span>}
+      </div>
     </div>
   );
 }
