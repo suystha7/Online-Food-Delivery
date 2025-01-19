@@ -53,7 +53,7 @@ const SignIn = () => {
     }
   }, [isSuccess, router]);
 
-  const errorMessage = error?.errorResponse?.message  || "Something went wrong";
+  // const errorMessage = error?.errorResponse?.message  || "Something went wrong";
 
   return (
     <div className="flex justify-center items-center min-h-screen ">
@@ -61,22 +61,13 @@ const SignIn = () => {
         <h2 className="text-center">SIGN IN</h2>
         <p className="text-center text-sm my-2">
           Dont have an account?{" "}
-          <a
-            href={ROUTE_PATHS.signup}
-            className="text-blue-600 hover:underline"
-          >
-            Sign Up
-          </a>
+          <Link href={ROUTE_PATHS.signup}>
+            <a className="text-blue-600 hover:underline">Sign Up</a>
+          </Link>
         </p>
-        <form
-          onSubmit={handleSubmit(signinSubmitHandler)}
-          className="space-y-4"
-        >
-          {error && (
-            <ErrorMessage
-              message={error?.errorResponse?.message || "Something went wrong"}
-            />
-          )}
+        <form onSubmit={handleSubmit(signinSubmitHandler)} className="space-y-4">
+          {error && <ErrorMessage message={errorMessage} />}
+
           <TextField
             fullWidth
             label="Email"
@@ -98,12 +89,12 @@ const SignIn = () => {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label="toggle password visibility"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
-                    {showPassword}
+                    {showPassword ? <FaEye /> : <FaEyeSlash />}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -112,8 +103,8 @@ const SignIn = () => {
 
           <div style={{ marginTop: "16px", textAlign: "right" }}>
             <div>
-              <Link href="/forgetPassword" style={{ color: "inherit" }}>
-                Forget Password?
+              <Link href="/forgetPassword">
+                <a style={{ color: "inherit" }}>Forget Password?</a>
               </Link>
             </div>
           </div>

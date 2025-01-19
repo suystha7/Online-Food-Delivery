@@ -1,7 +1,7 @@
 
 import { CartProvider } from "@/context/CartContext";
 import Provider from "./providers";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "./globals.css";
 
 export default function RootLayout({

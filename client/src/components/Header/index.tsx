@@ -8,6 +8,8 @@ import { ROUTE_PATHS } from "@/constants";
 import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
 import { IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useCart } from "@/context/CartContext";
+import { NAV_ITEM_LIST } from "@/data";
 
 const Header: React.FC = () => {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
