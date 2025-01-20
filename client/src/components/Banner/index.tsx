@@ -1,3 +1,4 @@
+
 "use client"
 import { Button } from "@mui/material";
 import React from "react";
@@ -17,15 +18,15 @@ const Banner: React.FC = () => {
         <h2 className="text-brown mb-4">
           THE BURGER TASTES BETTER WHEN <br /> YOU EAT IT WITH YOUR FAMILY
         </h2>
-        <p className="mb-8">
+        <p>
           Porta semper lacus cursus, feugiat primis ultrice a ligula risus
           auctor an tempus feugiat dolor lacinia cubiliaandrt curae integer orci
           congue and metus integer primis in integer metus
         </p>
 
-        <Button className="btn-red btn-lg no-radius" onClick={handleScroll}>
+        {/* <Button className="btn-red btn-lg no-radius" onClick={handleScroll}>
           EXPLORE FULL MENU
-        </Button>
+        </Button> */}
       </div>
     </section>
   );

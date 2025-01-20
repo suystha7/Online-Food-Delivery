@@ -29,6 +29,8 @@ const Button = (props: ButtonProps) => {
         return "bg-blue-700 text-white hover:bg-blue-600";
       case BUTTON_TYPES.secondaryButton:
         return "bg-gray-300 text-black hover:bg-gray-200";
+      case BUTTON_TYPES.redButton:
+        return "bg-accent border-2 border-accent  text-white hover:bg-white hover:text-accent py-4 px-8";
       default:
         return "";
     }

@@ -84,20 +84,23 @@ export default function ControlledSelect<
       ...provided,
       px: "0.75rem !important",
     }),
+    
   };
 
   return (
     <div className={`flex flex-col`}>
-      <div className="flex gap-1">
-        <label
-          htmlFor={id}
-          className="inline-block text-sm font-medium text-gray-700 cursor-pointer"
-        >
-          {label}
-        </label>
+      {label && (
+        <div className="flex gap-1">
+          <label
+            htmlFor={id}
+            className="inline-block text-sm font-medium text-gray-700 cursor-pointer"
+          >
+            {label}
+          </label>
 
-        <span className="text-red-500 -translate-y-[2px]">*</span>
-      </div>
+          <span className="text-red-500 -translate-y-[2px]">*</span>
+        </div>
+      )}
 
       <Select<Option, IsMulti, Group>
         inputId={id}

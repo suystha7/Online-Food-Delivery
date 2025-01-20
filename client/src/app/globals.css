@@ -78,7 +78,8 @@ header.scroll {
 
 header nav ul li a {
   /* color: #fff; */
-  color: #9c9797;
+  /* color: #9c9797; */
+  /* color: var(--primary-color); */
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -180,7 +181,7 @@ header .btn-border {
   color: #fff;
 }
 
-.category-swiper .swiper-wrapper{
+.category-swiper .swiper-wrapper {
   justify-content: center;
   /* gap: 1rem; */
 }
@@ -217,13 +218,14 @@ header .btn-border {
 }
 
 /* Product List */
-.foodList .foodItem {
-  /* width: 22% !important; */
-}
+/* .foodList .foodItem {
+  width: 22% !important;
+} */
 
-.foodItem .imgWrapper img {
-  width: 100%;
-  height: 250px;
+/* .foodItem .imgWrapper img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
   transition: all 0.3s;
   border-top-right-radius: 10px;
 }
@@ -263,7 +265,7 @@ header .btn-border {
 .foodItem .info button:hover {
   background-color: var(--secondary-color);
   color: #fff;
-}
+} */
 
 /* Banner */
 .banner {
@@ -387,7 +389,7 @@ h2 {
 }
 
 .foodItem_1 {
-  @apply bg-amber-50;
+  /* @apply bg-amber-50; */
 }
 
 .foodItem2 .imgWrapper img {
@@ -444,7 +446,7 @@ h2 {
   @apply hover:bg-transparent hover:border-2 hover:border-accent hover:text-accent;
 }
 
-.qtyDrop {
+/* .qtyDrop {
   width: 200px;
 }
 
@@ -460,19 +462,18 @@ h2 {
   color: rgba(0, 0, 0, 0.7);
 }
 
-.qtyDrop input {
+.qty-input {
   width: 60px;
-  height: 35px;
   outline: none;
-  padding: 5px;
-  border-radius: 5px;
+  padding: 4px;
+  border-radius: 6px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
 .qtyDrop input:focus {
   border: 1px solid rgba(0, 0, 0, 0.2);
-}
+} */
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -482,9 +483,16 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.productBigSlider {
-  border-radius: 5px;
-  overflow: hidden;
+/* food details page  */
+.productSmlSlider .swiper-wrapper{
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+.productSmlSlider .swiper-slide{
+  width: 76px !important;
+  height: 76px !important;
+  margin-right: 0px !important;
 }
 
 .smlSlider .item {

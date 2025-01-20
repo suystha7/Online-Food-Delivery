@@ -4,7 +4,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
-import { Button, Rating } from "@mui/material";
+import { Button, Divider, Rating } from "@mui/material";
+import Link from "next/link";
+import { getCapitalizedForm } from "@/utils/helpers";
 
 const TopRated = () => {
   const products = [
@@ -94,14 +96,23 @@ const TopRated = () => {
             }}
           >
             {products.map((product) => (
-              <SwiperSlide key={product.id} className="flex items-center justify-center">
-                <div className="foodItem">
+              <SwiperSlide
+                key={product.id}
+                className="flex items-center justify-center overflow-hidden"
+              >
+                <div className="bg-white rounded-md shadow-md">
                   <div className="imgWrapper">
-                    <Image src={product.image} alt={product.title} width={100} height={100} />
+                    <img
+                      className="ml-[15%]"
+                      src={product.image}
+                      alt={product.title}
+                      width="70%"
+                    />
 
-                    <div className="ratingWrapper">
-                      <span className="price">{product.price}</span>
-
+                    <div className="ratingWrapper bg-orange-50 cursor-pointer flex flex-col gap-2 items-center justify-center  rounded-md p-4">
+                      <Link href="" passHref>
+                        <h4 className="productTitle">{product.title}</h4>
+                      </Link>
                       <Rating
                         name="half-rating"
                         defaultValue={product.rating}
@@ -109,13 +120,8 @@ const TopRated = () => {
                         size="medium"
                         readOnly
                       />
+                      <span className="price mt-4">{product.price}</span>
                     </div>
-                  </div>
-
-                  <div className="info cursor-pointer bg-white">
-                    <h4 className="productTitle">{product.title}</h4>
-                    <p className="productDescription">{product.description}</p>
-                    <Button className="addToCartButton">ADD TO CART</Button>
                   </div>
                 </div>
               </SwiperSlide>

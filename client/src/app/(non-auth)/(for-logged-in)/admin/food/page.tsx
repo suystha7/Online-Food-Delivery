@@ -6,9 +6,12 @@ import PageLayout from "../components/PageLayout";
 import FoodTable from "./FoodTable";
 import { FoodCreateOrUpdateDrawer } from "@/components/drawers";
 import useCreateFood from "@/api/food/useCreateFood";
+import useCustomToast from "@/hooks/useCustomToast";
 
 const Food: React.FC = () => {
   const [isDrawerOpen, toggleDrawer] = useState(false);
+
+  const toast = useCustomToast();
 
   const { mutateAsync, isPending, isSuccess, error, reset } = useCreateFood();
 
@@ -38,6 +41,9 @@ const Food: React.FC = () => {
 
   useEffect(() => {
     if (isSuccess) {
+      toast({
+        msg: "New food has been added successfully",
+      });
       toggleDrawer(false);
     }
   }, [isSuccess]);
@@ -53,6 +59,7 @@ const Food: React.FC = () => {
           }}
           foodCreateOrUpdateSubmitHandler={foodCreateSubmitHandler}
           apiError={error?.errorResponse?.message || error?.errorMessage}
+          isLoading={isPending}
         />
       )}
 

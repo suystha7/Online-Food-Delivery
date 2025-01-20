@@ -15,10 +15,11 @@ export enum ROUTE_PATHS {
   signup = "/signup",
   signin = "/signin",
   cart = "/cart",
-  shipping = "/shippingDetails",
-  orderReview = "/orderReview",
+  shipping = "/shipping-details",
+  orderReview = "/order-review",
   payment = "/payment",
-  orderSuccess = "/orderSuccess",
+  orderSuccess = "/order-success",
+  myOrders = "/my-orders",
   category = "/admin/category",
   food = "/admin/food",
   adminOrder = "/admin/order",
@@ -33,10 +34,13 @@ export interface INavItemOptions {
 export enum BUTTON_TYPES {
   primaryButton,
   secondaryButton,
+  redButton,
   default,
 }
 
 export const MAX_FILE_SIZE = 3 * 1024 * 1024;
+
+export const DELIVERY_CHARGES = 75;
 
 export const ALLOWED_IMAGE_FILE_TYPES = [
   "image/jpeg",

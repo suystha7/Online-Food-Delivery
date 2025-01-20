@@ -1,5 +1,15 @@
 "use client";
-import { LogIn, ShoppingBag, User } from "lucide-react";
+import {
+  BookmarkCheck,
+  KeyRound,
+  LayoutDashboard,
+  LogIn,
+  LogOut,
+  ShoppingBag,
+  Star,
+  User,
+  UserRoundPen,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
@@ -9,13 +19,15 @@ import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
 import useGetCart from "@/api/cart/useGetCart";
 import Spinner from "../icons/Spinner";
 import { IconButton } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { NAV_ITEM_LIST } from "@/data";
 
 const Header: React.FC = () => {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
 
   const router = useRouter();
+
+  const pathName = usePathname();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -41,7 +53,7 @@ const Header: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const dropDownItemStyle = `px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer text-base border-b border-gray-200`;
+  const dropDownItemStyle = `flex gap-2 items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer text-base border-b border-gray-200 last:border-b-0`;
 
   return (
     <header
@@ -70,29 +82,26 @@ const Header: React.FC = () => {
             <ul className="flex gap-8 items-center mb-0 text-lg">
               {NAV_ITEM_LIST.map((navItem) => (
                 <li key={navItem.id}>
-                  <Link href={navItem.navigateTo}>{navItem.text}</Link>
+                  <Link
+                    href={navItem.navigateTo}
+                    className={`${
+                      pathName === "/" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {navItem.text}
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
           <div className="ml-auto flex gap-8 items-center">
-            {/* <Link href={ROUTE_PATHS.cart} className="relative">
-              <IconButton
-                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none"
-                aria-label="Shopping Bag Button"
-              >
-                <ShoppingBag className="w-6 h-6 text-gray-700" />
-              </IconButton>
-
-              {cartData && cartData.items.length > 0 && (
-                <span className="absolute -top-2 -right-1 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-red-500 rounded-full">
-                  {cartData.items.length}
-                </span>
-              )}
-            </Link> */}
             <Link href={ROUTE_PATHS.cart} className="relative cartTab">
-              <ShoppingBag className="text-gray-400 w-8 h-8" />
+              <ShoppingBag
+                className={`w-8 h-8 ${
+                  pathName === "/" ? "text-white" : "text-black"
+                }`}
+              />
               {cartData && cartData.items.length > 0 && (
                 <span className="flex items-center justify-center text-xs">
                   {cartData.items.length}
@@ -122,16 +131,51 @@ const Header: React.FC = () => {
 
                 {isDropdownOpen && (
                   <div
-                    className="absolute right-0 mt-2 w-52 bg-white shadow-lg rounded-lg border border-gray-200 z-10"
+                    className="absolute right-0 mt-2 min-w-52 bg-white shadow-lg rounded-lg border border-gray-200 z-10"
                     role="menu"
                   >
                     <ul className="flex flex-col p-2">
+                      <li
+                        className={`${dropDownItemStyle} justify-center`}
+                        role="menuitem"
+                        onClick={() => handleOptionClick("/my-profile")}
+                      >
+                        <span className="font-bold flex  text-nowrap">
+                          <span className="uppercase">{data.fullName}</span>
+
+                          <div className="ml-1">({data.role})</div>
+                        </span>
+                      </li>
+
+                      <li
+                        className={`${dropDownItemStyle}`}
+                        role="menuitem"
+                        onClick={() =>
+                          data.role === "USER"
+                            ? handleOptionClick("/my-orders")
+                            : handleOptionClick("/admin/category")
+                        }
+                      >
+                        {data.role === "ADMIN" ? (
+                          <>
+                            <LayoutDashboard size={24} />
+                            <span>Dashboard</span>
+                          </>
+                        ) : (
+                          <>
+                            <BookmarkCheck size={24} />
+                            <span> My Orders</span>
+                          </>
+                        )}
+                      </li>
+
                       <li
                         className={`${dropDownItemStyle}`}
                         role="menuitem"
                         onClick={() => handleOptionClick("/update-profile")}
                       >
-                        Update Profile
+                        <UserRoundPen size={24} />
+                        <span>Update Profile</span>
                       </li>
 
                       <li
@@ -139,16 +183,21 @@ const Header: React.FC = () => {
                         role="menuitem"
                         onClick={() => handleOptionClick("/change-password")}
                       >
-                        Change Password
+                        <KeyRound size={24} />
+                        <span>Change Password</span>
                       </li>
 
-                      {data.role === "ADMIN" && (
+                      {data.role === "USER" && (
                         <li
                           className={`${dropDownItemStyle}`}
                           role="menuitem"
-                          onClick={() => handleOptionClick("/admin/category")}
+                          onClick={() =>
+                            data.role === "USER" &&
+                            handleOptionClick("/my-ratings")
+                          }
                         >
-                          Dashboard
+                          <Star size={24} />
+                          <span>My Ratings</span>
                         </li>
                       )}
 
@@ -157,14 +206,15 @@ const Header: React.FC = () => {
                         role="menuitem"
                         onClick={() => handleOptionClick("/logout")}
                       >
-                        Logout
+                        <LogOut size={24} />
+                        <span>Logout</span>
                       </li>
                     </ul>
                   </div>
                 )}
               </div>
             ) : isPending ? (
-              <Spinner className="fill-gray-500"/>
+              <Spinner className="fill-gray-500" />
             ) : (
               <Link href={ROUTE_PATHS.signin}>
                 <Button className="btn-red ml-2 relative group">

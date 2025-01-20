@@ -23,13 +23,13 @@ export default function DeleteModal(props: IDeleteModalProps) {
       <div>
         {apiError && <ErrorMessage message={apiError} />}
 
-        <h3 className="text-center text-xl mb-4">
+        <span className="block text-center text-xl mb-4">
           {heading ?? "Do you want to delete this item?"}
-        </h3>
+        </span>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex justify-between gap-3">
           <Button
-            className=" bg-red-500"
+            className=" bg-red-500 flex-1"
             isLoading={isLoading}
             onClickHandler={deleteHandler}
           >
@@ -38,6 +38,7 @@ export default function DeleteModal(props: IDeleteModalProps) {
 
           <Button
             buttonType={BUTTON_TYPES.secondaryButton}
+            className="flex-1"
             onClickHandler={cancelHandler}
           >
             <span className="text-black">Cancel</span>

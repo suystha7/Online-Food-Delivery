@@ -3,7 +3,7 @@ import mongoose, { Schema, Types } from "mongoose";
 export interface IRating extends Document {
   rating: number;
   ratedBy: Types.ObjectId;
-  food: Types.ObjectId;
+  foodId: Types.ObjectId;
 }
 
 const ratingSchema = new Schema<IRating>(
@@ -17,7 +17,7 @@ const ratingSchema = new Schema<IRating>(
       ref: "User",
       required: true,
     },
-    food: {
+    foodId: {
       type: Schema.Types.ObjectId,
       ref: "Food",
       required: true,

@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import React from "react";
 
@@ -27,7 +28,7 @@ const servicesData = [
 
 const Services: React.FC = () => {
   return (
-    <section className="services text-center py-16 bg-yellow-400" id="services">
+    <section className="services text-center py-16" id="services">
       <div className="flex items-center justify-center gap-8">
         {servicesData.map((service) => (
           <div key={service.id} className="box p-6 text-center w-[33%] mb-0">

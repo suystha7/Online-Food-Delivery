@@ -41,7 +41,7 @@ export default function FoodTableRow(props: IFoodTableRowProps) {
           })}
         </td>
 
-        <td>{getCapitalizedForm({ sentence: item.description })}</td>
+        <td className="truncate">{getCapitalizedForm({ sentence: item.description })}</td>
 
         <td>{getAmountWithNepaliCurrency({ amount: item.price })}</td>
 

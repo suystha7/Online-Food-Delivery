@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 import useGetCart from "@/api/cart/useGetCart";
 import { getAmountWithNepaliCurrency } from "@/utils/helpers";
-import { ROUTE_PATHS } from "@/constants";
+import { DELIVERY_CHARGES, ROUTE_PATHS } from "@/constants";
 import Link from "next/link";
 import usePlaceOrder from "@/api/order/usePlaceOrder";
 import { ErrorMessage } from "@/components/basic";
@@ -153,6 +153,16 @@ const OrderReview = () => {
                   </p>
                 </div>
               ))}
+              <div className="flex justify-between border-b pb-2">
+                <div>
+                  <p className="text-xl font-semibold">Delivery Charges</p>
+                </div>
+                <p className="text-xl font-semibold">
+                  {getAmountWithNepaliCurrency({
+                    amount: DELIVERY_CHARGES,
+                  })}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -174,7 +184,9 @@ const OrderReview = () => {
               Total Price
             </h3>
             <p className="text-xl font-semibold text-red-600">
-              {getAmountWithNepaliCurrency({ amount: cartData?.cartTotal })}
+              {getAmountWithNepaliCurrency({
+                amount: cartData?.cartTotal + DELIVERY_CHARGES,
+              })}
             </p>
           </div>
 

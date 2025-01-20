@@ -6,7 +6,7 @@ import ApiError from "../utils/ApiError";
 import { OrderStatusEnum, OrderStatusType } from "../constant";
 import { getMongoosePaginateOptions } from "../utils/helpers";
 
-const frontend_url = "http://localhost:3000/orderSuccess";
+const frontend_url = "http://localhost:3000/order-success";
 
 export const placeOrder = asyncHandler(async (req, res) => {
   const { fullName, address, phoneNumber, paymentMethod, orderPrice, items } =
