@@ -11,7 +11,7 @@ import { ArrowUp } from "lucide-react";
 // import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
 import Menu from "@/components/Menu";
 import Header from "@/components/Header";
-// import Footer from "@/components/Footer";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -63,7 +63,7 @@ export default function Home() {
       
       <Contact />
 
-      {/* <Footer /> */}
+      <Footer />
 
       <button
         onClick={scrollToTop}
