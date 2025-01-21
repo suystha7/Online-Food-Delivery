@@ -30,7 +30,7 @@ const Category = ({selectedCategory,setSelectedCategory}:ICategoryProps) => {
           disableOnInteraction: false,
         }}
         modules={[Navigation, Pagination, Autoplay]}
-        className="category-swiper "
+        className="category-swiper border-b border-primary"
       >
         {data?.categories.map((category) => (
           <SwiperSlide key={category._id}>
@@ -48,7 +48,7 @@ const Category = ({selectedCategory,setSelectedCategory}:ICategoryProps) => {
                 onClick={() => handleProductClick(category._id)}
               />
               <h4
-                className="text-lg text-black font-semibold cursor-pointer mt-3"
+                className="text-lg text-black font-semibold cursor-pointer my-3"
                 onClick={() => handleProductClick(category._id)}
               >
                 {getCapitalizedForm({ sentence: category.name })}

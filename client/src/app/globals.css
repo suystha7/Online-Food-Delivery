@@ -272,7 +272,7 @@ header .btn-border {
 
 /* Services Section */
 .services {
-  @apply py-10 bg-yellow-300;
+  @apply py-10 bg-[#fdefc7];
 }
 
 .services .box {

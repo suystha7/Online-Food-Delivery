@@ -7,7 +7,6 @@ import {
   getCapitalizedForm,
 } from "@/utils/helpers";
 import { Food } from "@/api/food/FoodTypes";
-import { Divider } from "@mui/material";
 
 const FoodCard = ({ food }: { food: Food }) => {
   return (
@@ -18,8 +17,8 @@ const FoodCard = ({ food }: { food: Food }) => {
             <Image
               src={food.mainImage.url}
               alt="Food image"
-              width={80}
-              height={80}
+              width={100}
+              height={100}
             />
           </Link>
           <div className="ratingWrapper">
