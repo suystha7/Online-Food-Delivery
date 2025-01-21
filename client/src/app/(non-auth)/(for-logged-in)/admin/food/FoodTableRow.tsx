@@ -1,6 +1,6 @@
 import useGetAllCategories from "@/api/category/useGetAllCategories";
 import { Food } from "@/api/food/FoodTypes";
-import { SelectOptionType } from "@/constants";
+// import { SelectOptionType } from "@/constants";
 import {
   getAmountWithNepaliCurrency,
   getCapitalizedForm,
@@ -17,9 +17,9 @@ interface IFoodTableRowProps {
 export default function FoodTableRow(props: IFoodTableRowProps) {
   const { index, item, editBtnClickHandler, deleteModalOpenHandler } = props;
 
-  const createdDate = new Date(item.createdAt);
+  // const createdDate = new Date(item.createdAt);
 
-  const { data } = useGetAllCategories({ page: 1, limit: 6 });
+  const { data } = useGetAllCategories({ page: 1, limit: 7 });
 
   const categoryDataObject = (data?.categories ?? []).reduce<
     Record<string, string>
@@ -41,11 +41,7 @@ export default function FoodTableRow(props: IFoodTableRowProps) {
           })}
         </td>
 
-        <td className="break-words whitespace-normal">
-          {item.description
-            ? getCapitalizedForm({ sentence: item.description })
-            : "-"}
-        </td>
+        <td className="truncate">{getCapitalizedForm({ sentence: item.description })}</td>
 
         <td>{getAmountWithNepaliCurrency({ amount: item.price })}</td>
 

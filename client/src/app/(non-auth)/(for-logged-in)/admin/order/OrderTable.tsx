@@ -15,7 +15,7 @@ export default function OrderTable() {
 
   const { data, isPending, isError, error } = uesGetAllOrders({
     page,
-    limit: 6,
+    limit: 5,
   });
 
   const tableHeadingList = [
@@ -46,7 +46,7 @@ export default function OrderTable() {
     if (data?.hasNextPage) {
       queryClient.prefetchQuery({
         queryKey: ["get-orders", "all", page + 1],
-        queryFn: () => getAllOrders({ page: page + 1, limit: 1 }),
+        queryFn: () => getAllOrders({ page: page + 1, limit: 5 }),
       });
     }
 

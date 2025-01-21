@@ -34,7 +34,7 @@ export const getAmountWithNepaliCurrency = ({
 
   return amount.toLocaleString("en-NP", {
     style: "currency",
+    maximumFractionDigits: 0,
     currency: "NPR",
-    maximumFractionDigits: 2,
   });
 };

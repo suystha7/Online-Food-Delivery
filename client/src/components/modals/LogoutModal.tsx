@@ -23,11 +23,11 @@ export default function LogoutModal(props: ILogoutModalProps) {
       <div>
         {error && <ErrorMessage message={error} />}
 
-        <h3 className="text-center text-xl mb-4">Do you want to logout?</h3>
+        <span className="block text-center text-xl mb-4">Do you want to logout?</span>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex justify-between gap-3">
           <Button
-            className=" bg-red-500"
+            className=" bg-red-500 flex-1"
             isLoading={isLoading}
             onClickHandler={logoutSubmitHandler}
           >
@@ -35,6 +35,7 @@ export default function LogoutModal(props: ILogoutModalProps) {
           </Button>
 
           <Button
+            className="flex-1"
             buttonType={BUTTON_TYPES.secondaryButton}
             onClickHandler={cancelHandler}
           >

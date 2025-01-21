@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { Button, TextField } from "@mui/material";
-import { Minus, Plus } from "lucide-react";
+import { TextField } from "@mui/material";
+import { Minus, Plus, ShoppingBag, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -15,8 +15,13 @@ import {
   getAmountWithNepaliCurrency,
   getCapitalizedForm,
 } from "@/utils/helpers";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useAddOrUpdateCartItemQuantity from "@/api/cart/useAddOrUpdateCartItemQuantity";
+import Spinner from "@/components/icons/Spinner";
+import { BUTTON_TYPES, ROUTE_PATHS } from "@/constants";
+import useGetCart from "@/api/cart/useGetCart";
+import { Button } from "@/components/basic";
+import useCustomToast from "@/hooks/useCustomToast";
 
 interface CustomTabPanelProps {
   children: React.ReactNode;
@@ -43,79 +48,44 @@ function CustomTabPanel({
   );
 }
 
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
-const products = [
-  {
-    id: 1,
-    image: "/img1.png",
-    title: "BIGIT BURGER",
-    description: "Mushroom patty, vegan cheese, lettuce, tomatoes",
-    price: "Rs. 380",
-    rating: 2.5,
-  },
-  {
-    id: 2,
-    image: "/img1.png",
-    title: "CHEESE BURGER",
-    description: "Beef patty, cheddar cheese, lettuce, onions, pickles",
-    price: "Rs. 450",
-    rating: 4.0,
-  },
-  {
-    id: 3,
-    image: "/img1.png",
-    title: "VEGAN BURGER",
-    description: "Lentil patty, avocado, spinach, tomatoes",
-    price: "Rs. 500",
-    rating: 4.5,
-  },
-  {
-    id: 4,
-    image: "/img1.png",
-    title: "CLASSIC BURGER",
-    description: "Beef patty, lettuce, tomatoes, ketchup, mustard",
-    price: "Rs. 350",
-    rating: 3.0,
-  },
-  {
-    id: 3,
-    image: "/img1.png",
-    title: "VEGAN BURGER",
-    description: "Lentil patty, avocado, spinach, tomatoes",
-    price: "Rs. 500",
-    rating: 4.5,
-  },
-  {
-    id: 4,
-    image: "/img1.png",
-    title: "CLASSIC BURGER",
-    description: "Beef patty, lettuce, tomatoes, ketchup, mustard",
-    price: "Rs. 350",
-    rating: 3.0,
-  },
-];
-
 const FoodDetails = () => {
   const params = useParams();
 
-  const { data: food } = useGetFoodById({ foodId: params.foodId as string });
+  const [alreadyAddedToCart, setAlreadyAddedToCart] = useState<boolean>(false);
+
+  const [isOutOfStock, setIsOutofStock] = useState<boolean>(false);
+
+  const {
+    data: food,
+    isPending,
+    error: foodError,
+    isSuccess: isFoodSuccess,
+  } = useGetFoodById({
+    foodId: params.foodId as string,
+  });
+
+  const { data: cartData, isSuccess: isCartSuccess } = useGetCart();
 
   const { mutateAsync, isSuccess, isError, error } =
     useAddOrUpdateCartItemQuantity();
+
+  const router = useRouter();
+
+  const toast = useCustomToast();
+
+  useEffect(() => {
+    if (isCartSuccess && isFoodSuccess) {
+      setIsOutofStock(food.stock === 0);
+      setAlreadyAddedToCart(
+        cartData.items.map((item) => item.food._id).includes(food._id)
+      );
+    }
+  }, [cartData, isCartSuccess, isFoodSuccess]);
 
   const [qty, setQty] = useState<number>(1);
   const [slideIndex, setSlideIndex] = useState<number>(0);
   const [rating, setRating] = useState<number>(1);
   const [value, setValue] = useState<number>(0);
-
-  const bigImages: string[] = ["/img2.png", "/img3.jpg"];
-  const smlImages: string[] = ["/img2.png", "/img3.jpg"];
 
   const smlSlider = useRef<any>(null);
   const bigSlider = useRef<any>(null);
@@ -143,24 +113,46 @@ const FoodDetails = () => {
   };
 
   const addFoodToCart = async () => {
-    await mutateAsync({
-      foodId: food!._id,
-      quantity: qty,
-    });
+    if (cartData && cartData.items.length >= 10) {
+      toast({
+        msg: "You can have only 10 items in the cart",
+      });
+    } else {
+      await mutateAsync({
+        foodId: food!._id,
+        quantity: qty,
+      });
+    }
   };
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("food has been added to cart");
+      toast({
+        msg: `${food?.name || "New food"} has been added to your cart`,
+      });
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (foodError) {
+      router.push(ROUTE_PATHS.home);
+    }
+  }, [foodError]);
+
+  if (isPending) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div>
       <section className="py-5 mt-32">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-[400px_1fr] items-center gap-[6rem]">
+            <div className="flex flex-col gap-8">
               <div className="productBigSlider">
                 <Swiper
                   slidesPerView={1}
@@ -170,21 +162,21 @@ const FoodDetails = () => {
                   ref={bigSlider}
                   onSlideChange={(swiper) => setSlideIndex(swiper.realIndex)}
                 >
-                  {bigImages.map((image, index) => (
-                    <SwiperSlide key={index}>
-                      <Image
-                        src={image}
-                        alt={`img-${index}`}
-                        width={450}
-                        height={400}
-                        objectFit="cover"
-                      />
-                    </SwiperSlide>
-                  ))}
+                  {[food?.mainImage]
+                    .concat(food?.subImages)
+                    .map((image, index) => (
+                      <SwiperSlide key={index}>
+                        <img
+                          src={image!.url}
+                          alt={`img-${index}`}
+                          className="w-full aspect-square rounded-lg object-cover"
+                        />
+                      </SwiperSlide>
+                    ))}
                 </Swiper>
               </div>
 
-              <div className="productSmlSlider mt-4">
+              <div className="productSmlSlider">
                 <Swiper
                   slidesPerView={5}
                   spaceBetween={15}
@@ -192,77 +184,107 @@ const FoodDetails = () => {
                   className="smlSlider"
                   ref={smlSlider}
                 >
-                  {smlImages.map((image, index) => (
-                    <SwiperSlide key={index}>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          cursor: "pointer",
-                        }}
-                        className={`item ${slideIndex === index && "active"}`}
-                        onClick={() => goto(index)}
-                      >
-                        <Image
-                          src={image}
-                          alt={`img-${index}`}
-                          width={100}
-                          height={100}
-                          objectFit="cover"
-                        />
-                      </div>
-                    </SwiperSlide>
-                  ))}
+                  {[food?.mainImage]
+                    .concat(food?.subImages)
+                    .map((image, index) => (
+                      <SwiperSlide key={index}>
+                        <div
+                          className={`overflow-hidden rounded-md ${
+                            slideIndex === index ? "border-2 border-accent" : ""
+                          } cursor-pointer`}
+                          onClick={() => goto(index)}
+                        >
+                          <img
+                            src={image!.url}
+                            alt={`img-${index}`}
+                            className="w-full aspect-square object-cover "
+                          />
+                        </div>
+                      </SwiperSlide>
+                    ))}
                 </Swiper>
               </div>
             </div>
 
             {/* Food details */}
             {food && (
-              <div className="flex flex-col mt-8 pt-5">
-                <h1 className="text-5xl font-bold text-brown">
+              <div className="flex flex-col gap-6">
+                <h1 className="text-5xl font-bold text-secondary">
                   {getCapitalizedForm({ sentence: food?.name })}
                 </h1>
 
-                <h3 className="text-yellow-500 font-extrabold text-4xl mt-3">
-                  {getAmountWithNepaliCurrency({ amount: food?.price })}
-                </h3>
+                <p className="text-sm tracking-wide leading-5">
+                  {food?.description}
+                </p>
 
-                <p className="my-4 text-base">{food?.description}</p>
+                {food.discount > 0 ? (
+                  <div>
+                    <div className="flex gap-4 items-center mb-1">
+                      <span className="text-secondary text-2xl font-bold">
+                        {getAmountWithNepaliCurrency({
+                          amount:
+                            food?.price - food.price * (food.discount / 100),
+                        })}
+                      </span>
+                      <span className="bg-secondary rounded-[4px] text-white text-sm font-medium px-3 py-1">
+                        {food.discount}%
+                      </span>
+                    </div>
+                    <span className="text-text-light text-sm line-through font-bold">
+                      {getAmountWithNepaliCurrency({ amount: food?.price })}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-secondary text-2xl font-bold">
+                    {getAmountWithNepaliCurrency({ amount: food?.price })}
+                  </span>
+                )}
 
-                <div className="flex items-center mt-4">
-                  <div className="qtyDrop flex items-center gap-4">
-                    <Button className="action" onClick={minus}>
-                      <Minus />
+                <div className="flex gap-6">
+                  <div className="bg-gray-200 flex justify-between items-center gap-4 rounded-md p-4">
+                    <Button
+                      onClickHandler={minus}
+                      isDisabled={alreadyAddedToCart || isOutOfStock}
+                    >
+                      <Minus className="text-secondary" />
                     </Button>
 
                     <input
                       type="number"
                       value={qty}
                       readOnly
-                      className="qty-input"
+                      className="w-[56px] border border-black border-opacity-10 rounded-md outline-none text-text-light text-center font-medium px-2 py-1"
                     />
 
-                    <Button className="action" onClick={plus}>
-                      <Plus />
+                    <Button
+                      onClickHandler={plus}
+                      isDisabled={alreadyAddedToCart || isOutOfStock}
+                    >
+                      <Plus className="text-secondary" />
                     </Button>
                   </div>
 
                   <Button
-                    className="btn-red no-radius ml-4"
-                    onClick={addFoodToCart}
+                    buttonType={BUTTON_TYPES.redButton}
+                    className="flex items-center gap-4"
+                    onClickHandler={addFoodToCart}
+                    isDisabled={alreadyAddedToCart || isOutOfStock}
                   >
-                    Add to Cart
+                    {!alreadyAddedToCart && !isOutOfStock && <ShoppingCart />}
+                    <span className="font-medium tracking-wide text-xl">
+                      {isOutOfStock
+                        ? "Out of stock"
+                        : alreadyAddedToCart
+                        ? "Added to cart"
+                        : "Add to cart"}
+                    </span>
                   </Button>
                 </div>
               </div>
             )}
           </div>
 
-          <br />
-
-          <Box sx={{ width: "100%" }} className="tabs">
+          {/* <Box sx={{ width: "100%" }} className="tabs">
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs
                 value={value}
@@ -278,9 +300,9 @@ const FoodDetails = () => {
               </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-              {/* <h4 className="text-brown text-2xl font-bold mb-3">
+              <h4 className="text-brown text-2xl font-bold mb-3">
                 Description
-              </h4> */}
+              </h4>
               <p className="text-base">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
                 placeat eos velit minus vitae natus facilis illum ducimus
@@ -290,7 +312,7 @@ const FoodDetails = () => {
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={1}>
-              {/* <h4 className="text-brown text-2xl font-bold mb-3">Reviews</h4> */}
+              <h4 className="text-brown text-2xl font-bold mb-3">Reviews</h4>
               <p className="text-base">There are no rated yet</p>
               <h4 className="text-2xl text-black/60 font-medium">
                 Be the first to rate "Classic Burger"
@@ -307,9 +329,9 @@ const FoodDetails = () => {
                   setRating(newValue || 0);
                 }}
               />
-              {/* <p className="text-lg mt-3 font-medium">Your Review *</p> */}
+              <p className="text-lg mt-3 font-medium">Your Review *</p>
 
-              {/* <form className="w-full">
+              <form className="w-full">
                 <div className="form-group w-full mt-4">
                   <TextField
                     id="outlined-basic"
@@ -340,11 +362,11 @@ const FoodDetails = () => {
                 <br />
 
                 <Button className="btn-red">Submit</Button>
-              </form> */}
+              </form>
             </CustomTabPanel>
-          </Box>
+          </Box> */}
 
-          <div className="" id="menu">
+          {/* <div className="" id="menu">
             <section className="menu">
               <div>
                 <h3 className="font-semibold text-3xl text-red-500">
@@ -418,7 +440,7 @@ const FoodDetails = () => {
                 </Swiper>
               </div>
             </section>
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

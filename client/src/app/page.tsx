@@ -14,8 +14,6 @@ import Header from "@/components/Header";
 // import Footer from "@/components/Footer";
 
 export default function Home() {
-  // const { data, error, isPending, isSuccess } = useGetCurrentUser();
-
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const [isVisible, setIsVisible] = useState(false);
@@ -50,6 +48,10 @@ export default function Home() {
 
       <BannerSlider />
 
+      <Banner />
+
+      <TopRated />
+
       <Services />
 
       <Category
@@ -59,8 +61,6 @@ export default function Home() {
 
       <Menu selectedCategory={selectedCategory} />
       
-      <Banner />
-      <TopRated />
       <Contact />
 
       {/* <Footer /> */}

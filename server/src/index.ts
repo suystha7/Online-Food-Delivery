@@ -3,6 +3,7 @@ import { spawn } from "child_process";
 import dotenv from "dotenv";
 import { app } from "./app";
 import connectDB from "./db";
+import ApiResponse from "./utils/ApiResponse";
 
 dotenv.config();
 
@@ -19,16 +20,22 @@ connectDB()
   });
 
 // app.get("/", (req: Request, res: Response) => {
-//   let dataToSend: any;
+//   let dataToSend = "";
 
 //   const python = spawn("python", ["src/p.py"]);
 
 //   python.stdout.on("data", function (data) {
-//     dataToSend = data.toString();
+//     dataToSend += data;
+//   });
+
+//   python.stderr.on("data", (error) => {
+//     console.error(`stderr: ${error}`);
 //   });
 
 //   python.on("close", (code) => {
-//     res.send(dataToSend);
+//     if (code === 0) {
+//       const result = JSON.parse(dataToSend);
+//       res.json(new ApiResponse(200, { data: result }, "data has been sent"));
+//     }
 //   });
-//   // res.send("Welcome to Express & TypeScript Server");
 // });

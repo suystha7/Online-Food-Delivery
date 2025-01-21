@@ -13,7 +13,10 @@ interface ICategoryProps {
   setSelectedCategory: Dispatch<SetStateAction<string>>;
 }
 
-const Category = ({selectedCategory,setSelectedCategory}:ICategoryProps) => {
+const Category = ({
+  selectedCategory,
+  setSelectedCategory,
+}: ICategoryProps) => {
   const { data } = useGetAllCategories({ page: 1, limit: 0 });
 
   // const [activeCategory, setCategoryProduct] = useState<string>("");
@@ -22,42 +25,42 @@ const Category = ({selectedCategory,setSelectedCategory}:ICategoryProps) => {
     setSelectedCategory(id === selectedCategory ? "" : id);
   };
   return (
-    <div className="p-6">
-      <Swiper
-        slidesPerView={8}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        modules={[Navigation, Pagination, Autoplay]}
-        className="category-swiper border-b border-primary"
-      >
-        {data?.categories.map((category) => (
-          <SwiperSlide key={category._id}>
-            <div
-              className={`flex flex-col items-center text-center p-2 ${
-                selectedCategory === category._id ? "active" : ""
-              }`}
-            >
-              <Image
-                src={category.mainImage.url}
-                alt={"Category Image"}
-                width={60}
-                height={60}
-                className="cursor-pointer"
-                onClick={() => handleProductClick(category._id)}
-              />
-              <h4
-                className="text-lg text-black font-semibold cursor-pointer my-3"
-                onClick={() => handleProductClick(category._id)}
+    <section className="py-10 px-20" id="category">
+        <Swiper
+          slidesPerView={8}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          modules={[Navigation, Pagination, Autoplay]}
+          className="category-swiper"
+        >
+          {data?.categories.map((category) => (
+            <SwiperSlide key={category._id}>
+              <div
+                className={`flex justify-center items-center text-center p-4 ${
+                  selectedCategory === category._id ? "active" : ""
+                }`}
               >
-                {getCapitalizedForm({ sentence: category.name })}
-              </h4>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+                <div
+                  className="flex flex-col  items-center cursor-pointer"
+                  onClick={() => handleProductClick(category._id)}
+                >
+                  <Image
+                    src={category.mainImage.url}
+                    alt={"Category Image"}
+                    width={60}
+                    height={60}
+                  />
+                  <h4 className="text-lg text-black font-semibold cursor-pointer mt-1">
+                    {getCapitalizedForm({ sentence: category.name })}
+                  </h4>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+    </section>
   );
 };
 

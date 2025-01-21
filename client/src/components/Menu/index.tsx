@@ -3,8 +3,8 @@
 import React from "react";
 import useGetAllFoods from "@/api/food/useGetAllFoods";
 import useGetFoodsByCategory from "@/api/food/useGetFoodsByCategory";
-import FoodCard from "../../components/FoodCard";
 import { Foods } from "@/api/food/FoodTypes";
+import FoodCard from "../FoodCard";
 
 interface IMenuProps {
   selectedCategory: string;
@@ -23,8 +23,12 @@ export default function Menu({ selectedCategory }: IMenuProps) {
     selectedCategory === "" ? allFoodsData : categoryFoodsData;
 
   return (
-    <section className="p-6" id="menu">
-      <div className="flex gap-6 flex-wrap">
+    <section className="py-10 px-20" id="menu">
+      <h2 className="text-4xl tracking-wider text-secondary text-center font-bold mb-8">
+        Our Menu
+      </h2>
+
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-10">
         {data?.foods.map((food) => (
           <FoodCard key={food._id} food={food} />
         ))}

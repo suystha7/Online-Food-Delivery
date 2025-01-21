@@ -9,6 +9,7 @@ thead {
 
 tr {
     display: flex;
+    gap: 0.5rem;
     min-width: 769px;
     align-items: center;
 }

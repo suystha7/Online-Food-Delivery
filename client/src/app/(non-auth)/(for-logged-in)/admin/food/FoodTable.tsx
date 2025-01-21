@@ -11,6 +11,7 @@ import useGetAllFoods, { getAllFoods } from "@/api/food/useGetAllFoods";
 import { Food } from "@/api/food/FoodTypes";
 import useDeleteFood from "@/api/food/useDeleteFood";
 import useUpdateFood from "@/api/food/useUpdateFood";
+import useCustomToast from "@/hooks/useCustomToast";
 
 export default function FoodTable() {
   const [page, setPage] = useState<number>(1);
@@ -23,6 +24,8 @@ export default function FoodTable() {
     page,
     limit: 5,
   });
+
+  const toast = useCustomToast();
 
   const tableHeadingList = [
     "S.N.",
@@ -81,6 +84,9 @@ export default function FoodTable() {
 
   useEffect(() => {
     if (deleteFood.isSuccess) {
+      toast({
+        msg: "Food has been deleted successfully",
+      });
       toggleModal(false);
     }
   }, [deleteFood.isSuccess]);
@@ -123,6 +129,9 @@ export default function FoodTable() {
 
   useEffect(() => {
     if (updateFood.isSuccess) {
+      toast({
+        msg: "Food has been udpated successfully",
+      });
       toggleDrawer(false);
     }
   }, [updateFood.isSuccess]);
@@ -153,6 +162,7 @@ export default function FoodTable() {
           }
           food={editableFood}
           isUpdateMode={true}
+          isLoading={isPending}
         />
       )}
 

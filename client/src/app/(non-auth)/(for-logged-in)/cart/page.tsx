@@ -4,12 +4,12 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // For navigation in Next.js
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { Button } from "@mui/material";
 import useGetCart from "@/api/cart/useGetCart";
 import { getAmountWithNepaliCurrency } from "@/utils/helpers";
 import useAddOrUpdateCartItemQuantity from "@/api/cart/useAddOrUpdateCartItemQuantity";
 import useDeleteCartItem from "@/api/cart/useDeleteCartItem";
-import { ROUTE_PATHS } from "@/constants";
+import { BUTTON_TYPES, DELIVERY_CHARGES, ROUTE_PATHS } from "@/constants";
+import { Button } from "@/components/basic";
 
 const Cart: React.FC = () => {
   const router = useRouter();
@@ -190,25 +190,23 @@ const Cart: React.FC = () => {
 
                 <tbody>
                   {data.items.map((item, index) => (
-                    <tr key={item.food._id} className="border-t text-center">
-                      <td className="border border-gray-300 px-4 py-2 text-gray-700">
-                        {index + 1}
+                    <tr key={item.food._id} className="border-t font-medium">
+                      <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">
+                        {index + 1}.
                       </td>
 
-                      <td className="border border-gray-300 px-4 py-2 text-red-700 font-bold text-lg">
+                      <td className="border border-gray-300 px-4 py-2 text-accent text-lg">
                         {item.food.name}
-                        <p className="text-sm text-gray-700 my-3">
+                        {/* <p className="text-sm text-gray-700 my-3">
                           Stock: {item.food.stock}
-                        </p>
+                        </p> */}
                       </td>
 
-                      <td className="border border-gray-300 px-4 py-2">
-                        <Image
+                      <td className="w-[48px] border border-gray-300 px-4 py-2">
+                        <img
                           src={item.food.mainImage.url}
                           alt={`Food Image`}
-                          width={70}
-                          height={70}
-                          className="rounded-md object-cover"
+                          className="aspect-square rounded-md object-cover"
                         />
                       </td>
 
@@ -221,8 +219,8 @@ const Cart: React.FC = () => {
                       <td className="border border-gray-300 px-4 py-2 text-gray-700">
                         <div className="flex items-center gap-2 justify-center">
                           <Button
-                            disabled={cartItemsArr[item.food._id] === 1}
-                            onClick={() => {
+                            isDisabled={cartItemsArr[item.food._id] === 1}
+                            onClickHandler={() => {
                               setCartItemsArr((prev) => ({
                                 ...prev,
                                 [item.food._id]: prev[item.food._id] - 1,
@@ -242,10 +240,10 @@ const Cart: React.FC = () => {
                             className="w-12 text-center border border-gray-300 rounded-md py-1"
                           />
                           <Button
-                            disabled={
+                            isDisabled={
                               cartItemsArr[item.food._id] === item.food.stock
                             }
-                            onClick={() => {
+                            onClickHandler={() => {
                               setCartItemsArr((prev) => ({
                                 ...prev,
                                 [item.food._id]: prev[item.food._id] + 1,
@@ -261,7 +259,7 @@ const Cart: React.FC = () => {
                         </div>
                       </td>
 
-                      <td className="border border-gray-300 px-4 py-2 text-gray-700">
+                      <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">
                         <div className="relative group">
                           <button
                             onClick={() =>
@@ -286,10 +284,27 @@ const Cart: React.FC = () => {
               <h3 className="text-xl font-semibold mb-4 pb-3 text-gray-800 border-b border-gray-400">
                 Order Summary
               </h3>
+
               <div className="flex justify-between items-center mb-1">
-                <p className="text-gray-600">Subtotal</p>
+                <p className="text-gray-600">Food total</p>
                 <p className="text-gray-800 font-medium">
                   {getAmountWithNepaliCurrency({ amount: data.cartTotal })}
+                </p>
+              </div>
+
+              <div className="flex justify-between items-center mb-1">
+                <p className="text-gray-600">Delivery Charges</p>
+                <p className="text-gray-800 font-medium">
+                  {getAmountWithNepaliCurrency({ amount: DELIVERY_CHARGES })}
+                </p>
+              </div>
+
+              <div className="flex justify-between items-center mb-1">
+                <p className="text-gray-600">Total</p>
+                <p className="text-gray-800 font-medium">
+                  {getAmountWithNepaliCurrency({
+                    amount: data.cartTotal + DELIVERY_CHARGES,
+                  })}
                 </p>
               </div>
 
@@ -307,8 +322,9 @@ const Cart: React.FC = () => {
               </div> */}
 
               <Button
-                onClick={() => router.push(ROUTE_PATHS.shipping)}
-                className="btn-red"
+                buttonType={BUTTON_TYPES.redButton}
+                onClickHandler={() => router.push(ROUTE_PATHS.shipping)}
+                className="mt-2"
               >
                 Proceed to Checkout
               </Button>
