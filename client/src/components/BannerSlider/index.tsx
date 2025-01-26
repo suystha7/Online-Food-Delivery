@@ -6,8 +6,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Pagination, Autoplay } from "swiper/modules";
-import { Button } from "@mui/material";
 import { ArrowDown } from "lucide-react";
+import { Button } from "../basic";
+import { BUTTON_TYPES } from "@/constants";
 
 const banners = [
   {
@@ -29,7 +30,7 @@ const banners = [
 const HeroSection: FC = () => {
   const handleScroll = (): void => {
     if (typeof window !== "undefined") {
-      const targetSection = document.getElementById("target-section");
+      const targetSection = document.getElementById("category");
       if (targetSection) {
         targetSection.scrollIntoView({ behavior: "smooth" });
       }
@@ -77,10 +78,11 @@ const HeroSection: FC = () => {
                     {banner.description}
                   </p>
                   <Button
-                    className="btn-red-1 btn-lg no-radius mt-8 relative group"
-                    onClick={handleScroll}
+                    onClickHandler={handleScroll}
+                    buttonType={BUTTON_TYPES.redButton}
+                    className="mt-6 relative group"
                   >
-                    <span className="text-white">GET STARTED</span>
+                    <span className="">GET STARTED</span>
                     <ArrowDown
                       size={24}
                       className="absolute left-1/2 transform -translate-x-1/2 bottom-0 opacity-0 group-hover:opacity-100 group-hover:translate-y-2 transition-all duration-300"

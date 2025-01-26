@@ -30,7 +30,7 @@ export const upload = multer({
   storage,
   limits: { fileSize: 3 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|webp/;
+    const filetypes = /jpeg|jpg|png|webp|svg/;
     const mimetype = filetypes.test(file.mimetype);
     const extname = filetypes.test(
       path.extname(file.originalname).toLowerCase()
@@ -41,7 +41,7 @@ export const upload = multer({
         return cb(null, true);
       } else {
         return cb(
-          new ApiError(400, "Only file types .jpeg, .jpg, .png are allowed")
+          new ApiError(400, "Only file types .svg, .jpeg, .jpg, .png are allowed")
         );
       }
     }

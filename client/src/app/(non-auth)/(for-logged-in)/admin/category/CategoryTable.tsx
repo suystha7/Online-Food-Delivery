@@ -10,9 +10,10 @@ import useDeleteCategory from "@/api/category/useDeleteCategory";
 import useUpdateCategory from "@/api/category/useUpdateCategory";
 import { Category } from "@/api/category/CategoryTypes";
 import { useState, useEffect } from "react";
-import { CategoryCreateFormFields } from "@/constants";
+import { CategoryCreateFormFields, CategoryUpdateFormFields } from "@/constants";
 import { CategoryCreateOrUpdateDrawer } from "@/components/drawers";
 import { DeleteModal } from "@/components/modals";
+import useCustomToast from "@/hooks/useCustomToast";
 
 export default function CategoryTable() {
   const [page, setPage] = useState<number>(1);
@@ -26,13 +27,9 @@ export default function CategoryTable() {
     limit: 5,
   });
 
-  const tableHeadingList = [
-    "S.N.",
-    "Name",
-    "Image",
-    "Created At",
-    "Actions",
-  ];
+  const toast = useCustomToast();
+
+  const tableHeadingList = ["S.N.", "Name", "Image", "Created At", "Actions"];
 
   const queryClient = useQueryClient();
 
@@ -78,6 +75,9 @@ export default function CategoryTable() {
 
   useEffect(() => {
     if (deleteCategory.isSuccess) {
+      toast({
+        msg: "Category has been deleted successfully",
+      });
       toggleModal(false);
     }
   }, [deleteCategory.isSuccess]);
@@ -89,15 +89,31 @@ export default function CategoryTable() {
   }, [isDrawerOpen]);
 
   const categoryUpdateSubmitHandler = async (
-    formData: CategoryCreateFormFields
+    formData: CategoryUpdateFormFields
   ) => {
     const { name, mainImage } = formData;
+    let updates = {};
 
-    await updateCategory.mutateAsync({
-      categoryId: editableCategory!._id,
-      name,
-      mainImage,
-    });
+    if (name?.length !== 0) {
+      updates = {
+        ...updates,
+        name,
+      };
+    }
+
+    if (mainImage) {
+      updates = {
+        ...updates,
+        mainImage,
+      };
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await updateCategory.mutateAsync({
+        categoryId: editableCategory!._id,
+        ...updates,
+      });
+    }
   };
 
   const editBtnClickHandler = (category: Category) => {
@@ -107,6 +123,9 @@ export default function CategoryTable() {
 
   useEffect(() => {
     if (updateCategory.isSuccess) {
+      toast({
+        msg: "Category has been updated successfully",
+      });
       toggleDrawer(false);
     }
   }, [updateCategory.isSuccess]);
@@ -140,6 +159,7 @@ export default function CategoryTable() {
           }
           category={editableCategory}
           isUpdateMode={true}
+          isLoading={updateCategory.isPending}
         />
       )}
 

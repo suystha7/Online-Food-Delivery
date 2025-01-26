@@ -17,7 +17,7 @@ export default function LoggedInLayout({
     <div>
       {!isAdminPage && <Header />}
       <main className="min-h-screen w-full">{children}</main>
-      {!isAdminPage && <Footer />}
+      {/* {!isAdminPage && <Footer />} */}
     </div>
   );
 }

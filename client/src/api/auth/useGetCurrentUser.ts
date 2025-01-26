@@ -18,6 +18,7 @@ const useGetCurrentUser = () => {
     gcTime: 0,
     throwOnError: (err: ApiError) => false,
     retry: false,
+    refetchOnWindowFocus: false,
   });
 };
 

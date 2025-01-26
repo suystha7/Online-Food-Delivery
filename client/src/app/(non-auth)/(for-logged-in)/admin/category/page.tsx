@@ -6,9 +6,12 @@ import { CategoryCreateFormFields } from "@/constants";
 import PageLayout from "../components/PageLayout";
 import CategoryTable from "./CategoryTable";
 import { CategoryCreateOrUpdateDrawer } from "@/components/drawers";
+import useCustomToast from "@/hooks/useCustomToast";
 
 const Category: React.FC = () => {
   const [isDrawerOpen, toggleDrawer] = useState(false);
+
+  const toast = useCustomToast();
 
   const { mutateAsync, isPending, isSuccess, error, reset } =
     useCreateCategory();
@@ -26,6 +29,9 @@ const Category: React.FC = () => {
 
   useEffect(() => {
     if (isSuccess) {
+      toast({
+        msg: "New category has been added successfully",
+      });
       toggleDrawer(false);
     }
   }, [isSuccess]);
@@ -41,6 +47,7 @@ const Category: React.FC = () => {
           }}
           categoryCreateOrUpdateSubmitHandler={categoryCreateSubmitHandler}
           apiError={error?.errorResponse?.message || error?.errorMessage}
+          isLoading={isPending}
         />
       )}
 

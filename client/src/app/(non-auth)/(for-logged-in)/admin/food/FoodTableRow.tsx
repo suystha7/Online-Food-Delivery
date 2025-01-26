@@ -41,21 +41,23 @@ export default function FoodTableRow(props: IFoodTableRowProps) {
           })}
         </td>
 
-        <td>{getCapitalizedForm({ sentence: item.description })}</td>
+        <td>
+          <img
+            src={item.mainImage.url}
+            alt={`${item.name} Image`}
+            className="w-[64px] h-[64px] rounded-md object-cover"
+          />
+        </td>
 
         <td>{getAmountWithNepaliCurrency({ amount: item.price })}</td>
 
         <td>{item.stock}</td>
 
-        <td>{item.discount}</td>
-
-        <td>
-          <img
-            src={item.mainImage.url}
-            alt={`${item.name} Image`}
-            className="w-[64px] h-[64px]"
-          />
+        <td className="truncate">
+          {getCapitalizedForm({ sentence: item.description })}
         </td>
+
+        <td>{item.discount}</td>
 
         <td>
           <div className="w-full flex justify-center gap-4">

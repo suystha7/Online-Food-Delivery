@@ -7,6 +7,7 @@ import { DeleteModal } from "@/components/modals";
 import uesGetAllOrders, { getAllOrders } from "@/api/order/useGetAllOrders";
 import useDeleteOrder from "@/api/order/useDeleteOrder";
 import OrderTableRow from "./OrderTableRow";
+import useCustomToast from "@/hooks/useCustomToast";
 
 export default function OrderTable() {
   const [page, setPage] = useState<number>(1);
@@ -15,7 +16,7 @@ export default function OrderTable() {
 
   const { data, isPending, isError, error } = uesGetAllOrders({
     page,
-    limit: 1,
+    limit: 5,
   });
 
   const tableHeadingList = [
@@ -33,6 +34,8 @@ export default function OrderTable() {
     "Actions",
   ];
 
+  const toast = useCustomToast();
+
   const queryClient = useQueryClient();
 
   let startIndex: number = 0,
@@ -46,7 +49,7 @@ export default function OrderTable() {
     if (data?.hasNextPage) {
       queryClient.prefetchQuery({
         queryKey: ["get-orders", "all", page + 1],
-        queryFn: () => getAllOrders({ page: page + 1, limit: 1 }),
+        queryFn: () => getAllOrders({ page: page + 1, limit: 5 }),
       });
     }
 
@@ -73,6 +76,9 @@ export default function OrderTable() {
 
   useEffect(() => {
     if (deleteOrder.isSuccess) {
+      toast({
+        msg: "Order has been deleted successfully",
+      });
       toggleModal(false);
     }
   }, [deleteOrder.isSuccess]);

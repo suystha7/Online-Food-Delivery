@@ -167,9 +167,7 @@ const ShippingDetails: React.FC = () => {
             className={`w-full py-4`}
             // isDisabled={!isValid}
           >
-            {paymentMethod === "CASH"
-              ? "Proceed to Order Review"
-              : "Proceed to Stripe Payment"}
+            Proceed to Order Review
           </Button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { signupValidationSchema } from "./schema/signup.schema";
 import { signinValidationSchema } from "./schema/signin.schema";
-import { categoryCreateValidationSchema } from "./schema/categoryCreate.schema";
+import { categoryCreateValidationSchema, categoryUpdateValidationSchema } from "./schema/categoryCreate.schema";
 import { foodCreateValidationSchema } from "./schema/foodCreate.schema";
 import { selectOptionSchema } from "./schema/selectOption.schema";
 import { shippingValidationSchema } from "./schema/shipping.schema";
@@ -15,10 +15,11 @@ export enum ROUTE_PATHS {
   signup = "/signup",
   signin = "/signin",
   cart = "/cart",
-  shipping = "/shippingDetails",
-  orderReview = "/orderReview",
+  shipping = "/shipping-details",
+  orderReview = "/order-review",
   payment = "/payment",
-  orderSuccess = "/orderSuccess",
+  orderSuccess = "/order-success",
+  myOrders = "/my-orders",
   category = "/admin/category",
   food = "/admin/food",
   adminOrder = "/admin/order",
@@ -33,16 +34,20 @@ export interface INavItemOptions {
 export enum BUTTON_TYPES {
   primaryButton,
   secondaryButton,
+  redButton,
   default,
 }
 
 export const MAX_FILE_SIZE = 3 * 1024 * 1024;
+
+export const DELIVERY_CHARGES = 75;
 
 export const ALLOWED_IMAGE_FILE_TYPES = [
   "image/jpeg",
   "image/jpg",
   "image/png",
   "image/webp",
+  "image/svg",
 ];
 
 export type SignupFormFields = z.infer<typeof signupValidationSchema>;
@@ -71,6 +76,10 @@ export type SelectOptionType<T> = z.infer<
 
 export type CategoryCreateFormFields = z.infer<
   typeof categoryCreateValidationSchema
+>;
+
+export type CategoryUpdateFormFields = z.infer<
+  typeof categoryUpdateValidationSchema
 >;
 
 export type FoodCreateFormFields = z.infer<typeof foodCreateValidationSchema>;

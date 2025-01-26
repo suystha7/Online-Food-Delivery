@@ -11,6 +11,7 @@ import {
   getOrdersByUserId,
   placeOrder,
   removeOrder,
+  updateStatus,
   verifyPayment,
 } from "../controllers/order.controllers";
 import { mongoIdParamValidator } from "../validators/mongodb.validators";
@@ -55,7 +56,7 @@ router
     mongoIdParamValidator("orderId"),
     orderStatusValidator(),
     validate,
-    verifyPayment
+    updateStatus
   );
 
 export default router;

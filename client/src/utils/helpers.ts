@@ -13,6 +13,6 @@ export const getAmountWithNepaliCurrency = ({ amount }: { amount: number }) => {
   return amount.toLocaleString("en-NP", {
     currency: "NPR",
     style: "currency",
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 0,
   });
 };
