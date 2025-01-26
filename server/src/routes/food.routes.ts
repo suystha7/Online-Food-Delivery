@@ -13,11 +13,14 @@ import {
   getFoodsByCategory,
   updateFood,
   removeFood,
+  getFoodIds,
 } from "../controllers/food.controllers";
 import { upload } from "../middlewares/multer.middlewares";
 import { mongoIdParamValidator } from "../validators/mongodb.validators";
 
 const router = Router();
+
+router.route("/id/").get(getFoodIds)
 
 router
   .route("/")

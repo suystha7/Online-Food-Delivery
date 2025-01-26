@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { signupValidationSchema } from "./schema/signup.schema";
 import { signinValidationSchema } from "./schema/signin.schema";
-import { categoryCreateValidationSchema } from "./schema/categoryCreate.schema";
+import { categoryCreateValidationSchema, categoryUpdateValidationSchema } from "./schema/categoryCreate.schema";
 import { foodCreateValidationSchema } from "./schema/foodCreate.schema";
 import { selectOptionSchema } from "./schema/selectOption.schema";
 import { shippingValidationSchema } from "./schema/shipping.schema";
@@ -47,6 +47,7 @@ export const ALLOWED_IMAGE_FILE_TYPES = [
   "image/jpg",
   "image/png",
   "image/webp",
+  "image/svg",
 ];
 
 export type SignupFormFields = z.infer<typeof signupValidationSchema>;
@@ -75,6 +76,10 @@ export type SelectOptionType<T> = z.infer<
 
 export type CategoryCreateFormFields = z.infer<
   typeof categoryCreateValidationSchema
+>;
+
+export type CategoryUpdateFormFields = z.infer<
+  typeof categoryUpdateValidationSchema
 >;
 
 export type FoodCreateFormFields = z.infer<typeof foodCreateValidationSchema>;

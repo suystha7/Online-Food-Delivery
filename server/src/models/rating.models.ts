@@ -1,4 +1,5 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { AggregatePaginateModel, Schema, Types } from "mongoose";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 export interface IRating extends Document {
   rating: number;
@@ -26,4 +27,11 @@ const ratingSchema = new Schema<IRating>(
   { timestamps: true }
 );
 
-export const Rating = mongoose.model<IRating>("Rating", ratingSchema);
+ratingSchema.plugin(mongooseAggregatePaginate);
+
+interface RatingModel<T extends Document> extends AggregatePaginateModel<T> {}
+
+export const Rating: RatingModel<IRating> = mongoose.model<IRating>(
+  "Rating",
+  ratingSchema
+) as RatingModel<IRating>;

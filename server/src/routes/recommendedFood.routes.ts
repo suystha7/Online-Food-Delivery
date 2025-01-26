@@ -2,17 +2,29 @@ import { Router } from "express";
 import { verifyJwt } from "../middlewares/auth.middlewares";
 import { mongoIdParamValidator } from "../validators/mongodb.validators";
 import { validate } from "../validators/validate";
-import { getRelatedFoods } from "../controllers/recommendedFood.controllers";
+import {
+  getPopularFoods,
+  getRecommendedFoods,
+  getSimilarFoods,
+} from "../controllers/recommendedFood.controllers";
 
 const router = Router();
 
-// router.use(verifyJwt);
+router
+  .route("/")
+  .get(
+   verifyJwt,
+    getRecommendedFoods
+  );
 
 router
-  .route("/related")
-  .get(getRelatedFoods);
-// router
-//   .route("/related/:categoryId")
-//   .get(mongoIdParamValidator("categoryId"), validate, getRelatedFoods);
+  .route("/popular")
+  .get(
+    getPopularFoods
+  );
+
+router
+  .route("/similar/:foodId")
+  .get(mongoIdParamValidator("foodId"), validate, getSimilarFoods);
 
 export default router;

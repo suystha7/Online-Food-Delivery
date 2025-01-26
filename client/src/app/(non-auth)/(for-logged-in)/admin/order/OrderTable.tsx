@@ -7,6 +7,7 @@ import { DeleteModal } from "@/components/modals";
 import uesGetAllOrders, { getAllOrders } from "@/api/order/useGetAllOrders";
 import useDeleteOrder from "@/api/order/useDeleteOrder";
 import OrderTableRow from "./OrderTableRow";
+import useCustomToast from "@/hooks/useCustomToast";
 
 export default function OrderTable() {
   const [page, setPage] = useState<number>(1);
@@ -32,6 +33,8 @@ export default function OrderTable() {
     "Created At",
     "Actions",
   ];
+
+  const toast = useCustomToast();
 
   const queryClient = useQueryClient();
 
@@ -73,6 +76,9 @@ export default function OrderTable() {
 
   useEffect(() => {
     if (deleteOrder.isSuccess) {
+      toast({
+        msg: "Order has been deleted successfully",
+      });
       toggleModal(false);
     }
   }, [deleteOrder.isSuccess]);
