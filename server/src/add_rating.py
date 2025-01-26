@@ -7,7 +7,7 @@ arg = sys.argv[1]
 dd = json.loads(arg)
 
 
-absolute_path = r"D:/WEB/qb/Online-Food-Delivery/server/src/data/sample_data.csv"
+absolute_path = r"D:/Coding/Online-Food-Delivery/server/src/data/sample_data.csv"
 
 # Convert new data to a DataFrame
 new_row = pd.DataFrame([dd])

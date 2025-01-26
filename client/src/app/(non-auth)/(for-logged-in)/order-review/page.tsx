@@ -211,7 +211,7 @@ const OrderReview = () => {
       ) : (
         <div>
           <span>Please fill in shipping details first.</span>
-          <Link href={ROUTE_PATHS.home} className="underline ml-2">
+          <Link href={ROUTE_PATHS.home} legacyBehavior className="underline ml-2">
             Go to Homepage
           </Link>
         </div>

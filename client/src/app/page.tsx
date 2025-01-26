@@ -1,17 +1,14 @@
 "use client";
 
-// import Banner from "@/components/Banner";
+import Banner from "@/components/Banner";
 import BannerSlider from "@/components/BannerSlider";
-// import Services from "@/container/Services";
-// import TopRated from "@/container/TopRated";
-// import Contact from "@/container/Contact";
+import Services from "@/container/Services";
 import Category from "@/components/Category";
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
-// import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
 import Menu from "@/components/Menu";
 import Header from "@/components/Header";
-// import Footer from "@/components/Footer";
+import Footer from "@/components/Footer";
 import RecommendedFood from "@/components/RecommendedFood";
 import useGetAverageRating from "@/api/rating/useGetAverateRating";
 import Spinner from "@/components/icons/Spinner";
@@ -70,6 +67,7 @@ export default function Home() {
       <Header />
 
       <BannerSlider />
+      <Banner />
 
       <Category
         selectedCategory={selectedCategory}
@@ -81,18 +79,14 @@ export default function Home() {
         averageRatingData={averageRatingData!}
       />
 
-      <PopularFood averageRatingData={averageRatingData!} />
-
       {userData && ratingData!.totalRatings > 3 && (
         <RecommendedFood averageRatingData={averageRatingData!} />
       )}
 
-      {/* <Services /> */}
-      {/* <Banner /> */}
-      {/* <TopRated /> */}
-      {/* <Contact /> */}
+      <Services />
+      <PopularFood averageRatingData={averageRatingData!} />
 
-      {/* <Footer /> */}
+      <Footer />
 
       <button
         onClick={scrollToTop}

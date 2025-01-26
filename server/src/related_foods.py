@@ -7,7 +7,7 @@ import json
 
 warnings.simplefilter('ignore')
 
-df = pd.read_csv('D:/WEB/qb/Online-Food-Delivery/server/src/data/ingredients.csv')
+df = pd.read_csv('D:/Coding/Online-Food-Delivery/server/src/data/ingredients.csv')
 
 # Sample DataFrame (remove duplicates based on ProductId and Ingredients)
 df = df.drop(['ProductName'], axis=1)

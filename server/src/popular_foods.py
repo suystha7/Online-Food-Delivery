@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 import warnings;
 
 warnings.simplefilter('ignore')
-df = pd.read_csv('D:/WEB/qb/Online-Food-Delivery/server/src/data/sample_data.csv')
+df = pd.read_csv('D:/Coding/Online-Food-Delivery/server/src/data/sample_data.csv')
 
 # UserId is the index of the counts and counts is dataframe with userid and its frequency
 counts = df['UserId'].value_counts()
