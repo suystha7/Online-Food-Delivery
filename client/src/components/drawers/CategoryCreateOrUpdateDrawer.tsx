@@ -66,7 +66,7 @@ const CategoryCreateOrUpdateDrawer = (
     <>
       <Drawer
         isDrawerOpen={isDrawerOpen}
-        heading={`${isUpdateMode ? "Update Category" : "Create Category"}`}
+        heading={`${isUpdateMode ? "Update Category" : "Add Category"}`}
         hideDrawer={() => {
           reset();
           hideDrawer();

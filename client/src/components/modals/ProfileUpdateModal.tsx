@@ -43,11 +43,16 @@ export default function ProfileUpdateModal(props: IProfileUpdateModalProps) {
     if (isSuccess) {
       setValue("fullName", user.fullName);
       setValue("phoneNumber", user.phoneNumber);
+      setValue("email", user.email);
     }
   }, [isSuccess]);
 
   return (
-    <Modal heading="Update Profile" className="px-8 py-6 w-[95%] lg:w-1/4" hideModal={cancelHandler}>
+    <Modal
+      heading="Update Profile"
+      className="px-8 py-6 w-[95%] lg:w-1/4"
+      hideModal={cancelHandler}
+    >
       <form
         onSubmit={handleSubmit(updateProfileSubmitHandler)}
         className="space-y-4"
@@ -82,7 +87,7 @@ export default function ProfileUpdateModal(props: IProfileUpdateModalProps) {
           isLoading={isLoading}
           className="block mx-auto"
         >
-          Update
+          Save
         </Button>
       </form>
     </Modal>

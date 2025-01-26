@@ -37,12 +37,12 @@ const Footer: React.FC = () => {
           {/* Copyright Section */}
           <div className="flex flex-col sm:flex-row items-center sm:items-start">
             <p className="text-sm sm:text-left text-center mb-4 sm:mb-0">
-              © 2024 <span className="font-bold text-black">COMPANY NAME</span>.
+              © 2025 <span className="font-bold text-black">QUICKBITES</span>.
             </p>
           </div>
 
           {/* Footer Links */}
-          <div className="flex space-x-6 mb-4 sm:mb-0 text-black font-medium">
+          {/* <div className="flex space-x-6 mb-4 sm:mb-0 text-black font-medium">
             <a href="#" className="text-sm hover:text-black transition-colors">
               Contact Us
             </a>
@@ -52,15 +52,15 @@ const Footer: React.FC = () => {
             <a href="#" className="text-sm hover:text-black transition-colors">
               Useful Links
             </a>
-          </div>
+          </div> */}
 
           {/* Social Media Icons */}
-          <div className="flex space-x-4 text-gray-700">
+          <div className="flex space-x-4 text-gray-700 ">
             <a
               href="#"
               target="_blank"
               aria-label="Facebook"
-              className="hover:text-white transition-colors"
+              className="hover:text-primary transition-colors"
             >
               <FacebookIcon className="w-5 h-5" />
             </a>
@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
               href="#"
               target="_blank"
               aria-label="Twitter"
-              className="hover:text-white transition-colors"
+              className="hover:text-primary transition-colors"
             >
               <TwitterIcon className="w-5 h-5" />
             </a>
@@ -76,7 +76,7 @@ const Footer: React.FC = () => {
               href="#"
               target="_blank"
               aria-label="Instagram"
-              className="hover:text-white transition-colors"
+              className="hover:text-primary transition-colors"
             >
               <InstagramIcon className="w-5 h-5" />
             </a>
@@ -84,7 +84,7 @@ const Footer: React.FC = () => {
               href="#"
               target="_blank"
               aria-label="LinkedIn"
-              className="hover:text-white transition-colors"
+              className="hover:text-primary transition-colors"
             >
               <LinkedinIcon className="w-5 h-5" />
             </a>

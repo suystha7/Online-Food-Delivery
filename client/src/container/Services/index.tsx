@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import React from "react";
 
@@ -8,21 +7,21 @@ const servicesData = [
     icon: "/icon5.png",
     title: "ORIGINAL RECIPES",
     description:
-      "Porta semper lacus cursus, feugiat primis ultrice a ligula risus auctor an tempus feugiat dolor lacinia cubiliaandrt curae integer orci congue and metus integer primis in integer metus",
+      "Experience the magic of authentic, original recipes right at your fingertips",
   },
   {
     id: 2,
     icon: "/icon6.png",
     title: "FRESH INGREDIENTS",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "At the heart of every dish is the commitment to using only the freshest ingredients",
   },
   {
     id: 3,
     icon: "/icon7.png",
     title: "FAST DELIVERY",
     description:
-      "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin ut aliquam orci.",
+      "You can count on fast, reliable service that brings satisfaction, without the wait",
   },
 ];
 

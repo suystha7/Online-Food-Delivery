@@ -64,7 +64,7 @@ const Food: React.FC = () => {
       )}
 
       <PageLayout
-        title="Food"
+        title="Food Lists"
         addBtnText="Add Food"
         addBtnClickHandler={() => toggleDrawer(true)}
       >

@@ -1,15 +1,16 @@
-import Image from "next/image";
+// import Image from "next/image";
 import React from "react";
 import Rating from "@mui/material/Rating";
-import Button from "@mui/material/Button";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { useCart } from "@/context/CartContext";
-import { Food } from "@/api/food/FoodTypes";
+// import Link from "next/link";
+// import { useParams, useRouter } from "next/navigation";
+// import { useCart } from "@/context/CartContext";
+// import { Food } from "@/api/food/FoodTypes";
 import {
   getAmountWithNepaliCurrency,
   getCapitalizedForm,
 } from "@/utils/helpers";
+import { Food } from "@/api/food/FoodTypes";
+import { useRouter } from "next/navigation";
 
 const FoodCard = ({
   food,

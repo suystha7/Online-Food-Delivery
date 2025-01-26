@@ -26,11 +26,11 @@ const Button = (props: ButtonProps) => {
     switch (buttonType) {
       case BUTTON_TYPES.primaryButton:
         // return "bg-darkRed text-zinc-50 rounded";
-        return "bg-red-500 text-white hover:bg-red-700";
+        return "bg-red-500 text-white hover:bg-red-600";
       case BUTTON_TYPES.secondaryButton:
         return "bg-gray-300 text-black hover:bg-gray-200";
       case BUTTON_TYPES.redButton:
-        return "bg-accent border-2 border-accent  text-white hover:bg-white hover:text-accent py-4 px-8";
+        return "bg-accent border-2 border-accent text-white hover:bg-white hover:text-accent py-0 px-4";
       default:
         return "";
     }

@@ -17,9 +17,9 @@ interface IFoodTableRowProps {
 export default function FoodTableRow(props: IFoodTableRowProps) {
   const { index, item, editBtnClickHandler, deleteModalOpenHandler } = props;
 
-  const createdDate = new Date(item.createdAt);
+  // const createdDate = new Date(item.createdAt);
 
-  const { data } = useGetAllCategories({ page: 1, limit: 0 });
+  const { data } = useGetAllCategories({ page: 1, limit: 7 });
 
   const categoryDataObject = (data?.categories ?? []).reduce<
     Record<string, string>

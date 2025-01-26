@@ -7,7 +7,7 @@ const Order: React.FC = () => {
   return (
     <>
       <PageLayout
-        title="Order"
+        title="Orders"
       >
         <OrderTable />
       </PageLayout>

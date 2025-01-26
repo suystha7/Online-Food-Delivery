@@ -1,7 +1,7 @@
 "use client";
 
-import Banner from "@/components/Banner";
 import BannerSlider from "@/components/BannerSlider";
+import Banner from "@/components/Banner";
 import Services from "@/container/Services";
 import Category from "@/components/Category";
 import { useEffect, useState } from "react";

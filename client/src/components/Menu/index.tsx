@@ -2,9 +2,9 @@
 
 import React from "react";
 import useGetAllFoods from "@/api/food/useGetAllFoods";
-import FoodCard from "../../components/FoodCard";
 import useGetFoodsByCategory from "@/api/food/useGetFoodsByCategory";
 import { Foods } from "@/api/food/FoodTypes";
+import FoodCard from "../FoodCard";
 
 interface IMenuProps {
   selectedCategory: string;

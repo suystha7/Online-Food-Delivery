@@ -92,7 +92,7 @@ const FoodCreateOrUpdateDrawer = (props: FoodCreateOrUpdateDrawerProps) => {
     <>
       <Drawer
         isDrawerOpen={isDrawerOpen}
-        heading={`${isUpdateMode ? "Update Food" : "Create Food"}`}
+        heading={`${isUpdateMode ? "Update Food" : "Add Food"}`}
         hideDrawer={() => {
           reset();
           hideDrawer();
@@ -165,21 +165,23 @@ const FoodCreateOrUpdateDrawer = (props: FoodCreateOrUpdateDrawerProps) => {
             {...register("discount")}
           />
 
-          <FileInput
-            label="Main Image"
-            errorMessage={errors.mainImage?.message || ""}
-            register={register("mainImage")}
-            accept={ALLOWED_IMAGE_FILE_TYPES.toString()}
-          />
+          <div className="flex justify-between">
+            <FileInput
+              label="Main Image"
+              errorMessage={errors.mainImage?.message || ""}
+              register={register("mainImage")}
+              accept={ALLOWED_IMAGE_FILE_TYPES.toString()}
+            />
 
-          <FileInput
-            label="Sub Images"
-            errorMessage={errors.subImages?.message || ""}
-            register={register("subImages")}
-            accept={ALLOWED_IMAGE_FILE_TYPES.toString()}
-            isMultiple={true}
-            isRequired={false}
-          />
+            <FileInput
+              label="Sub Images"
+              errorMessage={errors.subImages?.message || ""}
+              register={register("subImages")}
+              accept={ALLOWED_IMAGE_FILE_TYPES.toString()}
+              isMultiple={true}
+              isRequired={false}
+            />
+          </div>
 
           <Button
             type="submit"

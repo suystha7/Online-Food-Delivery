@@ -10,6 +10,13 @@ export const updateProfileValidationSchema = z.object({
     .min(4, {
       message: "Fullname must be at least 4 characters long",
     }),
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, {
+      message: "Invalid email format",
+    }),
+
   phoneNumber: z
     .string()
     .min(1, { message: "Phone number is required" })

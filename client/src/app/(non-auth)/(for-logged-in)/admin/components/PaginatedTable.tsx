@@ -2,7 +2,7 @@
 // import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
 // import { PERIOD_FILTER } from "@/constants";
 
-import { Button } from "@/components/basic";
+// import { Button } from "@/components/basic";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./PaginatedTable.css";
 import { Dispatch, SetStateAction } from "react";
@@ -32,7 +32,7 @@ const NumberBox = ({
   return (
     <button
       className={`min-w-8 h-8 text-black font-medium rounded-md px-3 ${
-        currentPage === idx ? "bg-blue-700 text-white" : "bg-gray-200"
+        currentPage === idx ? "bg-red-500 text-white" : "bg-gray-200"
       }`}
       onClick={() => onClickHandler(idx)}
     >
