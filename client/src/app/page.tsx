@@ -67,7 +67,16 @@ export default function Home() {
       <Header />
 
       <BannerSlider />
+
       <Banner />
+      
+      <PopularFood averageRatingData={averageRatingData!} />
+
+      {userData && ratingData!.totalRatings > 3 && (
+        <RecommendedFood averageRatingData={averageRatingData!} />
+      )}
+
+      <Services />
 
       <Category
         selectedCategory={selectedCategory}
@@ -78,13 +87,6 @@ export default function Home() {
         selectedCategory={selectedCategory}
         averageRatingData={averageRatingData!}
       />
-
-      {userData && ratingData!.totalRatings > 3 && (
-        <RecommendedFood averageRatingData={averageRatingData!} />
-      )}
-
-      <Services />
-      <PopularFood averageRatingData={averageRatingData!} />
 
       <Footer />
 
