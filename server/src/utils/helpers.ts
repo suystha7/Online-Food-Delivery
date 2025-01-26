@@ -16,6 +16,7 @@ export const getMongoosePaginateOptions = ({
     limit,
     pagination: true,
     customLabels: {
+      pagingCounter: "serialNumber",
       ...customLabels,
     },
   };

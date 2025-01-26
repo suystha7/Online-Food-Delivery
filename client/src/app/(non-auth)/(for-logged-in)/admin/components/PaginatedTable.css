@@ -1,0 +1,70 @@
+table {
+    width: 100%;
+    margin-inline: auto;
+}
+
+thead {
+    border-bottom: 1px solid rgb(159, 156, 156);
+}
+
+tr {
+    display: flex;
+    gap: 0.5rem;
+    min-width: 769px;
+    align-items: center;
+}
+
+thead>tr>th {
+    flex: 1;
+    width: 200px;
+    color: rgb(100, 106, 110) !important;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    padding-block: 1rem;
+    padding-right: 1rem;
+    text-align: left;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+tbody>tr {
+    border-bottom: 1px solid rgb(159, 156, 156);
+}
+
+tbody>tr>td {
+    flex: 1;
+    width: 150px;
+    color: rgb(31, 31, 35) !important;
+    font-size: 1rem;
+    font-weight: 400;
+    padding-block: 1rem;
+    padding-right: 1rem;
+    text-transform: capitalize;
+    word-break: break-all;
+}
+
+:is(thead, tbody) th:first-child,
+:is(thead, tbody) td:first-child {
+    flex: none;
+    flex-basis: 100px;
+}
+
+:is(thead, tbody) th:last-child,
+:is(thead, tbody) td:last-child {
+    flex: none;
+    flex-basis: 125px;
+}
+
+tfoot {
+    display: flex;
+    justify-content: center;
+}
+
+tfoot tr {
+    width: 100%;
+}
+
+tfoot tr td {
+    width: 100%;
+}

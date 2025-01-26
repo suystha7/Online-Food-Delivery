@@ -13,6 +13,7 @@ import {
   getFileLocalPath,
   removeLocalFile,
 } from "../utils/helpers";
+import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinary";
 
 export const registerUser = asyncHandler<IUser>(async (req, res) => {
   const { email, password, fullName, phoneNumber } = req.body;
@@ -59,7 +60,7 @@ export const registerUser = asyncHandler<IUser>(async (req, res) => {
     .json(
       new ApiResponse(
         201,
-        { user: createdUser },
+        createdUser,
         "User has been registered successfully and verification email has been sent to your email"
       )
     );
@@ -159,7 +160,7 @@ export const getCurrentUser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { user: req.user },
+        req.user,
         "Current user has been fetched successfully"
       )
     );
@@ -174,11 +175,19 @@ export const updateProfile = asyncHandler<IUser>(async (req, res) => {
   if (phoneNumber) udpates = { ...udpates, phoneNumber };
 
   if (req.file) {
+    const cloudinaryResponse = await uploadToCloudinary({
+      localFilePath: req.file.path,
+    });
+
+    if (!cloudinaryResponse) {
+      throw new ApiError(500, "File cannot be uploaded to cloudinary");
+    }
+
     udpates = {
       ...udpates,
       avatar: {
-        url: getFileStaticPath(req, req.file?.filename),
-        localPath: getFileLocalPath(req.file.filename),
+        public_id: cloudinaryResponse.public_id,
+        url: cloudinaryResponse.url,
       },
     };
   }
@@ -199,8 +208,12 @@ export const updateProfile = asyncHandler<IUser>(async (req, res) => {
     "-emailVerificationToken -emailVerificationExpiry -password -refreshToken"
   );
 
-  if (req.file && user.avatar.localPath !== "public/images/avatar.jpg") {
-    removeLocalFile(user.avatar.localPath);
+  // if (req.file && user.avatar.localPath !== "public/images/avatar.jpg") {
+  //   removeLocalFile(user.avatar.localPath);
+  // }
+
+  if (req.file && user.avatar.public_id) {
+    await deleteFromCloudinary({ public_id: user.avatar.public_id });
   }
 
   return res
@@ -265,7 +278,7 @@ export const forgotPassword = asyncHandler<{ email: string }>(
       subject: "Reset your password",
       mailgenContent: generateResetForgottenPasswordMailgenContent(
         user.fullName,
-        `${req.protocol}://${req.get("host")}/api/v1/users/reset-email/${unhashedToken}` //set frontend url
+        `${req.protocol}://${req.get("host")}/api/v1/users/reset-password/${unhashedToken}` //set frontend url
         // `http://localhost:3000/reset-password/${unhashedToken}` //set frontend url
       ),
     });

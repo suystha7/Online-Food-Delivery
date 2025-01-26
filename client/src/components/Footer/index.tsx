@@ -1,43 +1,16 @@
 "use client";
 import {
-  ArrowUp,
   FacebookIcon,
   InstagramIcon,
   LinkedinIcon,
   TwitterIcon,
 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 const Footer: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  // Function to toggle the visibility of the scroll to top button
-  const toggleVisibility = () => {
-    if (window.scrollY > 300) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  };
-
-  // Scroll to the top of the page
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", toggleVisibility);
-    return () => {
-      window.removeEventListener("scroll", toggleVisibility);
-    };
-  }, []);
-
   return (
-    <footer className="text-gray-600 body-font bg-gray-100">
-      <div className="w-full px-4 py-10 bg-gray-100 text-center">
+    <footer className=" text-gray-600 body-font bg-gray-100">
+      {/* <div className="w-full px-4 py-10 bg-gray-100 text-center">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">
           Subscribe to our Newsletter
         </h2>
@@ -55,7 +28,7 @@ const Footer: React.FC = () => {
             Subscribe
           </button>
         </div>
-      </div>
+      </div> */}
 
       <hr className="text-gray-500" />
 
@@ -64,12 +37,12 @@ const Footer: React.FC = () => {
           {/* Copyright Section */}
           <div className="flex flex-col sm:flex-row items-center sm:items-start">
             <p className="text-sm sm:text-left text-center mb-4 sm:mb-0">
-              © 2024 <span className="font-bold text-black">COMPANY NAME</span>.
+              © 2025 <span className="font-bold text-black">QUICKBITES</span>.
             </p>
           </div>
 
           {/* Footer Links */}
-          <div className="flex space-x-6 mb-4 sm:mb-0 text-black font-medium">
+          {/* <div className="flex space-x-6 mb-4 sm:mb-0 text-black font-medium">
             <a href="#" className="text-sm hover:text-black transition-colors">
               Contact Us
             </a>
@@ -79,15 +52,15 @@ const Footer: React.FC = () => {
             <a href="#" className="text-sm hover:text-black transition-colors">
               Useful Links
             </a>
-          </div>
+          </div> */}
 
           {/* Social Media Icons */}
-          <div className="flex space-x-4 text-gray-700">
+          <div className="flex space-x-4 text-gray-700 ">
             <a
               href="#"
               target="_blank"
               aria-label="Facebook"
-              className="hover:text-white transition-colors"
+              className="hover:text-primary transition-colors"
             >
               <FacebookIcon className="w-5 h-5" />
             </a>
@@ -95,7 +68,7 @@ const Footer: React.FC = () => {
               href="#"
               target="_blank"
               aria-label="Twitter"
-              className="hover:text-white transition-colors"
+              className="hover:text-primary transition-colors"
             >
               <TwitterIcon className="w-5 h-5" />
             </a>
@@ -103,7 +76,7 @@ const Footer: React.FC = () => {
               href="#"
               target="_blank"
               aria-label="Instagram"
-              className="hover:text-white transition-colors"
+              className="hover:text-primary transition-colors"
             >
               <InstagramIcon className="w-5 h-5" />
             </a>
@@ -111,24 +84,13 @@ const Footer: React.FC = () => {
               href="#"
               target="_blank"
               aria-label="LinkedIn"
-              className="hover:text-white transition-colors"
+              className="hover:text-primary transition-colors"
             >
               <LinkedinIcon className="w-5 h-5" />
             </a>
           </div>
         </div>
       </div>
-
-      {/* Scroll to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className={`fixed bottom-20 right-6 p-3 rounded-full bg-brown text-white shadow-lg transition-opacity duration-300 transform ${
-          isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-        } hover:scale-110 hover:animate-bounce`}
-        aria-label="Scroll to top"
-      >
-        <ArrowUp size={24} />
-      </button>
     </footer>
   );
 };

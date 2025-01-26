@@ -1,6 +1,7 @@
-"use client"
-import { Button } from "@mui/material";
+"use client";
+// import { Button } from "@mui/material";
 import React from "react";
+import { Button } from "../basic";
 
 const Banner: React.FC = () => {
   const handleScroll = (): void => {
@@ -14,16 +15,18 @@ const Banner: React.FC = () => {
   return (
     <section className="banner bg-[#fdefc7]">
       <div className="info1">
-        <h2 className="text-brown mb-4">
-          THE BURGER TASTES BETTER WHEN <br /> YOU EAT IT WITH YOUR FAMILY
+        <h2 className="text-brown mb-4 uppercase">
+          "Good food, good company, delivered right to your door."
         </h2>
-        <p className="mb-8">
-          Porta semper lacus cursus, feugiat primis ultrice a ligula risus
-          auctor an tempus feugiat dolor lacinia cubiliaandrt curae integer orci
-          congue and metus integer primis in integer metus
+        <p>
+          Craving something tasty? With our quick and easy food delivery, you
+          don’t have to wait long for your favorite meals to arrive. Whether
+          it's a family dinner or a solo treat, we bring the joy of great food
+          and the comfort of home straight to your door. No fuss, just
+          deliciousness delivered!
         </p>
 
-        <Button className="btn-red btn-lg no-radius" onClick={handleScroll}>
+        <Button className="btn-red btn-lg no-radius mt-5" onClick="#menu">
           EXPLORE FULL MENU
         </Button>
       </div>

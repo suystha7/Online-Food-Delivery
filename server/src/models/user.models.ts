@@ -11,8 +11,8 @@ import {
 import { Cart } from "./cart.models";
 
 export interface IImage {
+  public_id: string;
   url: string;
-  localPath: string;
 }
 
 export interface IUser extends Document {
@@ -41,8 +41,8 @@ export interface IUser extends Document {
 }
 
 export const imageSchema = new Schema<IImage>({
+  public_id: { type: String },
   url: { type: String },
-  localPath: { type: String },
 });
 
 const userSchema = new Schema<IUser>(
@@ -50,6 +50,7 @@ const userSchema = new Schema<IUser>(
     avatar: {
       type: imageSchema,
       default: {
+        public_id: "",
         url: "",
         localPath: "",
       },
@@ -121,7 +122,7 @@ userSchema.methods.generateAccessToken = function () {
       email: this.email,
       role: this.role,
     },
-    process.env.ACCESS_TOKEN_SECRET!,
+    process.env.ACCESS_TOKEN_SECRET_KEY!,
     {
       expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
     }
@@ -133,7 +134,7 @@ userSchema.methods.generateRefreshToken = function (): string {
     {
       _id: this._id,
     },
-    process.env.REFRESH_TOKEN_SECRET!,
+    process.env.REFRESH_TOKEN_SECRET_KEY!,
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
   );
 };

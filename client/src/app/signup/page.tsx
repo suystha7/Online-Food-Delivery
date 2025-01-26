@@ -1,138 +1,215 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FormButton } from "@/components/FormButton";
-import { FormInput } from "@/components/FormInput";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icon for password visibility toggle
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupValidationSchema } from "@/schema/signup.schema";
+import { BUTTON_TYPES, ROUTE_PATHS, SignupFormFields } from "@/constants";
+import useSignup from "../../api/auth/useSignup";
+import { Button } from "@/components/basic";
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  Typography,
+  Link,
+  Divider,
+  Stack,
+} from "@mui/material";
+import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 
 const SignUp = () => {
-  const router = useRouter();
-
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false); // State for password visibility
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // State for confirm password visibility
-
-  const [errors, setErrors] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormFields>({
+    resolver: zodResolver(signupValidationSchema),
+    shouldFocusError: false,
   });
 
-  // Email validation
-  const validateEmail = (email: string) => /\S+@\S+\.\S+/.test(email);
+  const { mutateAsync, isPending, isSuccess } = useSignup();
 
-  // Password validation (at least 8 characters, one number)
-  const validatePassword = (password: string) => /^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/.test(password);
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    let valid = true;
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    // Full Name Validation
-    if (!fullName.trim()) {
-      setErrors((prev) => ({ ...prev, fullName: "Full name is required" }));
-      valid = false;
-    } else {
-      setErrors((prev) => ({ ...prev, fullName: "" }));
-    }
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
-    // Email Validation
-    if (!validateEmail(email)) {
-      setErrors((prev) => ({ ...prev, email: "Enter a valid email" }));
-      valid = false;
-    } else {
-      setErrors((prev) => ({ ...prev, email: "" }));
-    }
-
-    // Password Validation
-    if (!validatePassword(password)) {
-      setErrors((prev) => ({ ...prev, password: "Password must be at least 8 characters and contain a number" }));
-      valid = false;
-    } else {
-      setErrors((prev) => ({ ...prev, password: "" }));
-    }
-
-    // Confirm Password Validation
-    if (password !== confirmPassword) {
-      setErrors((prev) => ({ ...prev, confirmPassword: "Passwords do not match" }));
-      valid = false;
-    } else {
-      setErrors((prev) => ({ ...prev, confirmPassword: "" }));
-    }
-
-    if (valid) {
-      console.log("Form submitted:", { fullName, email, password });
-      // Redirect to Sign In page after successful registration
-      router.push("/signin");
-    }
+  const handleMouseDownPassword = (event: React.MouseEvent) => {
+    event.preventDefault();
   };
+
+  const signupSubmitHandler = async (formData: SignupFormFields) => {
+    const { fullName, email, password, phoneNumber } = formData;
+
+    await mutateAsync({
+      fullName,
+      email,
+      password,
+      phoneNumber,
+    });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.replace(ROUTE_PATHS.signin);
+    }
+  }, [isSuccess]);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full max-w-md p-8 space-y-6 rounded-lg">
+      <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
         <h2 className="text-center">SIGN UP</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <FormInput
-            label="Full Name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            type="text"
-            error={errors.fullName}
-          />
-          <FormInput
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            error={errors.email}
-          />
-
-          {/* Password Input */}
-          <div className="relative">
-            <FormInput
-              label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              type={passwordVisible ? "text" : "password"} // Toggle between text and password type
-              error={errors.password}
-            />
-            <div
-              className="absolute top-11 right-3 transform -translate-y-1/2 cursor-pointer"
-              onClick={() => setPasswordVisible(!passwordVisible)}
-            >
-              {passwordVisible ? <FaEyeSlash /> : <FaEye />} {/* Toggle the eye icon */}
-            </div>
-          </div>
-
-          {/* Confirm Password Input */}
-          <div className="relative">
-            <FormInput
-              label="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              type={confirmPasswordVisible ? "text" : "password"} // Toggle between text and password type
-              error={errors.confirmPassword}
-            />
-            <div
-              className="absolute top-11 right-3 transform -translate-y-1/2 cursor-pointer"
-              onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-            >
-              {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />} {/* Toggle the eye icon */}
-            </div>
-          </div>
-
-          <FormButton type="submit">Sign Up</FormButton>
-        </form>
-        <p className="text-center text-sm">
+        <p className="text-center text-sm my-2">
           Already have an account?{" "}
-          <a href="/signin" className="text-blue-600 hover:underline">
+          <a
+            href={ROUTE_PATHS.signin}
+            className="text-blue-600 hover:underline"
+          >
             Sign In
           </a>
         </p>
+        <form
+          onSubmit={handleSubmit(signupSubmitHandler)}
+          className="space-y-4"
+        >
+          <TextField
+            fullWidth
+            label="Full Name"
+            variant="outlined"
+            {...register("fullName")}
+            error={!!errors.fullName}
+            helperText={errors.fullName?.message}
+          />
+
+          <TextField
+            fullWidth
+            label="Email"
+            variant="outlined"
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+
+          <TextField
+            fullWidth
+            label="Phone Number"
+            variant="outlined"
+            {...register("phoneNumber")}
+            error={!!errors.phoneNumber}
+            helperText={errors.phoneNumber?.message}
+          />
+
+          <TextField
+            fullWidth
+            label="Password"
+            variant="outlined"
+            type={showPassword ? "text" : "password"}
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <TextField
+            fullWidth
+            label="Confirm Password"
+            variant="outlined"
+            type={showConfirmPassword ? "text" : "password"}
+            {...register("confirmPassword")}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle confirm password visibility"
+                    onClick={handleClickShowConfirmPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showConfirmPassword}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <Typography
+            component={"div"}
+            sx={{
+              color: "text.secondary",
+              mt: 3,
+              typography: "caption",
+              textAlign: "center",
+            }}
+          >
+            {"By signing up, I agree to "}
+            <Link underline="always" color="text.primary">
+              Terms of service
+            </Link>
+            {" and "}
+            <Link underline="always" color="text.primary">
+              Privacy Policy
+            </Link>
+          </Typography>
+
+          <Button
+            type="submit"
+            isLoading={isPending}
+            buttonType={BUTTON_TYPES.primaryButton}
+            onClickHandler={() => {}}
+            className="w-full"
+          >
+            Submit
+          </Button>
+
+          <Divider
+            sx={{
+              my: 2.5,
+              typography: "overline",
+              color: "text.disabled",
+              "&::before, ::after": {
+                borderTopStyle: "dashed",
+              },
+            }}
+          >
+            OR
+          </Divider>
+          <Stack
+            direction={"row"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            spacing={2}
+          >
+            <IconButton>
+              <FaGoogle color="#DF3E30" />
+            </IconButton>
+            <IconButton color="inherit">
+              <FaGithub />
+            </IconButton>
+            <IconButton>
+              <FaFacebook color="#1C9CEA" />
+            </IconButton>
+          </Stack>
+        </form>
       </div>
     </div>
   );

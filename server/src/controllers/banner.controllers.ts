@@ -3,6 +3,7 @@ import { Banner, IBanner } from "../models/banner.models";
 import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
+import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinary";
 import { getFileLocalPath, getFileStaticPath } from "../utils/helpers";
 
 export const createBanner = asyncHandler<IBanner>(async (req, res) => {
@@ -19,13 +20,21 @@ export const createBanner = asyncHandler<IBanner>(async (req, res) => {
       `At most ${BANNER_CNT_LIMIT} banners can be created`
     );
 
+  const cloudinaryResponse = await uploadToCloudinary({
+    localFilePath: image.path,
+  });
+
+  if (!cloudinaryResponse) {
+    throw new ApiError(500, "File cannot be uploaded to cloudinary");
+  }
+
   const banner = await Banner.create({
     title,
     description,
     alt,
     image: {
-      url: getFileStaticPath(req, image.filename),
-      localPath: getFileLocalPath(image.filename),
+      public_id: cloudinaryResponse.public_id,
+      url: cloudinaryResponse.url,
     },
   });
 
@@ -63,11 +72,21 @@ export const updateBanner = asyncHandler<IBanner, { bannerId: string }>(
     if (alt) updates = { ...updates, alt };
 
     if (image) {
+      const cloudinaryResponse = await uploadToCloudinary({
+        localFilePath: image.path,
+      });
+
+      if (!cloudinaryResponse) {
+        throw new ApiError(500, "File cannot be uploaded to cloudinary");
+      }
+
+      await deleteFromCloudinary({ public_id: banner.image.public_id });
+
       updates = {
         ...updateBanner,
         image: {
-          url: getFileStaticPath(req, image.filename),
-          localPath: getFileLocalPath(image.filename),
+          public_id: cloudinaryResponse.public_id,
+          url: cloudinaryResponse.url,
         },
       };
     }

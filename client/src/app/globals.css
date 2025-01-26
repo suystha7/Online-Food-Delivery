@@ -16,7 +16,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #f8ecc4;
+    /* --background: #f8ecc4; */
+    --background: #f9f5f0;
     --foreground: #1a4e83;
   }
 }
@@ -25,6 +26,7 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: "Poppins", sans-serif;
+  min-height: 100svh;
 }
 
 /* Utility Classes */
@@ -38,7 +40,7 @@ body {
 
 /* Typography */
 p {
-  font-size: 16px;
+  font-size: 20px;
   color: var(--text-color-light);
   font-weight: 400;
 }
@@ -75,7 +77,9 @@ header.scroll {
 }
 
 header nav ul li a {
-  color: #fff;
+  /* color: #fff; */
+  /* color: #9c9797; */
+  /* color: var(--primary-color); */
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -102,14 +106,14 @@ header.scroll .cartTab svg {
 }
 
 header .cartTab span {
-  position: absolute;
+  /* position: absolute;
   bottom: 15px;
   left: 15px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background-color: var(--accent-color);
-  color: #fff;
+  color: #fff; */
 }
 
 /* Buttons */
@@ -130,8 +134,10 @@ header .btn-border {
   padding: 6px 25px;
   font-weight: 600;
   /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); */
-  transition: all 0.3s ease; /* Smooth transition */
+  transition: all 0.3s ease;
+  /* Smooth transition */
 }
+
 .no-radius {
   border-radius: 0;
 }
@@ -162,6 +168,7 @@ header .btn-border {
   border: 2px solid var(--accent-color);
   color: #fff;
 }
+
 .btn-red:hover {
   background: transparent;
   color: var(--accent-color);
@@ -174,29 +181,36 @@ header .btn-border {
   color: #fff;
 }
 
-/* Target the active state of the img tag */
-.filterProducts .category-swiper .swiper-slide .active img {
+.category-swiper .swiper-wrapper {
+  justify-content: center;
+  /* gap: 1rem; */
+}
+
+.category-swiper .swiper-slide .active img {
   opacity: 1;
   transform: scale(1.1);
   transition: transform 0.3s ease-in-out;
 }
 
-.filterProducts .category-swiper .swiper-slide .active img {
+.category-swiper .swiper-slide .active img {
   color: #fff;
 }
 
-.filterProducts .category-swiper .swiper-slide .active h4 {
+.category-swiper .swiper-slide .active h4 {
   color: var(--accent-color);
   font-weight: bold;
 }
 
-/* Ensure proper spacing of SwiperSlide items */
-.filterProducts .category-swiper .swiper-slide {
+.category-swiper .swiper-slide {
   padding: 2px;
 }
 
-.filterProducts .list-inline li img {
+.list-inline li img {
   opacity: 0.4;
+}
+
+.filterProducts {
+  padding-bottom: 30px;
 }
 
 .filterProducts .list-inline h4 {
@@ -204,52 +218,49 @@ header .btn-border {
 }
 
 /* Product List */
-.productList .productItem {
+/* .foodList .foodItem {
   width: 22% !important;
-}
+} */
 
-.productItem .imgWrapper img {
-  width: 100%;
-  height: auto;
+/* .foodItem .imgWrapper img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
   transition: all 0.3s;
   border-top-right-radius: 10px;
 }
 
-.productItem .imgWrapper {
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-bottom: none;
+.foodItem .imgWrapper {
+  background-color: #fff;
   overflow: hidden;
   cursor: pointer;
 }
-.productItem .imgWrapper .MuiCheckbox-root {
+
+.foodItem .imgWrapper .MuiCheckbox-root {
   color: var(--accent-color);
 }
 
-.productItem .info {
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-top: none;
-  font-size: 20px;
-  color: var(--secondary-color);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-.productItem .info h4 {
+.foodItem .info {
   font-size: 20px;
   color: var(--secondary-color);
 }
 
-.productItem .info button {
+.foodItem .info h4 {
+  font-size: 20px;
+  color: var(--secondary-color);
+}
+
+.foodItem .info button {
   padding: 7px 20px;
   color: var(--secondary-color);
   font-weight: 600;
   border: 1px solid var(--secondary-color);
 }
 
-.productItem .info button:hover {
+.foodItem .info button:hover {
   background-color: var(--secondary-color);
   color: #fff;
-}
+} */
 
 /* Banner */
 .banner {
@@ -264,7 +275,7 @@ header .btn-border {
 
 /* Services Section */
 .services {
-  @apply py-16 bg-yellow-300;
+  @apply py-10 bg-[#fdefc7];
 }
 
 .services .box {
@@ -281,7 +292,7 @@ header .btn-border {
 
 /* Product Items */
 
-.productItem {
+.foodItem {
   @apply overflow-hidden;
 }
 
@@ -294,7 +305,7 @@ header .btn-border {
 }
 
 .price {
-  @apply text-lg font-bold bg-yellow-400 text-white px-3 py-1;
+  @apply text-lg font-bold bg-yellow-300 text-white px-3 py-1 rounded-md;
 }
 
 .ratingWrapper {
@@ -322,7 +333,8 @@ header .btn-border {
 }
 
 .banner {
-  @apply py-20 bg-[#fdefc7] text-center; /* Adjust padding and background */
+  @apply py-20 bg-[#fdefc7] text-center;
+  /* Adjust padding and background */
 }
 
 .info1 {
@@ -333,9 +345,9 @@ h2 {
   @apply text-4xl sm:text-5xl font-semibold text-brown mb-4;
 }
 
-p {
+/* p {
   @apply text-lg sm:text-sm text-gray-700 mb-8 leading-relaxed;
-}
+} */
 
 .btn-red {
   @apply bg-[#e3000e] text-white py-2 px-6 font-semibold text-lg transition duration-300 ease-in-out;
@@ -344,15 +356,18 @@ p {
 /* Responsive Styles */
 @media (max-width: 768px) {
   .banner {
-    padding: 30px 0; /* Less padding on smaller screens */
+    padding: 30px 0;
+    /* Less padding on smaller screens */
   }
 
   h2 {
-    font-size: 2rem; /* Smaller heading on mobile */
+    font-size: 2rem;
+    /* Smaller heading on mobile */
   }
 
   p {
-    font-size: 1rem; /* Smaller text on mobile */
+    font-size: 1rem;
+    /* Smaller text on mobile */
   }
 }
 
@@ -362,23 +377,25 @@ p {
   padding: 30px 0px;
   /* background-color: #f7be27; */
 }
+
 .menu h2 {
   color: #e3000e;
   text-transform: uppercase;
 }
 
-.productItem_1 {
-  @apply bg-amber-50;
+.foodItem_1 {
+  /* @apply bg-amber-50; */
 }
-.productItem2 .imgWrapper img {
+
+.foodItem2 .imgWrapper img {
   transition: all 0.5s;
 }
 
-.productItem2:hover .imgWrapper img {
+.foodItem2:hover .imgWrapper img {
   transform: scale(1.05);
 }
 
-.productListing {
+.foodListing {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
@@ -403,16 +420,20 @@ p {
 .category {
   @apply p-2.5;
 }
+
 .contact-container {
   @apply max-w-xl mx-auto p-8 rounded-xl my-10;
 }
+
 .contact-heading {
   @apply text-3xl font-semibold text-center mb-8 text-gray-800;
 }
+
 .contact-input,
 .contact-textarea {
   @apply mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition duration-300 ease-in-out;
 }
+
 .contact-button {
   @apply w-full px-6 py-3 mt-5 bg-accent text-white font-medium rounded-lg shadow-md transition duration-300 ease-in-out;
 
@@ -420,35 +441,23 @@ p {
   @apply hover:bg-transparent hover:border-2 hover:border-accent hover:text-accent;
 }
 
-.qtyDrop {
-  width: 200px;
-}
-
-.qtyDrop .action {
-  min-width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  background-color: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-}
 
 .qtyDrop .action svg {
   color: rgba(0, 0, 0, 0.7);
 }
 
-.qtyDrop input {
+.qty-input {
   width: 60px;
-  height: 35px;
   outline: none;
-  padding: 5px;
-  border-radius: 5px;
+  padding: 4px;
+  border-radius: 6px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
 .qtyDrop input:focus {
   border: 1px solid rgba(0, 0, 0, 0.2);
-}
+} 
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -458,9 +467,16 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.productBigSlider{
-  border-radius: 5px;
-  overflow: hidden;
+/* food details page  */
+.productSmlSlider .swiper-wrapper{
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+.productSmlSlider .swiper-slide{
+  width: 76px !important;
+  height: 76px !important;
+  margin-right: 0px !important;
 }
 
 .smlSlider .item {
@@ -470,20 +486,38 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 5px;
 }
 
-
-.smlSlider .item.active{
+.smlSlider .item.active {
   border: 1px solid #e3000e;
 }
 
-.tabs .itemTab{
-  font-weight: 600 ;
+.tabs .itemTab {
+  font-weight: 600;
   color: rgba(0, 0, 0, 0.7);
 }
 
-.tabs .itemTab.Mui-selected{
+.tabs .itemTab.Mui-selected {
   color: #000;
 }
 
-.css-1qltlow-MuiTabs-indicator{
+.css-1qltlow-MuiTabs-indicator {
   background-color: #e3000e;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 2.5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #d2d0d0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: red;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+textarea{
+  resize: none !important;
 }

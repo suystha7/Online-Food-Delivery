@@ -10,6 +10,9 @@ import {
   removeLocalFile,
 } from "../utils/helpers";
 import { getMongoosePaginateOptions } from "../utils/helpers";
+import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinary";
+import { v2 as cloudinary } from "cloudinary";
+import { UploadApiResponse } from "cloudinary";
 
 export const createFood = asyncHandler<IFood>(async (req, res) => {
   const { name, description, category, price, stock, discount = 0 } = req.body;
@@ -22,13 +25,50 @@ export const createFood = asyncHandler<IFood>(async (req, res) => {
   if (!files["mainImage"] || !files["mainImage"].length)
     throw new ApiError(400, "Main image of food is required");
 
-  const subImages =
+  const mainImageCloudinaryResponse = await uploadToCloudinary({
+    localFilePath: files["mainImage"][0].path,
+  });
+
+  if (!mainImageCloudinaryResponse) {
+    throw new ApiError(500, "File cannot be uploaded to cloudinary");
+  }
+
+  let subImages: { public_id: string; url: string }[] = [];
+
+  const uploadPromises =
     files["subImages[]"] && files["subImages[]"]?.length
-      ? files["subImages[]"].map((subImage) => ({
-          url: getFileStaticPath(req, subImage.filename),
-          localPath: getFileLocalPath(subImage.filename),
-        }))
+      ? files["subImages[]"].map(
+          (image) => cloudinary.uploader.upload(image.path) // Each image upload promise
+        )
       : [];
+
+  if (uploadPromises.length !== 0) {
+    const uploadResults: UploadApiResponse[] =
+      await Promise.all(uploadPromises);
+
+    subImages = uploadResults.map((result) => ({
+      public_id: result.public_id,
+      url: result.url,
+    }));
+  }
+
+  // const subImages =
+  //   files["subImages[]"] && files["subImages[]"]?.length
+  //     ? files["subImages[]"].map(async (subImage) => {
+  //         const cloudinaryResponse = await uploadToCloudinary({
+  //           localFilePath: subImage.path,
+  //         });
+
+  //         if (!cloudinaryResponse) {
+  //           throw new ApiError(500, "File cannot be uploaded to cloudinary");
+  //         }
+
+  //         return {
+  //           public_id: cloudinaryResponse.public_id,
+  //           url: cloudinaryResponse.url,
+  //         };
+  //       })
+  //     : [];
 
   const food = await Food.create({
     name,
@@ -38,8 +78,8 @@ export const createFood = asyncHandler<IFood>(async (req, res) => {
     stock,
     discount,
     mainImage: {
-      url: getFileStaticPath(req, files["mainImage"][0].filename),
-      localPath: getFileLocalPath(files["mainImage"][0].filename),
+      public_id: mainImageCloudinaryResponse.public_id,
+      url: mainImageCloudinaryResponse.url,
     },
     subImages,
   });
@@ -175,8 +215,8 @@ export const updateFood = asyncHandler<IFood, { foodId: string }>(
       price,
       stock,
       discount,
-      mainImage,
-      subImages,
+      // mainImage,
+      // subImages,
     };
 
     const filteredUpdates = Object.fromEntries(
@@ -191,17 +231,17 @@ export const updateFood = asyncHandler<IFood, { foodId: string }>(
       { new: true }
     );
 
-    if (food.mainImage.url !== updatedFood?.mainImage.url)
-      removeLocalFile(food.mainImage.localPath);
+    // if (food.mainImage.url !== updatedFood?.mainImage.url)
+    //   removeLocalFile(food.mainImage.localPath);
 
-    if (
-      food.subImages.length &&
-      food.subImages[0].url !== updatedFood?.subImages[0].url
-    ) {
-      food.subImages.forEach((subImage) => {
-        removeLocalFile(subImage.localPath);
-      });
-    }
+    // if (
+    //   food.subImages.length &&
+    //   food.subImages[0].url !== updatedFood?.subImages[0].url
+    // ) {
+    //   food.subImages.forEach((subImage) => {
+    //     removeLocalFile(subImage.localPath);
+    //   });
+    // }
 
     return res
       .status(201)
@@ -225,7 +265,7 @@ export const removeFood = asyncHandler<any, { foodId: string }>(
     const foodImages = [deletedFood.mainImage, ...deletedFood.subImages];
 
     foodImages.forEach((image) => {
-      removeLocalFile(image.localPath);
+      deleteFromCloudinary({ public_id: image.public_id });
     });
 
     return res
@@ -235,3 +275,13 @@ export const removeFood = asyncHandler<any, { foodId: string }>(
       );
   }
 );
+
+export const getFoodIds = asyncHandler(async (req, res) => {
+  const foods = await Food.find({});
+
+  const udpatedFoods = foods.map((food) => food._id );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, udpatedFoods, "successfully"));
+});

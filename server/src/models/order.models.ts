@@ -1,4 +1,4 @@
-import mongoose, { Schema,Types } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 import {
   OrderStatusEnum,
@@ -6,20 +6,48 @@ import {
   PaymentMediumEnum,
   PaymentMediumType,
 } from "../constant";
+import { AggregatePaginateModel } from "mongoose";
+import { IImage, imageSchema } from "./user.models";
 
 interface IOrder extends Document {
   address: string;
+  fullName: string;
+  city: string;
+  postalCode: string;
+  phoneNumber: string;
   customer: Types.ObjectId;
-  items: Array<{ foodId: Types.ObjectId; quantity: number }>;
+  items: Array<{
+    foodId: Types.ObjectId;
+    name: string;
+    price: number;
+    mainImage: IImage;
+    quantity: number;
+  }>;
   isPaymentDone: boolean;
   orderPrice: number;
-  paymentMedium: PaymentMediumType;
+  paymentMethod: PaymentMediumType;
   status: OrderStatusType;
 }
 
 const orderSchema = new Schema<IOrder>(
   {
     address: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: false,
+    },
+    fullName: {
+      type: String,
+      required: true,
+    },
+    postalCode: {
+      type: String,
+      required: false,
+    },
+    phoneNumber: {
       type: String,
       required: true,
     },
@@ -34,6 +62,18 @@ const orderSchema = new Schema<IOrder>(
           foodId: {
             type: Schema.Types.ObjectId,
             ref: "Food",
+          },
+          mainImage: {
+            type: imageSchema,
+            required: true,
+          },
+          name: {
+            type: String,
+            required: true,
+          },
+          price: {
+            type: Number,
+            default: 1,
           },
           quantity: {
             type: Number,
@@ -50,7 +90,7 @@ const orderSchema = new Schema<IOrder>(
       type: Number,
       required: true,
     },
-    paymentMedium: {
+    paymentMethod: {
       type: String,
       enum: Object.values(PaymentMediumEnum),
       default: "CASH",
@@ -66,4 +106,9 @@ const orderSchema = new Schema<IOrder>(
 
 orderSchema.plugin(mongooseAggregatePaginate);
 
-export const Order = mongoose.model<IOrder>("Order", orderSchema);
+interface OrderModel<T extends Document> extends AggregatePaginateModel<T> {}
+
+export const Order: OrderModel<IOrder> = mongoose.model<IOrder>(
+  "Order",
+  orderSchema
+) as OrderModel<IOrder>;

@@ -1,19 +1,14 @@
-"use client";
 
-import { usePathname } from "next/navigation";
+import { CartProvider } from "@/context/CartContext";
+import Provider from "./providers";
+import { ToastContainer } from "react-toastify";
 import "./globals.css";
-import Navbar from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-
-  const isAuthPage = pathname === "/signin" || pathname === "/signup";
-
   return (
     <html lang="en">
       <head>
@@ -27,9 +22,12 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
-        {!isAuthPage && <Navbar />}
-        {children}
-        {!isAuthPage && <Footer />}
+        <Provider>
+          <CartProvider>
+            {children}
+            <ToastContainer />
+          </CartProvider>
+        </Provider>
       </body>
     </html>
   );

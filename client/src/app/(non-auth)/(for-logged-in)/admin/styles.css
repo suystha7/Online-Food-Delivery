@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --text-color-light: rgba(0, 0, 0, 0.7);
+  --text-color-dark: #ededed;
+  --primary-color: #f7be27;
+  --secondary-color: #642f21;
+  --accent-color: #e3000e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #f8ecc4;
+    --foreground: #1a4e83;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Poppins", sans-serif;
+  color: #171717;
+} */
+
+/* Utility Classes */
+.text-y {
+  color: var(--primary-color) !important;
+}
+
+.text-brown {
+  color: var(--secondary-color);
+}
+
+.bg-y {
+  background-color: var(--primary-color);
+}
+
+.btn-lg {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 20px;
+}
+
+.btn-red {
+  background-color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  color: #fff;
+  padding: 2px 15px;
+}
+
+.btn-red-1 {
+  background-color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  color: #fff;
+  padding: 2px 15px;
+}
+.btn-red:hover {
+  background: transparent;
+  color: var(--accent-color);
+}
+
+.btn-red-1:hover {
+  transition: 0.2s all ease-in-out;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+}
