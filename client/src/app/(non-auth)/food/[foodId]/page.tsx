@@ -22,31 +22,9 @@ import { BUTTON_TYPES, ROUTE_PATHS } from "@/constants";
 import useGetCart from "@/api/cart/useGetCart";
 import { Button } from "@/components/basic";
 import useCustomToast from "@/hooks/useCustomToast";
-
-interface CustomTabPanelProps {
-  children: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel({
-  children,
-  value,
-  index,
-  ...other
-}: CustomTabPanelProps) {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-}
+import useGetSimilarFoods from "@/api/recommended-foods/useGetSimilaryFood";
+import FoodCard from "@/components/FoodCard";
+import useGetAverageRating from "@/api/rating/useGetAverateRating";
 
 const FoodDetails = () => {
   const params = useParams();
@@ -65,6 +43,14 @@ const FoodDetails = () => {
   });
 
   const { data: cartData, isSuccess: isCartSuccess } = useGetCart();
+
+  const {
+    data: similarFoodsData,
+    isPending: isSimilarFoodsPending,
+    isSuccess: isSimilarFoodsSuccess,
+  } = useGetSimilarFoods({ foodId: params.foodId as string });
+
+  const { data: averageRatingData } = useGetAverageRating();
 
   const { mutateAsync, isSuccess, isError, error } =
     useAddOrUpdateCartItemQuantity();
@@ -284,163 +270,64 @@ const FoodDetails = () => {
             )}
           </div>
 
-          {/* <Box sx={{ width: "100%" }} className="tabs">
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="basic tabs example"
-              >
-                <Tab label="More Info" {...a11yProps(0)} className="itemTab" />
-                <Tab
-                  label="Reviews (0)"
-                  {...a11yProps(1)}
-                  className="itemTab"
-                />
-              </Tabs>
-            </Box>
-            <CustomTabPanel value={value} index={0}>
-              <h4 className="text-brown text-2xl font-bold mb-3">
-                Description
-              </h4>
-              <p className="text-base">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-                placeat eos velit minus vitae natus facilis illum ducimus
-                assumenda optio voluptatibus quasi, beatae consequuntur possimus
-                eum obcaecati recusandae nostrum.
-              </p>
-            </CustomTabPanel>
-
-            <CustomTabPanel value={value} index={1}>
-              <h4 className="text-brown text-2xl font-bold mb-3">Reviews</h4>
-              <p className="text-base">There are no rated yet</p>
-              <h4 className="text-2xl text-black/60 font-medium">
-                Be the first to rate "Classic Burger"
-              </h4>
-              <p className="text-sm mb-3 font-semibold">
-                Your email address will not be published. Required fields are
-                marked *
-              </p>
-              <p className="text-lg mb-3 font-medium">Your Rating *</p>
-              <Rating
-                name="simple-controlled"
-                value={rating}
-                onChange={(event, newValue) => {
-                  setRating(newValue || 0);
-                }}
-              />
-              <p className="text-lg mt-3 font-medium">Your Review *</p>
-
-              <form className="w-full">
-                <div className="form-group w-full mt-4">
-                  <TextField
-                    id="outlined-basic"
-                    label="Review *"
-                    variant="outlined"
-                    className="w-full"
-                    multiline
-                    rows={4}
-                  />
-                  <div className="form-group w-[25%] mt-4">
-                    <TextField
-                      id="outlined-basic"
-                      label="Name"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                  </div>
-                  <div className="form-group w-[25%] mt-4">
-                    <TextField
-                      id="outlined-basic"
-                      label="Email"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                  </div>
-                </div>
-
-                <br />
-
-                <Button className="btn-red">Submit</Button>
-              </form>
-            </CustomTabPanel>
-          </Box> */}
-
-          {/* <div className="" id="menu">
+          <div className="">
             <section className="menu">
               <div>
-                <h3 className="font-semibold text-3xl text-red-500">
-                  Related Products
+                <h3 className="font-semibold tracking-wide text-3xl text-secondary mb-4">
+                  Similar Foods
                 </h3>
 
-                <Swiper
-                  spaceBetween={20}
-                  slidesPerView={4}
-                  navigation
-                  autoplay={{
-                    delay: 3000, // 3-second autoplay interval
-                    disableOnInteraction: false, // Keep autoplay on interaction
-                  }}
-                  modules={[Navigation, Pagination, Autoplay]}
-                  className="foodListing mt-4"
-                  breakpoints={{
-                    640: {
-                      slidesPerView: 1,
-                    },
-                    768: {
-                      slidesPerView: 2,
-                    },
-                    1024: {
-                      slidesPerView: 3,
-                    },
-                    1280: {
-                      slidesPerView: 4,
-                    },
-                  }}
-                >
-                  {products.map((product) => (
-                    <SwiperSlide
-                      key={product.id}
-                      className="flex items-center justify-center"
-                    >
-                      <div className="foodItem">
-                        <div className="imgWrapper">
-                          <Image
-                            src={product.image}
-                            alt={product.title}
-                            width={100}
-                            height={100}
-                          />
-
-                          <div className="ratingWrapper">
-                            <span className="price">{product.price}</span>
-
-                            <Rating
-                              name="half-rating"
-                              defaultValue={product.rating}
-                              precision={0.5}
-                              size="medium"
-                              readOnly
-                            />
-                          </div>
-                        </div>
-
-                        <div className="info cursor-pointer bg-white">
-                          <h4 className="productTitle">{product.title}</h4>
-                          <p className="productDescription">
-                            {product.description}
-                          </p>
-                          <Button className="addToCartButton">
-                            ADD TO CART
-                          </Button>
-                        </div>
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                {!isSimilarFoodsSuccess ? (
+                  <div className="flex justify-center">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <Swiper
+                    spaceBetween={20}
+                    slidesPerView={4}
+                    navigation
+                    autoplay={{
+                      delay: 3000, // 3-second autoplay interval
+                      disableOnInteraction: false, // Keep autoplay on interaction
+                    }}
+                    modules={[Navigation, Pagination, Autoplay]}
+                    className="foodListing mt-4"
+                    breakpoints={{
+                      640: {
+                        slidesPerView: 1,
+                      },
+                      768: {
+                        slidesPerView: 2,
+                      },
+                      1024: {
+                        slidesPerView: 3,
+                      },
+                      1280: {
+                        slidesPerView: 4,
+                      },
+                    }}
+                  >
+                    {similarFoodsData?.foods.map((food) => (
+                      <SwiperSlide
+                        key={food._id}
+                        className="flex items-center justify-center"
+                      >
+                        <FoodCard
+                          food={food}
+                          rating={averageRatingData![food._id].AverageRating}
+                          score={
+                            similarFoodsData.similarityScore[food._id][
+                              "Similarity Score"
+                            ]
+                          }
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                )}
               </div>
             </section>
-          </div> */}
+          </div>
         </div>
       </section>
     </div>

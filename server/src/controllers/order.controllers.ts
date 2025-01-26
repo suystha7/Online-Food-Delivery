@@ -5,6 +5,8 @@ import ApiResponse from "../utils/ApiResponse";
 import ApiError from "../utils/ApiError";
 import { OrderStatusEnum, OrderStatusType } from "../constant";
 import { getMongoosePaginateOptions } from "../utils/helpers";
+import { Rating } from "../models/rating.models";
+import { Food } from "../models/food.models";
 
 const frontend_url = "http://localhost:3000/order-success";
 
@@ -217,6 +219,21 @@ export const updateStatus = asyncHandler(async (req, res) => {
       new: true,
     }
   );
+
+  if (status === "DELIVERED") {
+    const foodsArr = updatedOrder?.items.map((item) => ({
+      rating: 0,
+      ratedBy: order.customer,
+      foodId: item.foodId,
+    }));
+    await Rating.insertMany(foodsArr);
+
+    const stockUpdateArr = updatedOrder?.items.map((item) =>
+      Food.findByIdAndUpdate(item.foodId, { $inc: { stock: -item.quantity } })
+    );
+
+    await Promise.all(stockUpdateArr!);
+  }
 
   return res
     .status(201)

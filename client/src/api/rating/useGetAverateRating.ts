@@ -1,25 +1,24 @@
 import asyncHandler from "@/utils/asyncHandler";
-import { User } from "./AuthTypes";
 import ApiResponse from "../ApiResponse";
 import axiosInstance from "../axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import ApiError from "../ApiError";
 
-const getCurrentUser = async (): Promise<User> => {
+const getAverageRating = async () => {
   return await asyncHandler(
-    (): Promise<ApiResponse<User>> => axiosInstance.get("/users/current-user")
+    (): Promise<ApiResponse<Record<string, { AverageRating: number }>>> =>
+      axiosInstance.get(`/ratings/average-rating/`)
   );
 };
 
-const useGetCurrentUser = () => {
+const useGetAverageRating = () => {
   return useQuery({
-    queryKey: ["current-user"],
-    queryFn: getCurrentUser,
-    gcTime: 0,
+    queryKey: ["get-average-rating"],
+    queryFn: () => getAverageRating(),
     throwOnError: (err: ApiError) => false,
-    retry: false,
     refetchOnWindowFocus: false,
+    retry: 2,
   });
 };
 
-export default useGetCurrentUser;
+export default useGetAverageRating;

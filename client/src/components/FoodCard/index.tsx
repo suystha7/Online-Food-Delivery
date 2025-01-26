@@ -11,7 +11,19 @@ import {
   getCapitalizedForm,
 } from "@/utils/helpers";
 
-const FoodCard = ({ food }: { food: Food }) => {
+const FoodCard = ({
+  food,
+  rating,
+  score,
+  rank,
+  prediction,
+}: {
+  food: Food;
+  rating?: number;
+  score?: number;
+  rank?: number;
+  prediction?: number;
+}) => {
   const router = useRouter();
 
   return (
@@ -55,7 +67,7 @@ const FoodCard = ({ food }: { food: Food }) => {
     // </div>
 
     <div className="relative group">
-      <div className="relative group bg-white rounded-xl shadow-md overflow-hidden group-hover:blur-[2px]">
+      <div className="relative group bg-white rounded-xl shadow-md overflow-hidden group-hover:blur-[1.5px]">
         <div className="">
           <img
             src={food.mainImage.url}
@@ -65,19 +77,37 @@ const FoodCard = ({ food }: { food: Food }) => {
         </div>
 
         <div className="flex flex-col p-4">
-          <span className="text-lg font-semibold text-secondary truncate">
+          <span className="text-lg font-semibold text-secondary truncate tracking-wide">
             {getCapitalizedForm({ sentence: food.name })}
           </span>
 
-          <span className="text-sm text-gray-500">
-            {" "}
-            {getAmountWithNepaliCurrency({ amount: food.price })}
-          </span>
+          <div className="flex justify-between">
+            <span className="text-base text-gray-500 font-semibold">
+              {getAmountWithNepaliCurrency({ amount: food.price })}
+            </span>
+
+            {score && (
+              <span className="text-base text-gray-500 font-semibold">
+                Score: {score.toFixed(3)}
+              </span>
+            )}
+
+            {rank && (
+              <span className="text-base text-gray-500 font-semibold">
+                Rank: {rank.toFixed(0)}
+              </span>
+            )}
+
+            {prediction && (
+              <span className="text-base text-gray-500 font-semibold">
+                Prediction: {prediction.toFixed(3)}
+              </span>
+            )}
+          </div>
 
           <Rating
             name="half-rating"
-            defaultValue={2.5}
-            precision={0.5}
+            defaultValue={rating}
             size="medium"
             readOnly
           />

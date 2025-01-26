@@ -7,6 +7,7 @@ import {
   Button,
   FileInput,
   ControlledSelect,
+  TextArea,
 } from "../basic";
 import {
   ALLOWED_IMAGE_FILE_TYPES,
@@ -124,8 +125,15 @@ const FoodCreateOrUpdateDrawer = (props: FoodCreateOrUpdateDrawerProps) => {
             isDisabled={isUpdateMode}
           />
 
-          <Input
+          {/* <Input
             type="text"
+            label="Description"
+            placeholder={"Enter food description"}
+            errorMessage={errors.description?.message || ""}
+            {...register("description")}
+          /> */}
+
+          <TextArea
             label="Description"
             placeholder={"Enter food description"}
             errorMessage={errors.description?.message || ""}

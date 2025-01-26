@@ -275,3 +275,13 @@ export const removeFood = asyncHandler<any, { foodId: string }>(
       );
   }
 );
+
+export const getFoodIds = asyncHandler(async (req, res) => {
+  const foods = await Food.find({});
+
+  const udpatedFoods = foods.map((food) => food._id );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, udpatedFoods, "successfully"));
+});

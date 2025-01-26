@@ -22,7 +22,7 @@ const Drawer = (props: DrawerProps) => {
       <div
         className={`fixed top-0 right-0 h-full w-1/4 bg-white
         ${isDrawerOpen && "animation-slideIn"}
-        z-10 ${className} overflow-scroll`}
+        z-20 ${className} overflow-scroll`}
       >
         <div className="px-6 py-4">
           <div className="flex justify-between">

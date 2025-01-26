@@ -13,14 +13,14 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import Button from "@mui/material/Button";
-import { ROUTE_PATHS } from "@/constants";
+import { BUTTON_TYPES, ROUTE_PATHS } from "@/constants";
 import useGetCurrentUser from "@/api/auth/useGetCurrentUser";
 import useGetCart from "@/api/cart/useGetCart";
 import Spinner from "../icons/Spinner";
 import { IconButton } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { NAV_ITEM_LIST } from "@/data";
+import { Button } from "../basic";
 
 const Header: React.FC = () => {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
@@ -57,7 +57,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className="w-full fixed top-0 left-0 z-[100] py-4 pr-12 duration-300"
+      className="w-full fixed top-0 left-0 z-[10] py-4 pr-12 duration-300"
       ref={headerRef}
     >
       <div className="flex items-center justify-between">
@@ -120,12 +120,12 @@ const Header: React.FC = () => {
                       className="w-[54px] h-[54px] rounded-full border-2 border-primary object-cover"
                     />
                   ) : (
-                    <IconButton
-                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none"
+                    <div
+                      className="p-2 rounded-full bg-white"
                       aria-label="User Icon Button"
                     >
                       <User className="w-6 h-6 text-gray-700" />
-                    </IconButton>
+                    </div>
                   )}
                 </div>
 
@@ -217,13 +217,16 @@ const Header: React.FC = () => {
               <Spinner className="fill-gray-500" />
             ) : (
               <Link href={ROUTE_PATHS.signin}>
-                <Button className="btn-red ml-2 relative group">
+                <Button
+                  buttonType={BUTTON_TYPES.redButton}
+                  className="ml-2 relative group"
+                >
                   <span className="group-hover:opacity-0 transition-opacity duration-300">
                     Sign In
                   </span>
                   <LogIn
                     size={20}
-                    className="text-red-500 absolute left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    className="text-accent absolute left-1/2 top-1/2 -translate-y-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                   />
                 </Button>
               </Link>

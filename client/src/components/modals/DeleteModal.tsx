@@ -19,7 +19,10 @@ export default function DeleteModal(props: IDeleteModalProps) {
   } = props;
 
   return (
-    <Modal className="px-8 py-6 w-[95%] lg:w-1/4" hideModal={cancelHandler}>
+    <Modal
+      className="px-8 py-6 w-[75%] md:w-2/4 lg:w-1/4"
+      hideModal={cancelHandler}
+    >
       <div>
         {apiError && <ErrorMessage message={apiError} />}
 

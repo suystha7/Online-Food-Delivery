@@ -56,7 +56,7 @@ export default function PaginatedTable(props: PaginatedTableProps) {
   } = props;
   return (
     <div className="">
-      <h3 className="p-4 text-2xl text-center font-semibold text-secondary mb-2">
+      <h3 className="p-4 text-2xl text-center font-semibold text-secondary">
         {tableCaption}
       </h3>
 
@@ -76,84 +76,88 @@ export default function PaginatedTable(props: PaginatedTableProps) {
             </table>
           </>
         ) : (
-          <span className="">There are no entries to be displayed</span>
+          <span className="block text-center font-medium tracking-wide">There are no entries to be displayed for your request.</span>
         )}
       </div>
 
-      <div className="flex justify-between gap-8 mt-6">
-        <span className="text-gray-400 text-sm font-medium whitespace-nowrap">
-          Showing data {startIndex} to {endIndex}
-          &nbsp;of total {totalDocs} entries
-        </span>
+      {hasData && (
+        <div className="flex justify-between gap-8 mt-6">
+          <span className="text-gray-400 text-sm font-medium whitespace-nowrap">
+            Showing data {startIndex} to {endIndex}
+            &nbsp;of total {totalDocs} entries
+          </span>
 
-        <div className="flex gap-4 items-end">
-          <button
-            className="min-w-8 h-8 rounded-md  bg-gray-200 px-3 disabled:opacity-40"
-            onClick={() => setPage(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
-          >
-            <ChevronLeft className="w-5 h-5 text-black" />
-          </button>
+          <div className="flex gap-4 items-end">
+            <button
+              className="min-w-8 h-8 rounded-md  bg-gray-200 px-3 disabled:opacity-40"
+              onClick={() => setPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="w-5 h-5 text-black" />
+            </button>
 
-          <NumberBox
-            idx={1}
-            currentPage={currentPage}
-            onClickHandler={setPage}
-          />
-
-          {currentPage > 5 && <span className="text-2xl">.&nbsp;.&nbsp;.</span>}
-
-          {Array.from({ length: 3 }, (_, idx) => idx)
-            .filter((idx) => currentPage - 3 + idx > 1)
-            .map((idx) => (
-              <NumberBox
-                key={idx}
-                idx={currentPage - 3 + idx}
-                currentPage={currentPage}
-                onClickHandler={setPage}
-              />
-            ))}
-
-          {![1, totalPages].includes(currentPage) && (
             <NumberBox
-              idx={currentPage}
+              idx={1}
               currentPage={currentPage}
               onClickHandler={setPage}
             />
-          )}
 
-          {Array.from({ length: 3 }, (_, idx) => idx)
-            .filter((idx) => currentPage + idx + 1 < totalPages)
-            .map((idx) => (
+            {currentPage > 5 && (
+              <span className="text-2xl">.&nbsp;.&nbsp;.</span>
+            )}
+
+            {Array.from({ length: 3 }, (_, idx) => idx)
+              .filter((idx) => currentPage - 3 + idx > 1)
+              .map((idx) => (
+                <NumberBox
+                  key={idx}
+                  idx={currentPage - 3 + idx}
+                  currentPage={currentPage}
+                  onClickHandler={setPage}
+                />
+              ))}
+
+            {![1, totalPages].includes(currentPage) && (
               <NumberBox
-                key={idx}
-                idx={currentPage + idx + 1}
+                idx={currentPage}
                 currentPage={currentPage}
                 onClickHandler={setPage}
               />
-            ))}
+            )}
 
-          {currentPage < totalPages - 4 && (
-            <span className="text-2xl">.&nbsp;.&nbsp;.</span>
-          )}
+            {Array.from({ length: 3 }, (_, idx) => idx)
+              .filter((idx) => currentPage + idx + 1 < totalPages)
+              .map((idx) => (
+                <NumberBox
+                  key={idx}
+                  idx={currentPage + idx + 1}
+                  currentPage={currentPage}
+                  onClickHandler={setPage}
+                />
+              ))}
 
-          {totalPages !== 1 && (
-            <NumberBox
-              idx={totalPages}
-              currentPage={currentPage}
-              onClickHandler={setPage}
-            />
-          )}
+            {currentPage < totalPages - 4 && (
+              <span className="text-2xl">.&nbsp;.&nbsp;.</span>
+            )}
 
-          <button
-            className="min-w-8 h-8 rounded-md  bg-gray-200 px-3 disabled:opacity-40"
-            onClick={() => setPage(Math.min(currentPage + 1, totalPages))}
-            disabled={currentPage === totalPages}
-          >
-            <ChevronRight className="w-5 h-5 text-black" />
-          </button>
+            {totalPages !== 1 && (
+              <NumberBox
+                idx={totalPages}
+                currentPage={currentPage}
+                onClickHandler={setPage}
+              />
+            )}
+
+            <button
+              className="min-w-8 h-8 rounded-md  bg-gray-200 px-3 disabled:opacity-40"
+              onClick={() => setPage(Math.min(currentPage + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              <ChevronRight className="w-5 h-5 text-black" />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

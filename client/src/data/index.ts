@@ -14,14 +14,14 @@ export const NAV_ITEM_LIST: Array<INavItemOptions> = [
   },
   {
     id: 3,
-    text: "SERVICES",
-    navigateTo: "/#services",
+    text: "POPULAR FOODS",
+    navigateTo: "/#popular-foods",
   },
-  {
-    id: 4,
-    text: "CONTACT US",
-    navigateTo: "/#contact",
-  },
+  // {
+  //   id: 4,
+  //   text: "CONTACT US",
+  //   navigateTo: "/#contact",
+  // },
 ];
 
 export const ORDER_STATUS_OPTIONS: Array<SelectOptionType<OrderStatusType>> = [

@@ -31,11 +31,11 @@ export default function FoodTable() {
     "S.N.",
     "Name",
     "Category",
-    "description",
+    "Main Image",
     "Price",
     "Stock",
+    "description",
     "Discount",
-    "Main Image",
     // "SubImage",
     "Actions",
   ];

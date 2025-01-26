@@ -5,6 +5,7 @@ import useUpdateOrderStatus from "@/api/order/useUpdateOrderStatus";
 import useVerifyPayment from "@/api/order/useVerifyPayment";
 import { SelectOptionType } from "@/constants";
 import { ORDER_STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS } from "@/data";
+import useCustomToast from "@/hooks/useCustomToast";
 import {
   getAmountWithNepaliCurrency,
   getCapitalizedForm,
@@ -27,6 +28,8 @@ export default function OrderTableRow(props: IOrderTableRowProps) {
 
   const [isPaymentDone, setIsPaymentDone] =
     useState<SingleValue<SelectOptionType<boolean>>>();
+
+  const toast = useCustomToast();
 
   const createdDate = new Date(order.createdAt);
 
@@ -66,6 +69,24 @@ export default function OrderTableRow(props: IOrderTableRowProps) {
       orderId: order._id,
     });
   };
+
+  useEffect(() => {
+    if (verifyPayment.isSuccess) {
+      toast({
+        msg:"Order payment has been verified successfully"
+      })
+    }
+  }, [verifyPayment.isSuccess]);
+
+  
+  useEffect(() => {
+    if (updateStatus.isSuccess) {
+      toast({
+        msg:"Order status has been updated successfully"
+      })
+    }
+  }, [updateStatus.isSuccess]);
+  
 
   return (
     <>

@@ -8,9 +8,13 @@ import { Foods } from "@/api/food/FoodTypes";
 
 interface IMenuProps {
   selectedCategory: string;
+  averageRatingData: Record<string, { AverageRating: number }>;
 }
 
-export default function Menu({ selectedCategory }: IMenuProps) {
+export default function Menu({
+  selectedCategory,
+  averageRatingData,
+}: IMenuProps) {
   let data: Foods | undefined;
 
   if (selectedCategory === "") {
@@ -27,13 +31,17 @@ export default function Menu({ selectedCategory }: IMenuProps) {
 
   return (
     <section className="py-10 px-20" id="menu">
-      <h2 className="text-4xl tracking-wider text-secondary text-center font-bold mb-8">
+      <h2 className="text-4xl tracking-wider text-secondary font-bold mb-8">
         Our Menu
       </h2>
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-10">
         {data?.foods.map((food) => (
-          <FoodCard key={food._id} food={food} />
+          <FoodCard
+            key={food._id}
+            food={food}
+            rating={averageRatingData[food._id].AverageRating}
+          />
         ))}
       </div>
     </section>
