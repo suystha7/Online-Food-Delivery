@@ -1,7 +1,6 @@
 "use client";
-// import { Button } from "@mui/material";
+import { Button } from "@mui/material";
 import React from "react";
-import { Button } from "../basic";
 
 const Banner: React.FC = () => {
   const handleScroll = (): void => {
@@ -12,8 +11,9 @@ const Banner: React.FC = () => {
       }
     }
   };
+
   return (
-    <section className="banner bg-[#fdefc7]">
+    <section className="banner bg-[#fdefc7]" id="banner">
       <div className="info1">
         <h2 className="text-brown mb-4 uppercase">
           "Good food, good company, delivered right to your door."
@@ -26,9 +26,12 @@ const Banner: React.FC = () => {
           deliciousness delivered!
         </p>
 
-        <Button className="btn-red btn-lg no-radius mt-5" onClick="#menu">
+        <button
+          className="btn-red btn-lg no-radius mt-5"
+          onClick={handleScroll}
+        >
           EXPLORE FULL MENU
-        </Button>
+        </button>
       </div>
     </section>
   );
