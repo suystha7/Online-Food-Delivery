@@ -30,7 +30,7 @@ const banners = [
 const HeroSection: FC = () => {
   const handleScroll = (): void => {
     if (typeof window !== "undefined") {
-      const targetSection = document.getElementById("category");
+      const targetSection = document.getElementById("banner");
       if (targetSection) {
         targetSection.scrollIntoView({ behavior: "smooth" });
       }

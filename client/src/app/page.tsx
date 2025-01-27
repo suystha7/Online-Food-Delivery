@@ -71,7 +71,7 @@ export default function Home() {
       <Banner />
       
       <PopularFood averageRatingData={averageRatingData!} />
-
+    
       {userData && ratingData!.totalRatings > 3 && (
         <RecommendedFood averageRatingData={averageRatingData!} />
       )}
